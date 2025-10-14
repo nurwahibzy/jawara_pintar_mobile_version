@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/kependudukan.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/keuangan.dart';
+import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/rumah_tambah.dart';
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class MainApp extends StatelessWidget {
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
+        '/rumah-tambah': (context) => const TambahRumah(),
       },
     );
   }
