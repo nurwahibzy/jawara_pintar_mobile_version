@@ -79,7 +79,6 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
-                    // Tambahkan aksi lupa password di sini
                   },
                   child: const Text('Lupa password?'),
                 ),

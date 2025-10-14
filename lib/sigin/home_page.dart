@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/menu_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
