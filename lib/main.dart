@@ -14,7 +14,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
+        // buat test sementara doang mwehehe
         '/': (context) => const Kependudukan(),
+        '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
       },
     );
