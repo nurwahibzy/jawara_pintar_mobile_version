@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jawara_pintar_mobile_version/pages/dahsboard/kependudukan.dart';
+import 'package:jawara_pintar_mobile_version/pages/dahsboard/keuangan.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +11,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        // buat test sementara doang mwehehe
+        '/': (context) => const Kependudukan(),
+        '/kependudukan': (context) => const Kependudukan(),
+        '/keuangan': (context) => const Keuangan(),
+      },
     );
   }
 }
