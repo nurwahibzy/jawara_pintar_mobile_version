@@ -4,7 +4,7 @@ class SideDrawer extends StatelessWidget {
   const SideDrawer({super.key});
 
   void _navigateTo(BuildContext context, String routeName) {
-    Navigator.pop(context); 
+        Navigator.pop(context); 
     Navigator.pushNamed(context, routeName);
   }
 
