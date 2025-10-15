@@ -32,11 +32,7 @@ class _KeuanganState extends State<Keuangan> {
   // Data kategori pemasukan
   final Map<String, Map<String, double>> incomeCategories = {
     '2025': {
-      'Gaji': 45000000,
-      'Investasi': 15000000,
-      'Bisnis': 25000000,
-      'Freelance': 10000000,
-      'Lainnya': 5000000,
+      'Pendapatan Lainnya': 5000000,
     },
   };
   
@@ -48,7 +44,7 @@ class _KeuanganState extends State<Keuangan> {
       'Kesehatan': 5000000,
       'Pendidikan': 12000000,
       'Hiburan': 7000000,
-      'Lainnya': 8000000,
+      'Pemeliharaan Fasilitas': 8000000,
     },
   };
 
@@ -424,8 +420,8 @@ class _KeuanganState extends State<Keuangan> {
                                 },
                               ),
                               borderData: FlBorderData(show: false),
-                              sectionsSpace: 1,
-                              centerSpaceRadius: 30,
+                              sectionsSpace: _getPieChartConfig(categories.length)['sectionsSpace']!,
+                              centerSpaceRadius: _getPieChartConfig(categories.length)['centerSpaceRadius']!,
                             ),
                           ),
                   ),
@@ -490,8 +486,8 @@ class _KeuanganState extends State<Keuangan> {
                                 },
                               ),
                               borderData: FlBorderData(show: false),
-                              sectionsSpace: 1,
-                              centerSpaceRadius: 30,
+                              sectionsSpace: _getPieChartConfig(categories.length)['sectionsSpace']!,
+                              centerSpaceRadius: _getPieChartConfig(categories.length)['centerSpaceRadius']!,
                             ),
                           ),
                   ),
@@ -513,9 +509,28 @@ class _KeuanganState extends State<Keuangan> {
     );
   }
 
+  // Helper method untuk mendapatkan radius yang konsisten
+  Map<String, double> _getPieChartRadius(int categoryCount) {
+    // Radius tetap sama untuk semua kondisi
+    return {'base': 65.0, 'touched': 75.0};
+  }
+
+  // Helper method untuk mendapatkan konfigurasi yang konsisten
+  Map<String, double> _getPieChartConfig(int categoryCount) {
+    return {
+      'centerSpaceRadius': 25.0, // Konsisten untuk semua kondisi
+      'sectionsSpace': categoryCount == 1 ? 0.0 : 1.0, // Tetap 0 untuk single data
+    };
+  }
+
   List<PieChartSectionData> _buildIncomePieChartSections(Map<String, double> categories, List<Color> colors) {
     double total = categories.values.fold(0, (sum, value) => sum + value);
     List<String> keys = categories.keys.toList();
+    
+    // Gunakan radius yang konsisten
+    final radiusConfig = _getPieChartRadius(keys.length);
+    final baseRadius = radiusConfig['base']!;
+    final touchedRadius = radiusConfig['touched']!;
     
     return keys.asMap().entries.map((entry) {
       final index = entry.key;
@@ -523,7 +538,7 @@ class _KeuanganState extends State<Keuangan> {
       final value = categories[category]!;
       final percentage = (value / total * 100);
       final isTouched = index == touchedIndexIncome;
-      final radius = isTouched ? 85.0 : 75.0;
+      final radius = isTouched ? touchedRadius : baseRadius;
       
       return PieChartSectionData(
         color: colors[index % colors.length],
@@ -545,13 +560,18 @@ class _KeuanganState extends State<Keuangan> {
     double total = categories.values.fold(0, (sum, value) => sum + value);
     List<String> keys = categories.keys.toList();
     
+    // Gunakan radius yang konsisten
+    final radiusConfig = _getPieChartRadius(keys.length);
+    final baseRadius = radiusConfig['base']!;
+    final touchedRadius = radiusConfig['touched']!;
+    
     return keys.asMap().entries.map((entry) {
       final index = entry.key;
       final category = entry.value;
       final value = categories[category]!;
       final percentage = (value / total * 100);
       final isTouched = index == touchedIndexExpense;
-      final radius = isTouched ? 85.0 : 75.0;
+      final radius = isTouched ? touchedRadius : baseRadius;
       
       return PieChartSectionData(
         color: colors[index % colors.length],
