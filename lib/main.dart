@@ -4,6 +4,7 @@ import 'package:jawara_pintar_mobile_version/pages/dahsboard/keuangan.dart';
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/rumah_tambah.dart';
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 import 'package:jawara_pintar_mobile_version/pages/warga/tambah.dart';
+import 'package:jawara_pintar_mobile_version/pages/dahsboard/kegiatan.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,6 +25,7 @@ class MainApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/tambah_warga': (context) => const TambahWarga(),
         '/rumah-tambah': (context) => const TambahRumah(),
+        '/kegiatan': (context) => const Kegiatan(),
       },
     );
   }
