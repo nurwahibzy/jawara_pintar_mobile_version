@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class home_page extends StatelessWidget {
+  const home_page({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,4 +52,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+  
+  MenuCard({required String title, required IconData icon, required Null Function() onTap}) {}
 }

@@ -23,23 +23,4 @@ class MainApp extends StatelessWidget {
       },
     );
   }
-  class JawaraApp extends StatelessWidget {
-  const JawaraApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Jawara App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/signin',
-      routes: {
-        '/signin': (context) => const SignInPage(),
-        '/home': (context) => const HomePage(),
-      },
-    );
-  }
-  }
 }
