@@ -28,12 +28,12 @@ class BottomNavigationBarWidget extends StatelessWidget {
           case 2:
             Navigator.pushNamed(context, '/kependudukan');
             break;
-          case 3:
-            Navigator.pushNamed(context, '/');
-            break;
-          case 4:
-            Navigator.pushNamed(context, '/');
-            break;
+          // case 3:
+          //   Navigator.pushNamed(context, '/');
+          //   break;
+          // case 4:
+          //   Navigator.pushNamed(context, '/');
+          //   break;
         }
       },
       items: const [
