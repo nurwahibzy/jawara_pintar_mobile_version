@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
@@ -16,6 +15,8 @@ class BottomNavigationBarWidget extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.green, // warna ikon & label saat aktif
+      unselectedItemColor: Colors.grey,
       onTap: (index) {
         // Navigasi ke halaman sesuai item yang ditekan
         switch (index) {
