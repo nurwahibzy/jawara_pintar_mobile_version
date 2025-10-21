@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jawara_pintar_mobile_version/widgets/side_drawer.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:jawara_pintar_mobile_version/widgets/bottom_navigation_bar.dart';
 
 class Kegiatan extends StatelessWidget {
   const Kegiatan({super.key});
@@ -12,7 +12,6 @@ class Kegiatan extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Dashboard Kegiatan'),
       ),
-      drawer: SideDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -38,6 +37,10 @@ class Kegiatan extends StatelessWidget {
             _buildBulananCard(),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBarWidget(
+        currentIndex: 1,
+        onTap: (index) {},
       ),
     );
   }
