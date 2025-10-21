@@ -25,29 +25,29 @@ class MenuKependudukan extends StatelessWidget {
           GridView.count(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            crossAxisCount: 4, // jumlah kolom
+            crossAxisCount: 4, 
             crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.85, 
             children: [
               _buildMenuItem(context, Icons.home, "Rumah", '/data-rumah-warga'),
               _buildMenuItem(context, Icons.people, "Warga", '/warga'),
               _buildMenuItem(
                 context,
                 Icons.card_giftcard,
-                "Penerimaan Warga",
+                "Penerimaan\nWarga",
                 '/penerimaan-warga',
               ),
               _buildMenuItem(
                 context,
                 Icons.swap_horiz,
-                "Mutasi Keluarga",
+                "Mutasi\nKeluarga",
                 '/mutasi-keluarga',
               ),
               _buildMenuItem(
                 context,
                 Icons.manage_accounts,
-                "Manajemen Pengguna",
+                "Manajemen\nPengguna",
                 '/manajemen-pengguna',
               ),
             ],
@@ -70,6 +70,7 @@ class MenuKependudukan extends StatelessWidget {
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(12),
@@ -80,10 +81,17 @@ class MenuKependudukan extends StatelessWidget {
             child: Icon(icon, color: Colors.green, size: 28),
           ),
           const SizedBox(height: 6),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12),
+          Flexible(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                height: 1.2,
+              ),
+            ),
           ),
         ],
       ),

@@ -20,15 +20,15 @@ class MenuKeuangan extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GridView.count(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            crossAxisCount: 4, // jumlah kolom
+            crossAxisCount: 4, 
             crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.85, 
             children: [
               _buildMenuItem(
                 context,
@@ -42,35 +42,40 @@ class MenuKeuangan extends StatelessWidget {
                 "Pengeluaran",
                 "/pengeluaran",
               ),
-              _buildMenuItem(context, Icons.list_alt, "Tagihan", "/tagihan"),
+              _buildMenuItem(
+                context,
+                Icons.list_alt,
+                "Tagihan",
+                "/tagihan",
+              ),
               _buildMenuItem(
                 context,
                 Icons.receipt,
-                "Tagih Iuran",
+                "Tagih\nIuran",
                 "/tagih-iuran",
               ),
               _buildMenuItem(
                 context,
                 Icons.category,
-                "Kategori Iuran",
+                "Kategori\nIuran",
                 "/kategori-iuran",
               ),
               _buildMenuItem(
                 context,
                 Icons.account_balance,
-                "Channel Transfer",
+                "Channel\nTransfer",
                 "/channel-transfer",
               ),
               _buildMenuItem(
                 context,
                 Icons.bar_chart,
-                "Laporan Keuangan",
+                "Laporan\nKeuangan",
                 "/laporan-keuangan",
               ),
               _buildMenuItem(
                 context,
                 Icons.print,
-                "Cetak Laporan",
+                "Cetak\nLaporan",
                 "/cetak-laporan",
               ),
             ],
@@ -93,6 +98,7 @@ class MenuKeuangan extends StatelessWidget {
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(12),
@@ -103,10 +109,17 @@ class MenuKeuangan extends StatelessWidget {
             child: Icon(icon, color: Colors.green, size: 28),
           ),
           const SizedBox(height: 6),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12),
+          Flexible(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                height: 1.2,
+              ),
+            ),
           ),
         ],
       ),
