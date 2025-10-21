@@ -1,68 +1,126 @@
 import 'package:flutter/material.dart';
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/detail_rumah.dart';
+import 'package:jawara_pintar_mobile_version/pages/warga/detail_warga.dart';
 
-class DaftarRumah extends StatefulWidget {
-  const DaftarRumah({super.key});
+class DaftarWarga extends StatefulWidget {
+  const DaftarWarga({super.key});
 
   @override
-  State<DaftarRumah> createState() => _DaftarRumahState();
+  State<DaftarWarga> createState() => _DaftarWargaState();
 }
 
-class _DaftarRumahState extends State<DaftarRumah> {
+class _DaftarWargaState extends State<DaftarWarga> {
   final TextEditingController _searchController = TextEditingController();
   String? _selectedStatus;
   bool _showFilter = false;
 
-  final List<Map<String, dynamic>> rumahList = [
+  // Data dummy sementara
+  final List<Map<String, dynamic>> wargaList = [
     {
-      'no_rumah': 'A-01',
+      'keluarga': 'Keluarga A',
+      'nama': 'Budi Santoso',
+      'nik': '31740510010001',
+      'telepon': '081234567890',
+      'tempat_lahir': 'Jakarta',
+      'tanggal_lahir': '1990-04-12',
+      'jenis_kelamin': 'Laki - Laki',
+      'agama': 'Islam',
+      'golongan_darah': 'O',
+      'peran_keluarga': 'Ayah',
+      'pendidikan': 'Sarjana',
+      'pekerjaan': 'PNS',
+      'status': 'Aktif',
       'alamat': 'Jl. Kenanga No. 10',
-      'status': 'Ditempati',
-      'kepala_keluarga': 'Budi Santoso',
-      'jumlah_anggota': 4,
-      'penghuni': [
-        'Budi Santoso',
-        'Ani Santoso',
-        'Rudi Santoso',
-        'Rina Santoso',
-      ],
+      'no_rumah': 'A-01',
     },
     {
-      'no_rumah': 'A-02',
+      'keluarga': 'Keluarga B',
+      'nama': 'Siti Aminah',
+      'nik': '31740510010002',
+      'telepon': '081298765432',
+      'tempat_lahir': 'Bandung',
+      'tanggal_lahir': '1992-08-25',
+      'jenis_kelamin': 'Perempuan',
+      'agama': 'Islam',
+      'golongan_darah': 'A',
+      'peran_keluarga': 'Ibu',
+      'pendidikan': 'SMA',
+      'pekerjaan': 'Wiraswasta',
+      'status': 'Tidak Aktif',
       'alamat': 'Jl. Melati No. 5',
-      'status': 'Kosong',
-      'kepala_keluarga': 'Siti Aminah',
-      'jumlah_anggota': 3,
-      'penghuni': ['Siti Aminah', 'Ahmad Amin', 'Lina Amin'],
+      'no_rumah': 'A-02',
     },
     {
-      'no_rumah': 'A-03',
-      'alamat': 'Jl. Anggrek No. 3',
-      'status': 'Kosong',
-      'kepala_keluarga': '-',
-      'jumlah_anggota': 0,
-      'penghuni': [],
+      'keluarga': 'Keluarga B',
+      'nama': 'Ahmad Amin',
+      'nik': '31740510010003',
+      'telepon': '081355667788',
+      'tempat_lahir': 'Bandung',
+      'tanggal_lahir': '2010-05-17',
+      'jenis_kelamin': 'Laki - Laki',
+      'agama': 'Islam',
+      'golongan_darah': 'B',
+      'peran_keluarga': 'Anak',
+      'pendidikan': 'SMP',
+      'pekerjaan': 'Pelajar/Mahasiswa',
+      'status': 'Aktif',
+      'alamat': 'Jl. Melati No. 5',
+      'no_rumah': 'A-02',
+    },
+    {
+      'keluarga': 'Keluarga C',
+      'nama': 'Maria Kristina',
+      'nik': '31740510010004',
+      'telepon': '081345678901',
+      'tempat_lahir': 'Surabaya',
+      'tanggal_lahir': '1988-02-10',
+      'jenis_kelamin': 'Perempuan',
+      'agama': 'Kristen',
+      'golongan_darah': 'AB',
+      'peran_keluarga': 'Ibu',
+      'pendidikan': 'Diploma',
+      'pekerjaan': 'BUMN',
+      'status': 'Aktif',
+      'alamat': 'Jl. Anggrek No. 7',
+      'no_rumah': 'B-03',
+    },
+    {
+      'keluarga': 'Keluarga C',
+      'nama': 'Andreas Kristino',
+      'nik': '31740510010005',
+      'telepon': '081322334455',
+      'tempat_lahir': 'Surabaya',
+      'tanggal_lahir': '1986-11-03',
+      'jenis_kelamin': 'Laki - Laki',
+      'agama': 'Kristen',
+      'golongan_darah': 'O',
+      'peran_keluarga': 'Ayah',
+      'pendidikan': 'Sarjana',
+      'pekerjaan': 'Wiraswasta',
+      'status': 'Aktif',
+      'alamat': 'Jl. Anggrek No. 7',
+      'no_rumah': 'B-03',
     },
   ];
 
-  List<Map<String, dynamic>> get filteredRumah {
-    return rumahList.where((rumah) {
-      final searchMatch = rumah['alamat'].toLowerCase().contains(
+
+  List<Map<String, dynamic>> get filteredWarga {
+    return wargaList.where((warga) {
+      final searchMatch = warga['nama'].toLowerCase().contains(
         _searchController.text.toLowerCase(),
       );
       final statusMatch = _selectedStatus == null || _selectedStatus == 'Semua'
           ? true
-          : rumah['status'] == _selectedStatus;
+          : warga['status'] == _selectedStatus;
       return searchMatch && statusMatch;
     }).toList();
   }
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'Ditempati':
-        return Colors.lightGreen.shade800;
-      case 'Kosong':
-        return Colors.red;
+      case 'Aktif':
+        return Colors.green.shade700;
+      case 'Tidak Aktif':
+        return Colors.red.shade700;
       default:
         return Colors.grey;
     }
@@ -82,7 +140,7 @@ class _DaftarRumahState extends State<DaftarRumah> {
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: const Text(
-            'Daftar Rumah Warga',
+            'Daftar Warga',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.green,
@@ -116,7 +174,7 @@ class _DaftarRumahState extends State<DaftarRumah> {
 
         body: Column(
           children: [
-            // Panel filter
+            // Filter Panel
             AnimatedCrossFade(
               duration: const Duration(milliseconds: 300),
               crossFadeState: _showFilter
@@ -136,7 +194,7 @@ class _DaftarRumahState extends State<DaftarRumah> {
                         TextField(
                           controller: _searchController,
                           decoration: InputDecoration(
-                            hintText: 'Cari berdasarkan alamat...',
+                            hintText: 'Cari berdasarkan nama...',
                             prefixIcon: const Icon(
                               Icons.search,
                               color: Colors.grey,
@@ -162,14 +220,9 @@ class _DaftarRumahState extends State<DaftarRumah> {
                         const SizedBox(height: 10),
                         DropdownButtonFormField<String>(
                           dropdownColor: Colors.white,
-                          iconEnabledColor: const Color.fromARGB(
-                            255,
-                            45,
-                            92,
-                            21,
-                          ),
+                          iconEnabledColor: const Color.fromARGB(255,45, 92, 21,),
                           decoration: InputDecoration(
-                            labelText: 'Filter Status Rumah',
+                            labelText: 'Filter Status Kependudukan',
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
@@ -187,12 +240,12 @@ class _DaftarRumahState extends State<DaftarRumah> {
                               child: Text('Semua'),
                             ),
                             DropdownMenuItem(
-                              value: 'Ditempati',
-                              child: Text('Ditempati'),
+                              value: 'Aktif',
+                              child: Text('Aktif'),
                             ),
                             DropdownMenuItem(
-                              value: 'Kosong',
-                              child: Text('Kosong'),
+                              value: 'Tidak Aktif',
+                              child: Text('Tidak Aktif'),
                             ),
                           ],
                           onChanged: (value) {
@@ -217,9 +270,6 @@ class _DaftarRumahState extends State<DaftarRumah> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.grey[300],
                                 foregroundColor: Colors.black,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -230,16 +280,8 @@ class _DaftarRumahState extends State<DaftarRumah> {
                               icon: const Icon(Icons.check_circle),
                               label: const Text("Terapkan"),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(
-                                  255,
-                                  45,
-                                  92,
-                                  21,
-                                ),
+                                backgroundColor: Colors.green,
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
                               ),
                             ),
                           ],
@@ -254,13 +296,13 @@ class _DaftarRumahState extends State<DaftarRumah> {
 
             const Divider(),
 
-            // Daftar rumah hasil filter
+            // Daftar warga
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(12),
-                itemCount: filteredRumah.length,
+                itemCount: filteredWarga.length,
                 itemBuilder: (context, index) {
-                  final rumah = filteredRumah[index];
+                  final warga = filteredWarga[index];
                   return Card(
                     margin: const EdgeInsets.only(bottom: 16),
                     shape: RoundedRectangleBorder(
@@ -273,31 +315,46 @@ class _DaftarRumahState extends State<DaftarRumah> {
                         vertical: 10,
                       ),
                       title: Text(
-                        'No. Rumah: ${rumah['no_rumah']}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        warga['nama'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
-                      subtitle: Text('Alamat: ${rumah['alamat']}'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${warga['keluarga']}'),
+                          Text('Alamat: ${warga['alamat']}'),
+                        ],
+                      ),
                       trailing: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: _getStatusColor(rumah['status']),
-                          borderRadius: BorderRadius.circular(10),
+                          color: _getStatusColor(warga['status']),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          rumah['status'],
+                          warga['status'],
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => DetailRumah(rumah: rumah),
+                            builder: (_) => DetailWarga(warga: warga),
                           ),
                         );
+
+                        if (result == 'hapus') {
+                          setState(() {
+                            wargaList.remove(warga);
+                          });
+                        }
                       },
                     ),
                   );
@@ -307,15 +364,16 @@ class _DaftarRumahState extends State<DaftarRumah> {
           ],
         ),
 
+        //Tombol Tambah Warga
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Colors.green,
-          icon: const Icon(Icons.add_home, color: Colors.white),
+          icon: const Icon(Icons.person_add, color: Colors.white),
           label: const Text(
-            'Tambah Rumah',
+            'Tambah Warga',
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/tambah_rumah');
+            Navigator.pushNamed(context, '/tambah_warga');
           },
         ),
       ),
