@@ -162,7 +162,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        // Navigator.pushReplacementNamed(context, '/dashboard');
+                        Navigator.pushReplacementNamed(context, '/kependudukan');
                       },
                       child: const Text('Login',
                        style: TextStyle(

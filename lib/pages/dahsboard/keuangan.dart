@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jawara_pintar_mobile_version/widgets/side_drawer.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:jawara_pintar_mobile_version/widgets/bottom_navigation_bar.dart';
 
 class Keuangan extends StatefulWidget {
   const Keuangan({super.key});
@@ -95,7 +95,6 @@ class _KeuanganState extends State<Keuangan> {
           ),
         ],
       ),
-      drawer: const SideDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -149,6 +148,10 @@ class _KeuanganState extends State<Keuangan> {
             _buildExpenseCategoryChart(currentExpenseCategories),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBarWidget(
+        currentIndex: 0,
+        onTap: (index) {},
       ),
     );
   }
