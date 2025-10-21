@@ -5,6 +5,7 @@ import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/rumah_tambah
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 import 'package:jawara_pintar_mobile_version/pages/warga/tambah.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/kegiatan.dart';
+import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_rumah.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,13 +20,14 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
-        '/': (context) => const LoginPage(),
+        '/': (context) => const DaftarRumah(),
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
         '/tambah_warga': (context) => const TambahWarga(),
-        '/rumah-tambah': (context) => const TambahRumah(),
+        '/tambah_rumah': (context) => const TambahRumah(),
         '/kegiatan': (context) => const Kegiatan(),
+        '/daftar_rumah': (context) => const DaftarRumah(),
       },
     );
   }
