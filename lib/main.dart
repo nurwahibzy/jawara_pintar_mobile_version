@@ -13,6 +13,7 @@ import 'package:jawara_pintar_mobile_version/pages/warga/detail_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/warga/edit_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/daftar_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/tambah_pengeluaran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.dart';
 
 void main() {
   runApp(const MainApp());
@@ -27,7 +28,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
-        '/': (context) => const Kependudukan(),
+        '/': (context) => const DaftarPengeluaran(),
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
@@ -38,8 +39,11 @@ class MainApp extends StatelessWidget {
         '/daftar_warga': (context) => const DaftarWarga(),
         '/detail_warga': (context) => const DetailWarga(warga: {}),
         '/edit_warga': (context) => const EditWarga(warga: {}),
+        '/pemasukan': (context) => const PemasukanLain(),
+        '/tambah_pemasukan': (context) => const TambahPemasukanLain(),
         '/daftar_pengeluaran': (context) => const DaftarPengeluaran(),
         '/tambah_pengeluaran': (context) => const TambahPengeluaran(),
+        '/edit_pengeluaran': (context) => const EditPengeluaranPage(pengeluaran: {}),
 
       },
     );
