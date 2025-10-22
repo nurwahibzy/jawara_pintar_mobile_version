@@ -42,6 +42,20 @@ class DetailKeluarga extends StatelessWidget {
                   const SizedBox(height: 10),
 
                   Text(
+                    'Kepala Keluarga:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  Text(keluarga['namaKepalaKeluarga']),
+                  const SizedBox(height: 10),
+
+                  Text(
+                    'Rumah Saat ini:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  Text(keluarga['namaKepalaKeluarga']),
+                  const SizedBox(height: 10),
+
+                  Text(
                     'Alamat:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
@@ -60,10 +74,87 @@ class DetailKeluarga extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(keluarga['status']),
-                  const SizedBox(height: 20),
-
+                  const SizedBox(height: 10),
                   const Divider(thickness: 1),
-                  // const SizedBox(height: 10),
+
+                  const SizedBox(height: 10),
+                  Text(
+                    'Anggota keluarga:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Nama:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(keluarga['namaKepalaKeluarga']),
+                            const SizedBox(height: 10),
+                            Text(
+                              'NIK:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(keluarga['nik']),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Peran:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(keluarga['peran']),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Jenis Kelamin:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(keluarga['jenisKelamin']),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Tanggal Lahir:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(keluarga['tanggalLahir']),
+                            const SizedBox(height: 10),
+                            Text(
+                              'status:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(keluarga['status']),
+                            const SizedBox(height: 10),
+                            // const Divider(thickness: 0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ), 
                 ],
               ),
             ),

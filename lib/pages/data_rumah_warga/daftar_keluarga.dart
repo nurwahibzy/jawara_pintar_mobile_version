@@ -11,18 +11,30 @@ class DaftarKeluarga extends StatelessWidget {
         'namaKepalaKeluarga': 'Budi Santoso',
         'alamat': 'Jl. Merdeka No. 10',
         'statusKepemilikan': 'Pemilik',
+        'nik': '1234567890',
+        'peran': 'Kepala Keluarga',
+        'jenisKelamin': 'Laki-Laki',
+        'tanggalLahir': '12 Desember 1945',
         'status': 'Aktif',
       },
       {
         'namaKepalaKeluarga': 'Siti Aminah',
         'alamat': 'Jl. Sudirman No. 5',
         'statusKepemilikan': 'Penyewa',
+        'nik': '1234567890',
+        'peran': 'Ibu Rumah Tangga',
+        'jenisKelamin': 'Perempuan',
+        'tanggalLahir': '1 Mei 1927',
         'status': 'Nonaktif',
       },
       {
         'namaKepalaKeluarga': 'Andi Wijaya',
         'alamat': 'Jl. Thamrin No. 20',
         'statusKepemilikan': 'Pemilik',
+        'nik': '1234567890',
+        'peran': 'Kepala Keluarga',
+        'jenisKelamin': 'Laki-Laki',
+        'tanggalLahir': '2 Januari 1927',
         'status': 'Aktif',
       },
     ];
@@ -104,79 +116,3 @@ class DaftarKeluarga extends StatelessWidget {
     );
   }
 }
-
-// class KeluargaCard extends StatelessWidget {
-//   final int nomor;
-//   final String namaKepalaKeluarga;
-//   final String alamat;
-//   final String statusKepemilikan;
-//   final String status;
-
-//   const KeluargaCard({
-//     super.key,
-//     required this.nomor,
-//     required this.namaKepalaKeluarga,
-//     required this.alamat,
-//     required this.statusKepemilikan,
-//     required this.status,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: () => Navigator.pushNamed(
-//         context,
-//         '/detail-keluarga',
-//         arguments: {
-//           'nomor': nomor,
-//           'nama': namaKepalaKeluarga,
-//           'alamat': alamat,
-//           'statusKepemilikan': statusKepemilikan,
-//           'status': status,
-//         },
-//       ),
-//       child: Card(
-//         margin: const EdgeInsets.symmetric(vertical: 8.0),
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Row(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               // Nomor urut
-//               CircleAvatar(
-//                 backgroundColor: Colors.green.withAlpha(1),
-//                 child: Text(
-//                   nomor.toString(),
-//                   style: const TextStyle(
-//                     color: Colors.green,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(width: 12),
-//               // Detail keluarga
-//               Expanded(
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       'Keluarga: $namaKepalaKeluarga',
-//                       style: const TextStyle(
-//                         fontSize: 18,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     const SizedBox(height: 6),
-//                     const SizedBox(height: 6),
-//                     Text('Status: $statusKepemilikan - $status'),
-//                     const SizedBox(height: 6),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
