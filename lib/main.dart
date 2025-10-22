@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/kependudukan.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/keuangan.dart';
+import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_keluarga.dart';
+import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_tagihan.dart';
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/rumah_tambah.dart';
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/daftar_pengguna.dart';
@@ -8,6 +10,9 @@ import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_tambah.dart';
 import 'package:jawara_pintar_mobile_version/pages/tagihan/daftar_tagihan.dart';
 import 'package:jawara_pintar_mobile_version/pages/tagihan/detail_tagihan.dart';
+import 'package:jawara_pintar_mobile_version/pages/pengguna/daftar_pengguna.dart';
+import 'package:jawara_pintar_mobile_version/pages/pengguna/profil.dart';
+import 'package:jawara_pintar_mobile_version/pages/pengguna/tambah_pengguna.dart';
 import 'package:jawara_pintar_mobile_version/pages/warga/tambah_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/kegiatan.dart';
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_rumah.dart';
@@ -47,9 +52,28 @@ class MainApp extends StatelessWidget {
         '/daftar_pengeluaran': (context) => const DaftarPengeluaran(),
         '/tambah_pengeluaran': (context) => const TambahPengeluaran(),
         '/edit_pengeluaran': (context) => const EditPengeluaranPage(pengeluaran: {}),
-        '/daftar_tagihan': (context) => const DaftarTagihan(),
         '/detail_tagihan': (context) => const DetailTagihan(tagihan: {}),
         '/daftar_pengguna': (context) => const DaftarPengguna(),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        '/daftar_keluarga': (context) => const DaftarKeluarga(),
+        '/daftar_tagihan': (context) => const DaftarTagihan(),
+        '/daftar_pengguna': (context) => const DaftarPengguna(),
+        '/tambah_pengguna': (context) => const TambahPengguna(),
+        '/profil': (context) =>  Profil(),
       },
     );
   }
