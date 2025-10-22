@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:jawara_pintar_mobile_version/pages/broadcast/daftar_broadcast.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/kependudukan.dart';
 import 'package:jawara_pintar_mobile_version/pages/dahsboard/keuangan.dart';
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_keluarga.dart';
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_tagihan.dart'
     as rumah_tagihan;
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/rumah_tambah.dart';
+import 'package:jawara_pintar_mobile_version/pages/kegiatan/kegiatan_daftar.dart';
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/daftar_pengguna.dart'
     as manajemen_pengguna;
@@ -73,6 +75,8 @@ class MainApp extends StatelessWidget {
             const manajemen_tambah_pengguna.TambahPengguna(),
         '/manajemen_pengguna/edit_pengguna': (context) =>
             const manajemen_edit_pengguna.EditPengguna(pengguna: {}),
+        '/daftar-kegiatan': (context) => const DaftarKegiatan(),
+        '/broadcast': (context) => const DaftarBroadcast(),
       },
     );
   }
