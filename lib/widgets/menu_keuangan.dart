@@ -46,7 +46,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.list_alt,
                 "Tagihan",
-                "/tagihan",
+                "/daftar_tagihan",
               ),
               _buildMenuItem(
                 context,
