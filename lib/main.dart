@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/daftar_tagihan',
+      initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
         '/': (context) => const DaftarPengeluaran(),
