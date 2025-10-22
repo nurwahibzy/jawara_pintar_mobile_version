@@ -27,13 +27,13 @@ class MenuKegiatan extends StatelessWidget {
             shrinkWrap: true,
             crossAxisCount: 4, // jumlah kolom
             crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.85, // Lebih tinggi untuk memberi ruang label
             children: [
               _buildMenuItem(
                 context,
                 Icons.event,
-                "Daftar Kegiatan",
+                "Daftar\nKegiatan",
                 "/daftar-kegiatan",
               ),
               _buildMenuItem(
@@ -45,7 +45,7 @@ class MenuKegiatan extends StatelessWidget {
               _buildMenuItem(
                 context,
                 Icons.history,
-                "Log Aktifitas",
+                "Log\nAktifitas",
                 "/log-aktifitas",
               ),
             ],
@@ -68,6 +68,7 @@ class MenuKegiatan extends StatelessWidget {
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(12),
@@ -78,10 +79,17 @@ class MenuKegiatan extends StatelessWidget {
             child: Icon(icon, color: Colors.green, size: 28),
           ),
           const SizedBox(height: 6),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12),
+          Flexible(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                height: 1.2,
+              ),
+            ),
           ),
         ],
       ),
