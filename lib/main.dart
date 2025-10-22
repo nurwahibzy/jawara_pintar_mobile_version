@@ -28,6 +28,10 @@ import 'package:jawara_pintar_mobile_version/pages/warga/edit_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/daftar_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/tambah_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/daftar_kategori_iuran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/tambah_kategori_iuran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/detail_kategori_iuran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/edit_kategori_iuran.dart';
 
 void main() {
   runApp(const MainApp());
@@ -42,7 +46,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
-        '/': (context) => const Kegiatan(),
+        '/': (context) => const DaftarKategoriIuran(),
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
@@ -73,6 +77,9 @@ class MainApp extends StatelessWidget {
             const manajemen_tambah_pengguna.TambahPengguna(),
         '/manajemen_pengguna/edit_pengguna': (context) =>
             const manajemen_edit_pengguna.EditPengguna(pengguna: {}),
+        '/daftar_kategori_iuran': (context) => const DaftarKategoriIuran(),
+        '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
+        '/edit_kategori_iuran': (context) => const EditKategoriIuran(dataEdit: {}),
       },
     );
   }
