@@ -34,6 +34,12 @@ class MenuKependudukan extends StatelessWidget {
               _buildMenuItem(context, Icons.people, "Warga", '/warga'),
               _buildMenuItem(
                 context,
+                Icons.family_restroom,
+                "Keluarga",
+                '/daftar_keluarga',
+              ),
+              _buildMenuItem(
+                context,
                 Icons.card_giftcard,
                 "Penerimaan\nWarga",
                 '/penerimaan-warga',
@@ -48,7 +54,7 @@ class MenuKependudukan extends StatelessWidget {
                 context,
                 Icons.manage_accounts,
                 "Manajemen\nPengguna",
-                '/manajemen-pengguna',
+                '/manajemen_pengguna/daftar_pengguna',
               ),
             ],
           ),
