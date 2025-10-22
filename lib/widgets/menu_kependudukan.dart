@@ -54,7 +54,7 @@ class MenuKependudukan extends StatelessWidget {
                 context,
                 Icons.manage_accounts,
                 "Manajemen\nPengguna",
-                '/daftar_pengguna',
+                '/manajemen_pengguna/daftar_pengguna',
               ),
             ],
           ),
