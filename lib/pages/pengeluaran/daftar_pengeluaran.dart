@@ -27,52 +27,306 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
     },
   ];
 
+  // --- Filter State ---
+  bool _showFilter = false;
+  final TextEditingController _searchController = TextEditingController();
+  String? _filterKategori;
+  DateTime? _filterDari;
+  DateTime? _filterSampai;
+
+  List<Map<String, dynamic>> get filteredPengeluaran {
+    return pengeluaranList.where((item) {
+      final searchMatch = item['nama'].toLowerCase().contains(
+        _searchController.text.toLowerCase(),
+      );
+      final kategoriMatch =
+          _filterKategori == null || _filterKategori == '-- Pilih Kategori --'
+          ? true
+          : item['kategori'] == _filterKategori;
+      final dariMatch = _filterDari == null
+          ? true
+          : DateTime.tryParse(
+              item['tanggal'].split('/').reversed.join('-'),
+            )!.isAfter(_filterDari!.subtract(const Duration(days: 1)));
+      final sampaiMatch = _filterSampai == null
+          ? true
+          : DateTime.tryParse(
+              item['tanggal'].split('/').reversed.join('-'),
+            )!.isBefore(_filterSampai!.add(const Duration(days: 1)));
+      return searchMatch && kategoriMatch && dariMatch && sampaiMatch;
+    }).toList();
+  }
+
+  Future<void> _pickTanggalDari() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _filterDari ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) setState(() => _filterDari = picked);
+  }
+
+  Future<void> _pickTanggalSampai() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _filterSampai ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) setState(() => _filterSampai = picked);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pengeluaran', ),
+        title: const Text(
+          'Daftar Pengeluaran',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.white), 
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              _showFilter ? Icons.close : Icons.filter_alt,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                _showFilter = !_showFilter;
+              });
+            },
+          ),
+        ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: pengeluaranList.length,
-        itemBuilder: (context, index) {
-          final item = pengeluaranList[index];
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
-            child: ListTile(
-              title: Text(item['nama']),
-              subtitle: Text(
-                "Tanggal: ${item['tanggal']}\nKategori: ${item['kategori']}",
-              ),
-              trailing: Text(
-                "Rp ${item['nominal']}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+      body: Column(
+        children: [
+          // --- Filter Panel ---
+          AnimatedCrossFade(
+            duration: const Duration(milliseconds: 300),
+            crossFadeState: _showFilter
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            firstChild: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Cari nama...',
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                              width: 0.8,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.green,
+                              width: 1.2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButtonFormField<String>(
+                        value: _filterKategori ?? '-- Pilih Kategori --',
+                        dropdownColor: Colors.white,
+                        iconEnabledColor: Colors.green,
+                        decoration: InputDecoration(
+                          labelText: 'Kategori',
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                        items:
+                            [
+                                  '-- Pilih Kategori --',
+                                  'Kebersihan',
+                                  'Perawatan',
+                                  'Lainnya',
+                                ]
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(e),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (val) =>
+                            setState(() => _filterKategori = val),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                labelText: 'Dari Tanggal',
+                                hintText: _filterDari == null
+                                    ? '--/--/----'
+                                    : '${_filterDari!.day}/${_filterDari!.month}/${_filterDari!.year}',
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onTap: _pickTanggalDari,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                labelText: 'Sampai Tanggal',
+                                hintText: _filterSampai == null
+                                    ? '--/--/----'
+                                    : '${_filterSampai!.day}/${_filterSampai!.month}/${_filterSampai!.year}',
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onTap: _pickTanggalSampai,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _searchController.clear();
+                                _filterKategori = '-- Pilih Kategori --';
+                                _filterDari = null;
+                                _filterSampai = null;
+                              });
+                            },
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                              foregroundColor: Colors.black,
+                            ),
+                            child: const Text("Reset Filter"),
+                          ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {}); // Terapkan filter
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text("Terapkan"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              onTap: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DetailPengeluaran(pengeluaran: item),
+            ),
+            secondChild: const SizedBox.shrink(),
+          ),
+
+          const Divider(),
+
+          // --- List Pengeluaran ---
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: filteredPengeluaran.length,
+              itemBuilder: (context, index) {
+                final item = filteredPengeluaran[index];
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  child: ListTile(
+                    title: Text(item['nama']),
+                    subtitle: Text(
+                      "Tanggal: ${item['tanggal']}\nKategori: ${item['kategori']}",
+                    ),
+                    trailing: Text(
+                      "Rp ${item['nominal']}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onTap: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DetailPengeluaran(pengeluaran: item),
+                        ),
+                      );
+                      if (result == 'hapus') {
+                        setState(() {
+                          pengeluaranList.removeAt(index);
+                        });
+                      }
+                    },
                   ),
                 );
-
-                if (result == 'hapus') {
-                  setState(() {
-                    pengeluaranList.removeAt(index);
-                  });
-                }
               },
             ),
-          );
-        },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.green,
@@ -99,6 +353,8 @@ class DetailPengeluaran extends StatelessWidget {
         title: const Text('Detail Pengeluaran'),
         backgroundColor: Colors.green,
         centerTitle: true,
+        foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -123,77 +379,11 @@ class DetailPengeluaran extends StatelessWidget {
                 _buildDetailItem('Tanggal', pengeluaran['tanggal']),
                 _buildDetailItem('Kategori', pengeluaran['kategori']),
                 _buildDetailItem('Nominal', pengeluaran['nominal']),
-                _buildDetailItem('Tanggal Terverifikasi',pengeluaran['tanggal_verifikasi']),
-                _buildDetailItem('Verifikator',pengeluaran['verifikator']),
-                const SizedBox(height: 16),
-                const Text(
-                  'Bukti Pengeluaran',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                _buildDetailItem(
+                  'Tanggal Terverifikasi',
+                  pengeluaran['tanggal_verifikasi'],
                 ),
-                const SizedBox(height: 8),
-                _buildImagePlaceholder(
-                  child: Image.asset(
-                    'images/background_login.jpg',
-                    height: 180,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          '/edit_pengeluaran',
-                          arguments: pengeluaran,
-                        );
-                      },
-                      icon: const Icon(Icons.edit),
-                      label: const Text('Edit'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text('Hapus Pengeluaran'),
-                            content: Text(
-                              'Apakah yakin ingin hapus "${pengeluaran['nama'] ?? '-'}"?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx),
-                                child: const Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(ctx);
-                                  Navigator.pop(context, 'hapus');
-                                },
-                                child: const Text(
-                                  'Hapus',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.delete),
-                      label: const Text('Hapus'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+                _buildDetailItem('Verifikator', pengeluaran['verifikator']),
               ],
             ),
           ),
@@ -216,27 +406,9 @@ class DetailPengeluaran extends StatelessWidget {
             ),
           ),
           const Text(": "),
-          Expanded(
-            child: Text(
-              value != null && value.toString().isNotEmpty
-                  ? value.toString()
-                  : '-',
-            ),
-          ),
+          Expanded(child: Text(value != null ? value.toString() : '-')),
         ],
       ),
-    );
-  }
-
-  Widget _buildImagePlaceholder({Widget? child}) {
-    return Container(
-      height: 180,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      alignment: Alignment.center,
-      child: child ?? const Icon(Icons.image, size: 60, color: Colors.grey),
     );
   }
 }
