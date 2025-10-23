@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jawara_pintar_mobile_version/pages/pengeluaran/detail_pengeluaran.dart';
 
 class DaftarPengeluaran extends StatefulWidget {
   const DaftarPengeluaran({super.key});
@@ -336,78 +337,6 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
         onPressed: () {
           Navigator.pushNamed(context, '/tambah_pengeluaran');
         },
-      ),
-    );
-  }
-}
-
-class DetailPengeluaran extends StatelessWidget {
-  final Map<String, dynamic> pengeluaran;
-
-  const DetailPengeluaran({super.key, required this.pengeluaran});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail Pengeluaran'),
-        backgroundColor: Colors.green,
-        centerTitle: true,
-        foregroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 3,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: ListView(
-              children: [
-                Text(
-                  pengeluaran['nama'] ?? '-',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Divider(),
-                _buildDetailItem('Tanggal', pengeluaran['tanggal']),
-                _buildDetailItem('Kategori', pengeluaran['kategori']),
-                _buildDetailItem('Nominal', pengeluaran['nominal']),
-                _buildDetailItem(
-                  'Tanggal Terverifikasi',
-                  pengeluaran['tanggal_verifikasi'],
-                ),
-                _buildDetailItem('Verifikator', pengeluaran['verifikator']),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailItem(String label, dynamic value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 155,
-            child: Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-          const Text(": "),
-          Expanded(child: Text(value != null ? value.toString() : '-')),
-        ],
       ),
     );
   }

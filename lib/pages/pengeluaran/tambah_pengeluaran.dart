@@ -64,14 +64,12 @@ class _TambahPengeluaranState extends State<TambahPengeluaran> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Colors.green, // header background
-              onPrimary: Colors.white, // header text
-              onSurface: Colors.black, // body text
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
             ),
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.green, // tombol OK/Cancel
-              ),
+              style: TextButton.styleFrom(foregroundColor: Colors.green),
             ),
           ),
           child: child!,
@@ -108,6 +106,18 @@ class _TambahPengeluaranState extends State<TambahPengeluaran> {
     });
   }
 
+  InputDecoration _inputDecoration(String label, String hint) {
+    return InputDecoration(
+      labelText: label,
+      hintText: hint,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.green, width: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isEdit = widget.dataEdit != null;
@@ -126,10 +136,9 @@ class _TambahPengeluaranState extends State<TambahPengeluaran> {
             TextField(
               controller: namaController,
               cursorColor: Colors.green,
-              selectionControls: MaterialTextSelectionControls(),
-              decoration: const InputDecoration(
-                labelText: "Nama Pengeluaran",
-                hintText: "Masukkan nama pengeluaran",
+              decoration: _inputDecoration(
+                "Nama Pengeluaran",
+                "Masukkan nama pengeluaran",
               ),
             ),
             const SizedBox(height: 12),
@@ -139,9 +148,9 @@ class _TambahPengeluaranState extends State<TambahPengeluaran> {
                 child: TextField(
                   controller: tanggalController,
                   cursorColor: Colors.green,
-                  decoration: const InputDecoration(
-                    labelText: "Tanggal Pengeluaran",
-                    hintText: "--/--/----",
+                  decoration: _inputDecoration(
+                    "Tanggal Pengeluaran",
+                    "--/--/----",
                   ),
                 ),
               ),
@@ -149,9 +158,7 @@ class _TambahPengeluaranState extends State<TambahPengeluaran> {
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: kategori,
-              decoration: const InputDecoration(
-                labelText: "Kategori Pengeluaran",
-              ),
+              decoration: _inputDecoration("Kategori Pengeluaran", ""),
               items: [
                 "Operasional",
                 "Konsumsi",
@@ -164,11 +171,8 @@ class _TambahPengeluaranState extends State<TambahPengeluaran> {
             TextField(
               controller: nominalController,
               cursorColor: Colors.green,
-              decoration: const InputDecoration(
-                labelText: "Nominal",
-                hintText: "Masukkan nominal",
-              ),
               keyboardType: TextInputType.number,
+              decoration: _inputDecoration("Nominal", "Masukkan nominal"),
             ),
             const SizedBox(height: 20),
             const Text(
