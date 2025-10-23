@@ -42,10 +42,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/daftar_pesan',
+      initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
-        '/': (context) => const Kegiatan(),
+        '/': (context) => const LoginPage(),
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
@@ -63,7 +63,7 @@ class MainApp extends StatelessWidget {
         '/edit_pengeluaran': (context) =>
             const EditPengeluaranPage(pengeluaran: {}),
         '/daftar_tagihan': (context) => const DaftarTagihan(),
-        '/daftar_pesan': (context) => const DaftarPesanWarga(),
+        '/pesan_warga': (context) => const DaftarPesanWarga(),
         '/detail_tagihan': (context) => const DetailTagihan(tagihan: {}),
         '/daftar_tagihan_rumah': (context) =>
             const rumah_tagihan.DaftarTagihan(),
