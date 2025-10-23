@@ -32,7 +32,6 @@ import 'package:jawara_pintar_mobile_version/pages/pengeluaran/tambah_pengeluara
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/daftar_kategori_iuran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/tambah_kategori_iuran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/edit_kategori_iuran.dart';
 import 'package:jawara_pintar_mobile_version/pages/log aktivitas/daftar_log_aktivitas.dart';
 
 void main() {
@@ -48,7 +47,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
-        '/': (context) => const DaftarLogAktivitas(),
+        '/': (context) => const Kependudukan(),
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
@@ -83,7 +82,7 @@ class MainApp extends StatelessWidget {
         '/broadcast': (context) => const DaftarBroadcast(),
         '/daftar_kategori_iuran': (context) => const DaftarKategoriIuran(),
         '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
-        '/daftar_log_aktivitas': (context) => const DaftarLogAktivitas(),
+        '/log-aktivitas': (context) => const DaftarLogAktivitas(),
       },
     );
   }
