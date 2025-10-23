@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 class Penerimaan {
   final String id;
@@ -26,7 +26,9 @@ class PenerimaanWargaPage extends StatefulWidget {
 
 class _PenerimaanWargaPageState extends State<PenerimaanWargaPage> {
   final List<Penerimaan> _penerimaanList = [];
-  final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ');
+
+  final NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
   void _tambahPenerimaan(Penerimaan data) {
     setState(() {
@@ -51,8 +53,6 @@ class _PenerimaanWargaPageState extends State<PenerimaanWargaPage> {
 
   double get totalPenerimaan =>
       _penerimaanList.fold(0, (sum, item) => sum + item.jumlah);
-      
-        static get NumberFormat => null;
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +106,16 @@ class _PenerimaanWargaPageState extends State<PenerimaanWargaPage> {
                         child: ListTile(
                           title: Text(data.namaWarga),
                           subtitle: Text(
-                              '${DateFormat('dd MMM yyyy').format(data.tanggal)}${data.keterangan != null ? ' • ${data.keterangan}' : ''}'),
-                          trailing: Text(currencyFormat.format(data.jumlah),
-                              style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold)),
+                            '${DateFormat('dd MMM yyyy').format(data.tanggal)}'
+                            '${data.keterangan != null ? ' • ${data.keterangan}' : ''}',
+                          ),
+                          trailing: Text(
+                            currencyFormat.format(data.jumlah),
+                            style: const TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -125,8 +130,6 @@ class _PenerimaanWargaPageState extends State<PenerimaanWargaPage> {
       ),
     );
   }
-  
-  DateFormat(String s) {}
 }
 
 class TambahPenerimaanDialog extends StatefulWidget {
@@ -221,6 +224,4 @@ class _TambahPenerimaanDialogState extends State<TambahPenerimaanDialog> {
       ],
     );
   }
-  
-  DateFormat(String s) {}
 }

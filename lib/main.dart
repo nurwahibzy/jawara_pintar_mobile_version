@@ -91,9 +91,9 @@ class MainApp extends StatelessWidget {
         '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
         '/log-aktivitas': (context) => const DaftarLogAktivitas(),
         // '/channel_transfer': (context) => const ChannelTransfer(),
-        '/laporan_keuangan': (context) => const LaporanKeuangan(),
+        '/laporan-keuangan': (context) => const LaporanKeuangan(),
         // '/mutasi_keluarga': (context) => const MutasiKeluarga(),
-        '/penerimaan_warga': (context) => const PenerimaanWargaPage(),
+        '/penerimaan-warga': (context) => const PenerimaanWargaPage(),
 
       },
     );
