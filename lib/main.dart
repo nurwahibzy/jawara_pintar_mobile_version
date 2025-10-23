@@ -48,7 +48,7 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // buat test sementara doang mwehehe
-        '/': (context) => const Kependudukan(),
+        '/': (context) => const DaftarLogAktivitas(),
         '/kependudukan': (context) => const Kependudukan(),
         '/keuangan': (context) => const Keuangan(),
         '/login': (context) => const LoginPage(),
@@ -81,6 +81,9 @@ class MainApp extends StatelessWidget {
             const manajemen_edit_pengguna.EditPengguna(pengguna: {}),
         '/daftar-kegiatan': (context) => const DaftarKegiatan(),
         '/broadcast': (context) => const DaftarBroadcast(),
+        '/daftar_kategori_iuran': (context) => const DaftarKategoriIuran(),
+        '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
+        '/daftar_log_aktivitas': (context) => const DaftarLogAktivitas(),
       },
     );
   }
