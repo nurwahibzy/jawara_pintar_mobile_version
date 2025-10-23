@@ -31,6 +31,9 @@ import 'package:jawara_pintar_mobile_version/pages/warga/edit_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/daftar_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/tambah_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/daftar_kategori_iuran.dart';
+import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/tambah_kategori_iuran.dart';
+import 'package:jawara_pintar_mobile_version/pages/log aktivitas/daftar_log_aktivitas.dart';
 
 void main() {
   runApp(const MainApp());
@@ -79,6 +82,9 @@ class MainApp extends StatelessWidget {
             const manajemen_edit_pengguna.EditPengguna(pengguna: {}),
         '/daftar-kegiatan': (context) => const DaftarKegiatan(),
         '/broadcast': (context) => const DaftarBroadcast(),
+        '/daftar_kategori_iuran': (context) => const DaftarKategoriIuran(),
+        '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
+        '/log-aktivitas': (context) => const DaftarLogAktivitas(),
       },
     );
   }

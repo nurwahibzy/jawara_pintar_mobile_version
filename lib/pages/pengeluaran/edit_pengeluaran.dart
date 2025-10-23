@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 
 class EditPengeluaranPage extends StatefulWidget {
   final Map<String, dynamic> pengeluaran;
-
   const EditPengeluaranPage({super.key, required this.pengeluaran});
 
   @override
@@ -17,24 +16,20 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
   String? kategori;
   DateTime? tanggalPengeluaran;
   File? buktiGambar;
-
   final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     final data = widget.pengeluaran;
-
     namaController.text = data['nama'] ?? '';
     nominalController.text = data['nominal'] ?? '';
     kategori = data['kategori'];
-
     if (data['tanggal'] != null) {
       try {
         tanggalPengeluaran = DateTime.parse(data['tanggal']);
       } catch (_) {}
     }
-
     if (data['bukti'] != null && data['bukti'].toString().isNotEmpty) {
       buktiGambar = File(data['bukti']);
     }
@@ -44,9 +39,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
     );
-    if (pickedFile != null) {
-      setState(() => buktiGambar = File(pickedFile.path));
-    }
+    if (pickedFile != null) setState(() => buktiGambar = File(pickedFile.path));
   }
 
   Future<void> _pickTanggal() async {
@@ -60,23 +53,18 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
               primary: Colors.green, // header & tombol OK/Cancel
-              onPrimary: Colors.white, 
+              onPrimary: Colors.white,
               onSurface: Colors.black,
             ),
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.green, 
-              ),
+              style: TextButton.styleFrom(foregroundColor: Colors.green),
             ),
           ),
           child: child!,
         );
       },
     );
-
-    if (picked != null) {
-      setState(() => tanggalPengeluaran = picked);
-    }
+    if (picked != null) setState(() => tanggalPengeluaran = picked);
   }
 
   void _resetForm() {
@@ -99,6 +87,14 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     });
   }
 
+  // Fungsi untuk membuat border kotak hijau saat fokus
+  OutlineInputBorder _inputBorder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(color: color, width: 1.5),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,9 +112,13 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
             TextField(
               controller: namaController,
               cursorColor: Colors.green,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Nama Pengeluaran",
                 hintText: "Masukkan nama pengeluaran",
+                enabledBorder: _inputBorder(Colors.grey),
+                focusedBorder: _inputBorder(Colors.green),
+                filled: true,
+                fillColor: Colors.white,
               ),
             ),
             const SizedBox(height: 12),
@@ -134,6 +134,10 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
                     hintText: tanggalPengeluaran == null
                         ? "dd/mm/yyyy"
                         : "${tanggalPengeluaran!.day}/${tanggalPengeluaran!.month}/${tanggalPengeluaran!.year}",
+                    enabledBorder: _inputBorder(Colors.grey),
+                    focusedBorder: _inputBorder(Colors.green),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
                 ),
               ),
@@ -143,8 +147,12 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
             // Kategori
             DropdownButtonFormField<String>(
               value: kategori,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Kategori Pengeluaran",
+                enabledBorder: _inputBorder(Colors.grey),
+                focusedBorder: _inputBorder(Colors.green),
+                filled: true,
+                fillColor: Colors.white,
               ),
               items: [
                 "Operasional",
@@ -160,9 +168,13 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
             TextField(
               controller: nominalController,
               cursorColor: Colors.green,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Nominal",
                 hintText: "Masukkan nominal",
+                enabledBorder: _inputBorder(Colors.grey),
+                focusedBorder: _inputBorder(Colors.green),
+                filled: true,
+                fillColor: Colors.white,
               ),
               keyboardType: TextInputType.number,
             ),

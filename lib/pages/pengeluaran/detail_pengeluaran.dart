@@ -56,7 +56,7 @@ class DetailPengeluaran extends StatelessWidget {
                 const SizedBox(height: 8),
                 _buildImagePlaceholder(
                   child: Image.asset(
-                    'assets/images/background_login.jpg',
+                    'images/background_login.jpg',
                     height: 180,
                     fit: BoxFit.cover,
                   ),

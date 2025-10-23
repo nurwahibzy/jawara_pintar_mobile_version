@@ -30,8 +30,8 @@ class MenuKependudukan extends StatelessWidget {
             mainAxisSpacing: 16,
             childAspectRatio: 0.85, 
             children: [
-              _buildMenuItem(context, Icons.home, "Rumah", '/data-rumah-warga'),
-              _buildMenuItem(context, Icons.people, "Warga", '/warga'),
+              _buildMenuItem(context, Icons.home, "Rumah", '/daftar_rumah'),
+              _buildMenuItem(context, Icons.people, "Warga", '/daftar_warga'),
               _buildMenuItem(
                 context,
                 Icons.family_restroom,
