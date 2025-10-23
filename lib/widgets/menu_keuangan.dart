@@ -40,7 +40,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.money_off,
                 "Pengeluaran",
-                "/pengeluaran",
+                "/daftar_pengeluaran",
               ),
               _buildMenuItem(
                 context,
@@ -58,7 +58,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.category,
                 "Kategori\nIuran",
-                "/kategori-iuran",
+                "/daftar_kategori_iuran",
               ),
               _buildMenuItem(
                 context,
