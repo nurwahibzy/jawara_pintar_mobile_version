@@ -45,8 +45,8 @@ class MenuKegiatan extends StatelessWidget {
               _buildMenuItem(
                 context,
                 Icons.history,
-                "Log\nAktifitas",
-                "/log-aktifitas",
+                "Log\nAktivitas",
+                "/log-aktivitas",
               ),
             ],
           ),

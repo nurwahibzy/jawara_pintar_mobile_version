@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_daftar.dart';
+import 'package:jawara_pintar_mobile_version/pages/kegiatan/kegiatan_daftar.dart';
 
-class DetailPemasukanLain extends StatelessWidget {
-  final Pemasukan pemasukan;
+class DetailKegiatan extends StatelessWidget {
+  final ModelKegiatan kegiatan;
 
-  const DetailPemasukanLain({super.key, required this.pemasukan});
+  const DetailKegiatan({super.key, required this.kegiatan});
 
-  // Helper widget untuk membuat baris detail
   Widget _buildDetailRow(
     String label,
     String value, {
@@ -20,7 +19,7 @@ class DetailPemasukanLain extends StatelessWidget {
           Text(label, style: const TextStyle(color: Colors.grey, fontSize: 14)),
           const SizedBox(height: 4),
           Text(
-            value.isEmpty ? '-' : value, // Tampilkan '-' jika data kosong
+            value.isEmpty ? '-' : value,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 16,
@@ -36,7 +35,7 @@ class DetailPemasukanLain extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detail Pemasukan'),
+        title: const Text('Detail Kegiatan'),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -55,19 +54,19 @@ class DetailPemasukanLain extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildDetailRow('Nama Pemasukan', pemasukan.nama),
-                  _buildDetailRow('Kategori', pemasukan.jenisPemasukan),
+                  _buildDetailRow('Nama Kegiatan', kegiatan.namaKegiatan),
+                  _buildDetailRow('Kategori', kegiatan.kategori),
                   _buildDetailRow(
-                    'Tanggal Transaksi',
-                    pemasukan.tanggal.toLocal().toString().split(' ')[0],
+                    'Tanggal',
+                    kegiatan.tanggal.toLocal().toString().split(' ')[0],
                   ),
+                  _buildDetailRow('Lokasi', kegiatan.lokasi),
+                  _buildDetailRow('Penanggung Jawab', kegiatan.penanggungJawab),
+                  _buildDetailRow('Deskripsi', kegiatan.deskripsi),
                   _buildDetailRow(
-                    'Jumlah',
-                    'Rp ${pemasukan.nominal.toStringAsFixed(2)}',
-                    valueColor: Colors.green.shade700,
+                    'Dokumentasi',
+                    kegiatan.dokumentasiPath ?? 'Belum ada',
                   ),
-                  _buildDetailRow('Tanggal Terverifikasi', ''), // Data dummy
-                  _buildDetailRow('Verifikator', 'Admin Jawara'), // Data dummy
                 ],
               ),
             ),

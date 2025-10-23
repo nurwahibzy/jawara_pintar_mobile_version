@@ -34,19 +34,19 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.add_card,
                 "Pemasukan",
-                "/pemasukan",
+                "/pemasukan_lain",
               ),
               _buildMenuItem(
                 context,
                 Icons.money_off,
                 "Pengeluaran",
-                "/pengeluaran",
+                "/daftar_pengeluaran",
               ),
               _buildMenuItem(
                 context,
                 Icons.list_alt,
                 "Tagihan",
-                "/tagihan",
+                "/daftar_tagihan",
               ),
               _buildMenuItem(
                 context,
@@ -58,7 +58,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.category,
                 "Kategori\nIuran",
-                "/kategori-iuran",
+                "/daftar_kategori_iuran",
               ),
               _buildMenuItem(
                 context,

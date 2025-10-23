@@ -1,71 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_detail.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_tambah.dart';
+import 'package:jawara_pintar_mobile_version/pages/kegiatan/kegiatan_detail.dart';
+import 'package:jawara_pintar_mobile_version/pages/kegiatan/kegiatan_edit.dart';
+import 'package:jawara_pintar_mobile_version/pages/kegiatan/kegiatan_tambah.dart';
 
-class Pemasukan {
+class ModelKegiatan {
   final String id;
-  final String nama;
-  final String jenisPemasukan;
-  final DateTime tanggal;
-  final double nominal;
-  final String? buktiPath;
+  String namaKegiatan;
+  String kategori;
+  DateTime tanggal;
+  String lokasi;
+  String penanggungJawab;
+  String deskripsi;
+  String? dokumentasiPath;
 
-  Pemasukan({
+  ModelKegiatan({
     required this.id,
-    required this.nama,
-    required this.jenisPemasukan,
+    required this.namaKegiatan,
+    required this.kategori,
     required this.tanggal,
-    required this.nominal,
-    this.buktiPath,
+    required this.lokasi,
+    required this.penanggungJawab,
+    required this.deskripsi,
+    this.dokumentasiPath,
   });
 }
 
-// Halaman List Pemasukan
-class PemasukanLain extends StatefulWidget {
-  const PemasukanLain({super.key});
+class DaftarKegiatan extends StatefulWidget {
+  const DaftarKegiatan({super.key});
 
   @override
-  State<PemasukanLain> createState() => _PemasukanLainState();
+  State<DaftarKegiatan> createState() => _DaftarKegiatanState();
 }
 
-class _PemasukanLainState extends State<PemasukanLain> {
-  List<Pemasukan> dataPemasukan = [
-    Pemasukan(
-      id: '1',
-      nama: 'aaaaa',
-      jenisPemasukan: 'Dana Bantuan Pemerintah',
-      tanggal: DateTime(2025, 10, 15),
-      nominal: 11.00,
+class _DaftarKegiatanState extends State<DaftarKegiatan> {
+  List<ModelKegiatan> dataKegiatan = [
+    ModelKegiatan(
+      id: 'k1',
+      namaKegiatan: 'Musyawarah Warga Bulanan',
+      kategori: 'Komunitas & Sosial',
+      tanggal: DateTime(2025, 10, 12),
+      lokasi: 'Balai Desa',
+      penanggungJawab: 'Pak RT',
+      deskripsi: 'Rapat rutin membahas kebersihan lingkungan.',
     ),
-    Pemasukan(
-      id: '2',
-      nama: 'Joki by firman',
-      jenisPemasukan: 'Pendapatan Lainnya',
-      tanggal: DateTime(2025, 10, 13),
-      nominal: 49999997.00,
+    ModelKegiatan(
+      id: 'k2',
+      namaKegiatan: 'Kerja Bakti',
+      kategori: 'Komunitas & Sosial',
+      tanggal: DateTime(2025, 10, 19),
+      lokasi: 'Area Taman',
+      penanggungJawab: 'Pak RW',
+      deskripsi: 'Membersihkan selokan dan area taman bermain.',
     ),
-    Pemasukan(
-      id: '3',
-      nama: 'tes',
-      jenisPemasukan: 'Pendapatan Lainnya',
-      tanggal: DateTime(2025, 8, 12),
-      nominal: 10000.00,
+    ModelKegiatan(
+      id: 'k3',
+      namaKegiatan: 'Lomba 17-an',
+      kategori: 'Acara Khusus',
+      tanggal: DateTime(2025, 8, 17),
+      lokasi: 'Lapangan Utama',
+      penanggungJawab: 'Karang Taruna',
+      deskripsi: 'Perlombaan merayakan hari kemerdekaan.',
     ),
   ];
 
-  // List Kategori untuk Filter Dialog
   final List<String> kategoriList = [
-    'Dana Bantuan Pemerintah',
-    'Pendapatan Lainnya',
-    'Donasi',
-    'Hibah',
+    'Komunitas & Sosial',
+    'Olahraga',
+    'Keagamaan',
+    'Acara Khusus',
+    'Lainnya',
   ];
+
+  void _hapusKegiatan(ModelKegiatan kegiatan) {
+    setState(() {
+      dataKegiatan.removeWhere((item) => item.id == kegiatan.id);
+    });
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Kegiatan berhasil dihapus'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  void _showDeleteDialog(ModelKegiatan kegiatan) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: const Text('Konfirmasi Hapus'),
+          content: const Text(
+            'Apakah kamu yakin ingin menghapus item ini? Aksi ini tidak dapat dibatalkan.',
+          ),
+          actions: <Widget>[
+            // Tombol Batal
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context); // Tutup dialog
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.grey[700],
+                side: BorderSide(color: Colors.grey[300]!),
+              ),
+              child: const Text('Batal'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _hapusKegiatan(kegiatan);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor:Colors.green, // Warna biru-ungu seperti di gambar
+                foregroundColor: Colors.white,
+                elevation: 0,
+              ),
+              child: const Text('Hapus'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daftar Pemasukan'),
+        title: const Text('Daftar Kegiatan'),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -84,7 +148,7 @@ class _PemasukanLainState extends State<PemasukanLain> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TambahPemasukanLain(),
+                        builder: (context) => const TambahKegiatan(),
                       ),
                     );
                   },
@@ -110,138 +174,153 @@ class _PemasukanLainState extends State<PemasukanLain> {
             ),
           ),
           Expanded(
-            // Gunakan ListView.builder untuk membuat daftar yang bisa di-scroll
+            // Gunakan ListView.builder untuk daftar yang efisien
             child: ListView.builder(
-              // Tentukan jumlah item berdasarkan panjang data Anda
-              itemCount: dataPemasukan.length,
+              // Tentukan jumlah item dari list data Anda
+              itemCount: dataKegiatan.length,
+              // 'itemBuilder' akan membuat satu Card untuk setiap item data
               itemBuilder: (context, index) {
-                // Ambil satu item data
-                final Pemasukan item = dataPemasukan[index];
+                // Ambil data item saat ini
+                final ModelKegiatan item = dataKegiatan[index];
+                // Ambil nomor urut
+                final int displayIndex = index + 1;
+                // Format tanggal
+                final String formattedDate = item.tanggal
+                    .toLocal()
+                    .toString()
+                    .split(' ')[0];
 
-                // Format data untuk ditampilkan
-                final String formattedDate =
-                    item.tanggal.toLocal().toString().split(' ')[0];
-                final String formattedNominal =
-                    'Rp ${item.nominal.toStringAsFixed(2)}';
-
-                // Buat widget Card untuk setiap item
+                // Kembalikan widget Card
                 return Card(
                   margin: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
                   elevation: 2,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.grey[100],
+                      child: Text(
+                        '$displayIndex',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+
+                    title: Text(
+                      item.namaKegiatan,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+
+                    subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Baris 1: Nama Pemasukan dan Tombol Aksi
+                        const SizedBox(height: 4),
+                        // Kategori
+                        Text(
+                          item.kategori,
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        // Lokasi & Tanggal
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Nama Pemasukan (dibuat Expanded agar tidak overflow)
+                            const Icon(
+                              Icons.location_on,
+                              size: 12,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                item.nama,
+                                item.lokasi,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  color: Colors.grey,
+                                  fontSize: 12,
                                 ),
-                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            // Tombol Aksi (PopupMenuButton)
-                            Container(
-                              width: 40,
-                              alignment: Alignment.topRight,
-                              child: PopupMenuButton<String>(
-                                onSelected: (String value) {
-                                  if (value == 'detail') {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailPemasukanLain(
-                                                pemasukan: item),
-                                      ),
-                                    );
-                                  }
-                                  // Tambahkan 'edit' atau 'hapus' di sini jika perlu
-                                },
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<String>>[
-                                  const PopupMenuItem<String>(
-                                    value: 'detail',
-                                    child: Text('Detail'),
-                                  ),
-                                ],
-                                icon: const Icon(Icons.more_vert,
-                                    color: Colors.grey),
-                                padding: EdgeInsets.zero,
+                            const SizedBox(width: 8),
+                            const Icon(
+                              Icons.calendar_today,
+                              size: 12,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              formattedDate,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
-
-                        // Baris 2: Jenis Pemasukan
-                        Text(
-                          item.jenisPemasukan,
-                          style:
-                              TextStyle(color: Colors.grey[700], fontSize: 14),
-                        ),
-                        const SizedBox(height: 4),
-
-                        // Baris 3: Tanggal
-                        Text(
-                          formattedDate,
-                          style:
-                              TextStyle(color: Colors.grey[600], fontSize: 12),
-                        ),
-
-                        // Pemisah
-                        const Divider(height: 24),
-
-                        // Baris 4: Nominal (di bagian bawah)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            formattedNominal,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.green, // Diberi warna agar menonjol
-                            ),
-                          ),
-                        ),
                       ],
+                    ),
+
+                    trailing: PopupMenuButton<String>(
+                      onSelected: (String value) {
+                        if (value == 'detail') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailKegiatan(kegiatan: item),
+                            ),
+                          );
+                        } else if (value == 'edit') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditKegiatan(kegiatan: item),
+                            ),
+                          );
+                        } else if (value == 'hapus') {
+                          _showDeleteDialog(item);
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: 'detail',
+                              child: Text('Detail'),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: 'edit',
+                              child: Text('Edit'),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: 'hapus',
+                              child: Text('Hapus'),
+                            ),
+                          ],
+                      icon: const Icon(Icons.more_vert),
                     ),
                   ),
                 );
               },
             ),
           ),
-          // Pagination
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // ... (Widget pagination Anda)
-              ],
-            ),
-          ),
         ],
       ),
-      
     );
   }
 
   void _showFilterDialog(BuildContext context) {
-    // ... (Fungsi dialog filter Anda tidak berubah)
     String? dialogSelectedKategori;
     DateTime? dialogStartDate;
     DateTime? dialogEndDate;
@@ -253,14 +332,14 @@ class _PemasukanLainState extends State<PemasukanLain> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              title: const Text('Filter Pemasukan Non Iuran'),
+              title: const Text('Filter Kegiatan'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Nama',
+                      'Nama Kegiatan',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -270,7 +349,7 @@ class _PemasukanLainState extends State<PemasukanLain> {
                     TextFormField(
                       controller: namaController,
                       decoration: const InputDecoration(
-                        hintText: 'Cari nama...',
+                        hintText: 'Cari nama kegiatan...',
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
@@ -288,7 +367,7 @@ class _PemasukanLainState extends State<PemasukanLain> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: dialogSelectedKategori,
+                      initialValue: dialogSelectedKategori,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.symmetric(
@@ -362,11 +441,7 @@ class _PemasukanLainState extends State<PemasukanLain> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    print('Filter Diterapkan:');
-                    print('Nama: ${namaController.text}');
-                    print('Kategori: $dialogSelectedKategori');
-                    print('Dari: $dialogStartDate');
-                    print('Sampai: $dialogEndDate');
+                    // Logika filter diterapkan di sini
                     Navigator.pop(dialogContext);
                   },
                   child: const Text('Terapkan'),
@@ -384,7 +459,6 @@ class _PemasukanLainState extends State<PemasukanLain> {
     required DateTime? selectedDate,
     required ValueChanged<DateTime> onDateSelected,
   }) {
-    // ... (Fungsi helper date picker tidak berubah)
     return InkWell(
       onTap: () async {
         final DateTime? picked = await showDatePicker(
