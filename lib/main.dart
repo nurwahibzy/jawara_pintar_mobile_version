@@ -16,6 +16,7 @@ import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/edit_pengg
     as manajemen_edit_pengguna;
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_daftar.dart';
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_tambah.dart';
+import 'package:jawara_pintar_mobile_version/pages/pesan_warga/daftar_pesan_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/tagihan/daftar_tagihan.dart';
 import 'package:jawara_pintar_mobile_version/pages/tagihan/detail_tagihan.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengguna/daftar_pengguna.dart';
@@ -41,7 +42,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/daftar_pesan',
       routes: {
         // buat test sementara doang mwehehe
         '/': (context) => const Kegiatan(),
@@ -62,6 +63,7 @@ class MainApp extends StatelessWidget {
         '/edit_pengeluaran': (context) =>
             const EditPengeluaranPage(pengeluaran: {}),
         '/daftar_tagihan': (context) => const DaftarTagihan(),
+        '/daftar_pesan': (context) => const DaftarPesanWarga(),
         '/detail_tagihan': (context) => const DetailTagihan(tagihan: {}),
         '/daftar_tagihan_rumah': (context) =>
             const rumah_tagihan.DaftarTagihan(),
