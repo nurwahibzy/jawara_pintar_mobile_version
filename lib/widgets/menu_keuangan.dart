@@ -34,7 +34,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.add_card,
                 "Pemasukan",
-                "/pemasukan",
+                "/pemasukan_lain",
               ),
               _buildMenuItem(
                 context,
