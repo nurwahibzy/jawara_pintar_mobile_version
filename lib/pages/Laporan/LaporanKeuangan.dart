@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
-/// Enum tipe transaksi
 enum TransactionType { income, expense }
 
-/// Model transaksi
 class Transaction {
   final String id;
   final String title;
@@ -24,9 +22,8 @@ class Transaction {
   });
 }
 
-/// Halaman utama laporan keuangan
 class LaporanKeuangan extends StatefulWidget {
-  const LaporanKeuangan({super.key}); // ✅ diperbaiki
+  const LaporanKeuangan({super.key});
 
   @override
   State<LaporanKeuangan> createState() => _LaporanKeuanganState();
@@ -43,8 +40,6 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
   double get totalExpense => _transactions
       .where((t) => t.type == TransactionType.expense)
       .fold(0.0, (p, e) => p + e.amount);
-      
-        static get NumberFormat => null;
 
   void _addTransaction(Transaction tx) {
     setState(() {
@@ -241,13 +236,8 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
       ),
     );
   }
-  
-  DateFormat(String s) {}
 }
 
-/// -----------------
-/// Dialog Tambah Transaksi
-/// -----------------
 class AddTransactionDialog extends StatefulWidget {
   @override
   State<AddTransactionDialog> createState() => _AddTransactionDialogState();
@@ -313,8 +303,8 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                   if (parsed == null || parsed <= 0) return 'Jumlah tidak valid';
                   return null;
                 },
-                onSaved: (v) => _amount = double.parse(
-                    v!.replaceAll(',', '').replaceAll(' ', '')),
+                onSaved: (v) => _amount =
+                    double.parse(v!.replaceAll(',', '').replaceAll(' ', '')),
               ),
               TextFormField(
                 decoration:
@@ -362,13 +352,8 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
       ],
     );
   }
-  
-  DateFormat(String s) {}
 }
 
-/// -----------------
-/// Pratinjau Laporan
-/// -----------------
 class ReportPreviewPage extends StatelessWidget {
   final String reportText;
   const ReportPreviewPage({super.key, required this.reportText});

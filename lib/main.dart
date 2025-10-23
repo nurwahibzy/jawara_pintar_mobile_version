@@ -34,6 +34,11 @@ import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/daftar_kategori_iuran.dart';
 import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/tambah_kategori_iuran.dart';
 import 'package:jawara_pintar_mobile_version/pages/log aktivitas/daftar_log_aktivitas.dart';
+import 'package:jawara_pintar_mobile_version/pages/Laporan/channel_transfer.dart';
+import 'package:jawara_pintar_mobile_version/pages/Laporan/LaporanKeuangan.dart';
+import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/mutasi_keluarga.dart';
+import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/penerimaan_warga_page.dart';
+
 
 void main() {
   runApp(const MainApp());
@@ -85,6 +90,11 @@ class MainApp extends StatelessWidget {
         '/daftar_kategori_iuran': (context) => const DaftarKategoriIuran(),
         '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
         '/log-aktivitas': (context) => const DaftarLogAktivitas(),
+        // '/channel_transfer': (context) => const ChannelTransfer(),
+        '/laporan-keuangan': (context) => const LaporanKeuangan(),
+        // '/mutasi_keluarga': (context) => const MutasiKeluarga(),
+        '/penerimaan-warga': (context) => const PenerimaanWargaPage(),
+
       },
     );
   }
