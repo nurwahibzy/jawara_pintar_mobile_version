@@ -1,47 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:jawara_pintar_mobile_version/pages/broadcast/daftar_broadcast.dart';
-import 'package:jawara_pintar_mobile_version/pages/dahsboard/kependudukan.dart';
-import 'package:jawara_pintar_mobile_version/pages/dahsboard/keuangan.dart';
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_keluarga.dart';
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_tagihan.dart'
-    as rumah_tagihan;
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/rumah_tambah.dart';
-import 'package:jawara_pintar_mobile_version/pages/kegiatan/kegiatan_daftar.dart';
-import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
-import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/daftar_pengguna.dart'
-    as manajemen_pengguna;
-import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/tambah_pengguna.dart'
-    as manajemen_tambah_pengguna;
-import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/edit_pengguna.dart'
-    as manajemen_edit_pengguna;
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_daftar.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/pemasukan_lain_tambah.dart';
-import 'package:jawara_pintar_mobile_version/pages/pesan_warga/daftar_pesan_warga.dart';
-import 'package:jawara_pintar_mobile_version/pages/tagihan/daftar_tagihan.dart';
-import 'package:jawara_pintar_mobile_version/pages/tagihan/detail_tagihan.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengguna/daftar_pengguna.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengguna/profil.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengguna/tambah_pengguna.dart';
-import 'package:jawara_pintar_mobile_version/pages/warga/tambah_warga.dart';
-import 'package:jawara_pintar_mobile_version/pages/dahsboard/kegiatan.dart';
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/daftar_rumah.dart';
-import 'package:jawara_pintar_mobile_version/pages/warga/daftar_warga.dart';
-import 'package:jawara_pintar_mobile_version/pages/warga/detail_warga.dart';
-import 'package:jawara_pintar_mobile_version/pages/warga/edit_warga.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengeluaran/daftar_pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengeluaran/tambah_pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/daftar_kategori_iuran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pemasukan_lain/tambah_kategori_iuran.dart';
-import 'package:jawara_pintar_mobile_version/pages/log aktivitas/daftar_log_aktivitas.dart';
-import 'package:jawara_pintar_mobile_version/pages/Laporan/channel_transfer.dart';
-import 'package:jawara_pintar_mobile_version/pages/Laporan/LaporanKeuangan.dart';
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/mutasi_keluarga.dart';
-import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/penerimaan_warga_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'core/routes/app_router.dart';
+import 'core/routes/app_routes.dart';
+import 'core/theme/app_theme.dart';
+import 'core/utils/erors_checkers.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
-void main() {
-  runApp(const MainApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    // Load Env
+    await dotenv.load(fileName: ".env");
+
+    // Validasi Key sebelum Init (Mencegah error null check operator '!')
+    final sbUrl = dotenv.env['SUPABASE_URL'];
+    final sbKey = dotenv.env['SUPABASE_ANON_KEY'];
+
+    if (sbUrl == null || sbKey == null) {
+      throw Exception(
+        "File .env tidak lengkap! Pastikan SUPABASE_URL dan KEY ada.",
+      );
+    }
+
+    // Init Supabase
+    await Supabase.initialize(url: sbUrl, anonKey: sbKey);
+
+    runApp(const MainApp());
+  } catch (e) {
+    // Jika Gagal Init, Jalankan App Error Sederhana
+    runApp(ErrorApp(message: e.toString()));
+  }
 }
 
 class MainApp extends StatelessWidget {
@@ -50,52 +40,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        // buat test sementara doang mwehehe
-        '/': (context) => const LoginPage(),
-        '/kependudukan': (context) => const Kependudukan(),
-        '/keuangan': (context) => const Keuangan(),
-        '/login': (context) => const LoginPage(),
-        '/tambah_warga': (context) => const TambahWarga(),
-        '/tambah_rumah': (context) => const TambahRumah(),
-        '/kegiatan': (context) => const Kegiatan(),
-        '/daftar_rumah': (context) => const DaftarRumah(),
-        '/daftar_warga': (context) => const DaftarWarga(),
-        '/detail_warga': (context) => const DetailWarga(warga: {}),
-        '/edit_warga': (context) => const EditWarga(warga: {}),
-        '/pemasukan_lain': (context) => const PemasukanLain(),
-        '/tambah_pemasukan': (context) => const TambahPemasukanLain(),
-        '/daftar_pengeluaran': (context) => const DaftarPengeluaran(),
-        '/tambah_pengeluaran': (context) => const TambahPengeluaran(),
-        '/edit_pengeluaran': (context) =>
-            const EditPengeluaranPage(pengeluaran: {}),
-        '/daftar_tagihan': (context) => const DaftarTagihan(),
-        '/pesan_warga': (context) => const DaftarPesanWarga(),
-        '/detail_tagihan': (context) => const DetailTagihan(tagihan: {}),
-        '/daftar_tagihan_rumah': (context) =>
-            const rumah_tagihan.DaftarTagihan(),
-        '/daftar_keluarga': (context) => const DaftarKeluarga(),
-        '/pengguna/daftar_pengguna': (context) => const DaftarPengguna(),
-        '/pengguna/tambah_pengguna': (context) => const TambahPengguna(),
-        '/profil': (context) => Profil(),
-        '/manajemen_pengguna/daftar_pengguna': (context) =>
-            const manajemen_pengguna.DaftarPengguna(),
-        '/manajemen_pengguna/tambah_pengguna': (context) =>
-            const manajemen_tambah_pengguna.TambahPengguna(),
-        '/manajemen_pengguna/edit_pengguna': (context) =>
-            const manajemen_edit_pengguna.EditPengguna(pengguna: {}),
-        '/daftar-kegiatan': (context) => const DaftarKegiatan(),
-        '/broadcast': (context) => const DaftarBroadcast(),
-        '/daftar_kategori_iuran': (context) => const DaftarKategoriIuran(),
-        '/tambah_kategori_iuran': (context) => const TambahKategoriIuran(),
-        '/log-aktivitas': (context) => const DaftarLogAktivitas(),
-        // '/channel_transfer': (context) => const ChannelTransfer(),
-        '/laporan-keuangan': (context) => const LaporanKeuangan(),
-        // '/mutasi_keluarga': (context) => const MutasiKeluarga(),
-        '/penerimaan-warga': (context) => const PenerimaanWargaPage(),
-
-      },
+      theme: AppTheme.appTheme,
+      initialRoute: AppRoutes.login,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }
