@@ -1,28 +1,28 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 
 class DetailPengeluaran extends StatelessWidget {
-  final Map<String, dynamic> pengeluaran;
+  final Pengeluaran pengeluaran;
 
   const DetailPengeluaran({super.key, required this.pengeluaran});
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
         centerTitle: true,
         elevation: 2,
-        // Back arrow putih
-        iconTheme: const IconThemeData(color: Colors.white),
-        // Title putih
         title: const Text(
           'Detail Pengeluaran',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
         ),
       ),
       body: Padding(
@@ -36,8 +36,9 @@ class DetailPengeluaran extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: ListView(
               children: [
+                // Judul
                 Text(
-                  pengeluaran['nama'] ?? '-',
+                  pengeluaran.judul,
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -45,77 +46,54 @@ class DetailPengeluaran extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Divider(),
-                _buildDetailItem('Tanggal', pengeluaran['tanggal']),
-                _buildDetailItem('Kategori', pengeluaran['kategori']),
-                _buildDetailItem('Nominal', pengeluaran['nominal']),
+
+                // DETAIL FIELDS
+                _buildDetailItem(
+                  'Tanggal',
+                  _formatTanggal(pengeluaran.tanggalTransaksi),
+                ),
+                _buildDetailItem(
+                  'Kategori',
+                  _mapKategoriIdToString(pengeluaran.kategoriTransaksiId),
+                ),
+                _buildDetailItem(
+                  'Nominal',
+                  currencyFormatter.format(pengeluaran.nominal),
+                ),
+                _buildDetailItem(
+                  'Keterangan',
+                  (pengeluaran.keterangan != null &&
+                          pengeluaran.keterangan!.isNotEmpty)
+                      ? pengeluaran.keterangan!
+                      : '-',
+                ),
+                _buildDetailItem(
+                  'Tanggal Verifikasi',
+                  pengeluaran.tanggalVerifikasi != null
+                      ? _formatTanggal(pengeluaran.tanggalVerifikasi!)
+                      : '-',
+                ),
+                _buildDetailItem(
+                  'Verifikator',
+                  pengeluaran.verifikatorId?.toString() ?? '-',
+                ),
+
                 const SizedBox(height: 16),
                 const Text(
                   'Bukti Pengeluaran',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
+
+                // IMAGE
                 _buildImagePlaceholder(
-                  child: Image.asset(
-                    'images/background_login.jpg',
-                    height: 180,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          '/edit_pengeluaran',
-                          arguments: pengeluaran,
-                        );
-                      },
-                      icon: const Icon(Icons.edit),
-                      label: const Text('Edit'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text('Hapus Pengeluaran'),
-                            content: Text(
-                              'Apakah yakin ingin hapus "${pengeluaran['nama'] ?? '-'}"?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx),
-                                child: const Text('Batal'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(ctx);
-                                  Navigator.pop(context, 'hapus');
-                                },
-                                child: const Text(
-                                  'Hapus',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.delete),
-                      label: const Text('Hapus'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ],
+                  child: pengeluaran.buktiFoto != null
+                      ? Image.file(
+                          File(pengeluaran.buktiFoto!),
+                          height: 180,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(Icons.image, size: 60, color: Colors.grey),
                 ),
               ],
             ),
@@ -125,31 +103,50 @@ class DetailPengeluaran extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailItem(String label, dynamic value) {
+  // Helper to format date
+  String _formatTanggal(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}/'
+        '${date.month.toString().padLeft(2, '0')}/'
+        '${date.year}';
+  }
+
+  // Map kategori ID ke nama
+  String _mapKategoriIdToString(int id) {
+    switch (id) {
+      case 1:
+        return "Dana Hibah/Donasi";
+      case 2:
+        return "Penjualan Sampah Daur Ulang";
+      case 3:
+        return "Operasional RT";
+      case 4:
+        return "Perbaikan Fasilitas";
+      default:
+        return "Lainnya";
+    }
+  }
+
+  // Widget untuk detail item
+  Widget _buildDetailItem(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 140,
+            width: 160,
             child: Text(
               '$label:',
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
-          Expanded(
-            child: Text(
-              value != null && value.toString().isNotEmpty
-                  ? value.toString()
-                  : '-',
-            ),
-          ),
+          Expanded(child: Text(value)),
         ],
       ),
     );
   }
 
+  // Widget untuk menampilkan image atau placeholder
   Widget _buildImagePlaceholder({Widget? child}) {
     return Container(
       height: 180,
