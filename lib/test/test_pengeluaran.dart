@@ -37,14 +37,14 @@ class TestPengeluaranCRUDApp extends StatelessWidget {
   Future<void> testFetchAll() async {
     try {
       final data = await datasource.getAllPengeluaran();
-      print('\n✅ getAllPengeluaran:');
+      print('\n getAllPengeluaran:');
       if (data.isEmpty) {
-        print('⚠️ Table pengeluaran kosong.');
+        print(' Table pengeluaran kosong.');
       } else {
         for (var item in data) print(item.toMap());
       }
     } catch (e) {
-      print('❌ Error fetch all: $e');
+      print(' Error fetch all: $e');
     }
   }
 
@@ -52,9 +52,9 @@ class TestPengeluaranCRUDApp extends StatelessWidget {
   Future<void> testFetchById(int id) async {
     try {
       final item = await datasource.getPengeluaranById(id);
-      print('\n✅ getPengeluaranById($id): ${item.toMap()}');
+      print('\n getPengeluaranById($id): ${item.toMap()}');
     } catch (e) {
-      print('❌ Error fetch by id: $e');
+      print(' Error fetch by id: $e');
     }
   }
 
@@ -76,13 +76,13 @@ class TestPengeluaranCRUDApp extends StatelessWidget {
       );
       await datasource.createPengeluaran(newItem);
 
-      print('\n✅ createPengeluaran: berhasil');
+      print('\n createPengeluaran: berhasil');
       final all = await datasource.getAllPengeluaran();
       final created = all.last; // ambil item terakhir sebagai yang baru dibuat
       print('Created item: ${created.toMap()}');
       return created.id;
     } catch (e) {
-      print('❌ Error create: $e');
+      print(' Error create: $e');
       return null;
     }
   }
@@ -105,9 +105,9 @@ class TestPengeluaranCRUDApp extends StatelessWidget {
       );
       await datasource.updatePengeluaran(updateItem);
       final updated = await datasource.getPengeluaranById(id);
-      print('\n✅ updatePengeluaran: ${updated.toMap()}');
+      print('\n updatePengeluaran: ${updated.toMap()}');
     } catch (e) {
-      print('❌ Error update: $e');
+      print(' Error update: $e');
     }
   }
 
@@ -115,9 +115,9 @@ class TestPengeluaranCRUDApp extends StatelessWidget {
   Future<void> testDelete(int id) async {
     try {
       await datasource.deletePengeluaran(id);
-      print('\n✅ deletePengeluaran id=$id: berhasil');
+      print('\n deletePengeluaran id=$id: berhasil');
     } catch (e) {
-      print('❌ Error delete: $e');
+      print(' Error delete: $e');
     }
   }
 

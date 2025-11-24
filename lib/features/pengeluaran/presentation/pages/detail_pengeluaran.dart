@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../features/pengeluaran/domain/entities/pengeluaran.dart';
+import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 
 class DetailPengeluaran extends StatelessWidget {
   final Pengeluaran pengeluaran;

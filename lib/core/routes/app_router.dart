@@ -7,9 +7,9 @@ import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/b
 import 'app_routes.dart';
 // import halaman yg dibutuhkan
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengeluaran/daftar_pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengeluaran/tambah_pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/pages/pengeluaran/edit_pengeluaran.dart';
+import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/daftar_pengeluaran.dart';
+import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/tambah_pengeluaran.dart';
+import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/edit_pengeluaran.dart';
 
 
 class AppRouter {
