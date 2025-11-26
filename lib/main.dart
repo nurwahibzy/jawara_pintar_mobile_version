@@ -5,6 +5,7 @@ import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/erors_checkers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:jawara_pintar_mobile_version/features/mutasi-keluarga/injection.dart';
 
 
 Future<void> main() async {
@@ -27,6 +28,8 @@ Future<void> main() async {
     // Init Supabase
     await Supabase.initialize(url: sbUrl, anonKey: sbKey);
 
+    await init();
+
     runApp(const MainApp());
   } catch (e) {
     // Jika Gagal Init, Jalankan App Error Sederhana
@@ -41,7 +44,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.appTheme,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.daftarMutasiKeluarga,
       onGenerateRoute: AppRouter.generateRoute,
     );
   }
