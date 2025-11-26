@@ -5,7 +5,7 @@ import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/erors_checkers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:jawara_pintar_mobile_version/features/mutasi-keluarga/injection.dart';
+import 'core/injections/injection.dart';
 
 
 Future<void> main() async {
@@ -44,7 +44,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.appTheme,
-      initialRoute: AppRoutes.daftarMutasiKeluarga,
+      initialRoute: AppRoutes.login,
       onGenerateRoute: AppRouter.generateRoute,
     );
   }

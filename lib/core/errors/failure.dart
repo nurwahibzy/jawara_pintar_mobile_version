@@ -1,6 +1,3 @@
-abstract class Failure {
-  final String message;
-  const Failure(this.message);
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
