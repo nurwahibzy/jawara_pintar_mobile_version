@@ -1,97 +1,89 @@
+import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Import domain layer - Dashboard Keuangan
+// Core
+import '../network/network_info.dart';
+
+// DASHBOARD KEUANGAN
 import '../../features/dashboard-keuangan/domain/repositories/dashboard_repository.dart';
 import '../../features/dashboard-keuangan/domain/usecases/get_dashboard_summary_usecase.dart';
 import '../../features/dashboard-keuangan/domain/usecases/get_available_years_usecase.dart';
-
-// Import data layer - Dashboard Keuangan
 import '../../features/dashboard-keuangan/data/repositories/dashboard_repository_impl.dart';
 import '../../features/dashboard-keuangan/data/datasources/dashboard_remote_datasource.dart';
 
-// Import domain layer - Dashboard Kegiatan
+// DASHBOARD KEGIATAN
 import '../../features/dashboard-kegiatan/domain/repositories/dashboard_repository.dart';
 import '../../features/dashboard-kegiatan/domain/usecases/get_dashboard_kegiatan_usecase.dart';
-
-// Import data layer - Dashboard Kegiatan
 import '../../features/dashboard-kegiatan/data/repositories/dashboard_repository_impl.dart';
 import '../../features/dashboard-kegiatan/data/datasources/dashboard_remote_datasource.dart';
 
-// Import core
-import '../network/network_info.dart';
+// PENGELUARAN
+import '../../features/pengeluaran/data/datasources/remote_datasource.dart';
+import '../../features/pengeluaran/data/repositories/pengeluaran_repository_implementation.dart';
+import '../../features/pengeluaran/domain/repositories/pengeluaran_repository.dart';
 
-/// Simple Service Locator (tanpa get_it)
-class ServiceLocator {
-  static final ServiceLocator _instance = ServiceLocator._internal();
-  factory ServiceLocator() => _instance;
-  ServiceLocator._internal();
+import '../../features/pengeluaran/domain/usecases/create_pengeluaran.dart';
+import '../../features/pengeluaran/domain/usecases/delete_pengeluaran.dart';
+import '../../features/pengeluaran/domain/usecases/get_all_pengeluaran.dart';
+import '../../features/pengeluaran/domain/usecases/get_pengeluaran.dart';
+import '../../features/pengeluaran/domain/usecases/update_pengeluaran.dart';
 
-  final Map<Type, dynamic> _services = {};
+import '../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 
-  void register<T>(T service) {
-    _services[T] = service;
-  }
+final sl = GetIt.instance;
 
-  T get<T>() {
-    final service = _services[T];
-    if (service == null) {
-      throw Exception('Service of type $T not registered');
-    }
-    return service as T;
-  }
-
-  void clear() {
-    _services.clear();
-  }
-}
-
-final sl = ServiceLocator();
-
-/// Initialize dependency injection
 Future<void> init() async {
   //! Core
-  final networkInfo = NetworkInfoImpl();
-  sl.register<NetworkInfo>(networkInfo);
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl());
 
-  //! External - Supabase Client
+  //! External - Supabase
   final supabaseClient = Supabase.instance.client;
 
-  //! Features - Dashboard Keuangan
-  
-  // Data sources
-  final dashboardKeuanganRemoteDataSource = DashboardRemoteDataSourceImpl(
-    supabaseClient: supabaseClient,
+  // --------------------------------------------------------------------------
+  // DASHBOARD KEUANGAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<DashboardRemoteDataSource>(
+    () => DashboardRemoteDataSourceImpl(supabaseClient: supabaseClient),
   );
-  sl.register<DashboardRemoteDataSource>(dashboardKeuanganRemoteDataSource);
 
-  // Repository
-  final dashboardKeuanganRepository = DashboardKeuanganRepositoryImpl(
-    remoteDataSource: dashboardKeuanganRemoteDataSource,
+  sl.registerLazySingleton<DashboardKeuanganRepository>(
+    () => DashboardKeuanganRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.register<DashboardKeuanganRepository>(dashboardKeuanganRepository);
 
-  // Use cases
-  final getDashboardSummaryUseCase = GetDashboardSummaryUseCase(dashboardKeuanganRepository);
-  sl.register<GetDashboardSummaryUseCase>(getDashboardSummaryUseCase);
-  
-  final getAvailableYearsUseCase = GetAvailableYearsUseCase(dashboardKeuanganRepository);
-  sl.register<GetAvailableYearsUseCase>(getAvailableYearsUseCase);
+  sl.registerLazySingleton(() => GetDashboardSummaryUseCase(sl()));
+  sl.registerLazySingleton(() => GetAvailableYearsUseCase(sl()));
 
-  //! Features - Dashboard Kegiatan
-  
-  // Data sources
-  final dashboardKegiatanRemoteDataSource = DashboardKegiatanRemoteDataSourceImpl(
-    supabaseClient: supabaseClient,
+  // --------------------------------------------------------------------------
+  // DASHBOARD KEGIATAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<DashboardKegiatanRemoteDataSource>(
+    () => DashboardKegiatanRemoteDataSourceImpl(supabaseClient: supabaseClient),
   );
-  sl.register<DashboardKegiatanRemoteDataSource>(dashboardKegiatanRemoteDataSource);
 
-  // Repository
-  final dashboardKegiatanRepository = DashboardKegiatanRepositoryImpl(
-    remoteDataSource: dashboardKegiatanRemoteDataSource,
+  sl.registerLazySingleton<DashboardKegiatanRepository>(
+    () => DashboardKegiatanRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.register<DashboardKegiatanRepository>(dashboardKegiatanRepository);
 
-  // Use cases
-  final getDashboardKegiatanUseCase = GetDashboardKegiatanUseCase(dashboardKegiatanRepository);
-  sl.register<GetDashboardKegiatanUseCase>(getDashboardKegiatanUseCase);
+  sl.registerLazySingleton(() => GetDashboardKegiatanUseCase(sl()));
+
+  // --------------------------------------------------------------------------
+  // PENGELUARAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<PengeluaranRemoteDataSource>(
+    () => PengeluaranRemoteDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<PengeluaranRepository>(
+    () => PengeluaranRepositoryImpl(sl()),
+  );
+
+  sl.registerLazySingleton(() => GetPengeluaranList(sl()));
+  sl.registerLazySingleton(() => GetPengeluaranById(sl()));
+  sl.registerLazySingleton(() => CreatePengeluaran(sl()));
+  sl.registerLazySingleton(() => UpdatePengeluaran(sl()));
+  sl.registerLazySingleton(() => DeletePengeluaran(sl()));
+
+  sl.registerFactory(
+    () => PengeluaranBloc(repository: sl<PengeluaranRepository>()),
+  );
 }
