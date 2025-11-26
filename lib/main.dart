@@ -5,6 +5,7 @@ import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/erors_checkers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'core/injections/injection.dart';
 
 
 Future<void> main() async {
@@ -26,6 +27,8 @@ Future<void> main() async {
 
     // Init Supabase
     await Supabase.initialize(url: sbUrl, anonKey: sbKey);
+
+    await init();
 
     runApp(const MainApp());
   } catch (e) {
