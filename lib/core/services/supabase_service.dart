@@ -4,3 +4,4 @@ class SupabaseService {
   SupabaseService._(); 
   static SupabaseClient get client => Supabase.instance.client;
 }
+

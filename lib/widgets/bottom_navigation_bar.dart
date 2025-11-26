@@ -21,10 +21,10 @@ class BottomNavigationBarWidget extends StatelessWidget {
         // Navigasi ke halaman sesuai item yang ditekan
         switch (index) {
           case 0:
-            Navigator.pushNamed(context, '/keuangan');
+            Navigator.pushNamed(context, '/dashboard-keuangan');
             break;
           case 1:
-            Navigator.pushNamed(context, '/kegiatan');
+            Navigator.pushNamed(context, '/dashboard-kegiatan');
             break;
           case 2:
             Navigator.pushNamed(context, '/kependudukan');

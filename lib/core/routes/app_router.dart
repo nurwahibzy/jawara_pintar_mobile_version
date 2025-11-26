@@ -7,6 +7,8 @@ import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/b
 import 'app_routes.dart';
 // import halaman yg dibutuhkan
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
+import 'package:jawara_pintar_mobile_version/features/dashboard-keuangan/presentation/pages/dashboard_keuangan_page.dart';
+import 'package:jawara_pintar_mobile_version/features/dashboard-kegiatan/presentation/pages/dashboard_kegiatan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/daftar_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/tambah_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/edit_pengeluaran.dart';
@@ -14,7 +16,6 @@ import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/p
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // Mengambil arguments (jika ada)
     final args = settings.arguments;
 
     switch (settings.name) {
@@ -46,13 +47,18 @@ class AppRouter {
           ),
         );
 
+      case AppRoutes.dashboardKeuangan:
+        return MaterialPageRoute(builder: (_) => const DashboardKeuanganPage());
+
+      case AppRoutes.dashboardKegiatan:
+        return MaterialPageRoute(builder: (_) => const DashboardKegiatanPage());
+
       // dikebutt moasss
       default:
         return _errorRoute();
     }
   }
 
-  // Halaman Error jika route tidak ditemukan
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(
       builder: (_) {
