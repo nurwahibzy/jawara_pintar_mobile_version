@@ -4,14 +4,14 @@ import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/edit_pengg
 import 'package:jawara_pintar_mobile_version/pages/manajemen_pengguna/tambah_pengguna.dart';
 
 // Halaman List Pengguna
-class DaftarPengguna extends StatefulWidget {
-  const DaftarPengguna({super.key});
+class ManDaftarPengguna extends StatefulWidget {
+  const ManDaftarPengguna({super.key});
 
   @override
-  State<DaftarPengguna> createState() => _DaftarPenggunaState();
+  State<ManDaftarPengguna> createState() => _ManDaftarPenggunaState();
 }
 
-class _DaftarPenggunaState extends State<DaftarPengguna> {
+class _ManDaftarPenggunaState extends State<ManDaftarPengguna> {
   List<dynamic> dataPengguna = [
     {
       'id': '1',
@@ -135,7 +135,7 @@ class _DaftarPenggunaState extends State<DaftarPengguna> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TambahPengguna(),
+                        builder: (context) => const ManTambahPengguna(),
                       ),
                     );
                   },
@@ -249,7 +249,7 @@ class _DaftarPenggunaState extends State<DaftarPengguna> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                DetailPengguna(pengguna: item),
+                                                ManDetailPengguna(pengguna: item),
                                           ),
                                         );
                                       } else if (value == 'edit') {
@@ -257,7 +257,7 @@ class _DaftarPenggunaState extends State<DaftarPengguna> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                EditPengguna(pengguna: item),
+                                                ManEditPengguna(pengguna: item),
                                           ),
                                         );
                                       }

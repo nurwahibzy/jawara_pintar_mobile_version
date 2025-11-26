@@ -81,10 +81,10 @@ class MenuKependudukan extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.green.withAlpha(1),
+              color: Color(0xff8E6CEF).withAlpha(20),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: Colors.green, size: 28),
+            child: Icon(icon, color: Color(0xff8E6CEF), size: 28),
           ),
           const SizedBox(height: 6),
           Flexible(

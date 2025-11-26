@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TambahPengguna extends StatefulWidget {
-  const TambahPengguna({super.key});
+class ManTambahPengguna extends StatefulWidget {
+  const ManTambahPengguna({super.key});
 
   @override
-  State<TambahPengguna> createState() => _TambahPenggunaState();
+  State<ManTambahPengguna> createState() => _ManTambahPenggunaState();
 }
 
-class _TambahPenggunaState extends State<TambahPengguna> {
+class _ManTambahPenggunaState extends State<ManTambahPengguna> {
   final _formKey = GlobalKey<FormState>();
   
   final TextEditingController _namaController = TextEditingController();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class DetailPengguna extends StatelessWidget {
+class ManDetailPengguna extends StatelessWidget {
   final dynamic pengguna;
 
-  const DetailPengguna({super.key, required this.pengguna});
+  const ManDetailPengguna({super.key, required this.pengguna});
 
   // Helper widget untuk membuat baris detail
   Widget _buildDetailRow(

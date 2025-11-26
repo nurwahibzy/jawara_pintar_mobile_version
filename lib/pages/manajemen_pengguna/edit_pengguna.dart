@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class EditPengguna extends StatefulWidget {
+class ManEditPengguna extends StatefulWidget {
   final dynamic pengguna;
 
-  const EditPengguna({super.key, required this.pengguna});
+  const ManEditPengguna({super.key, required this.pengguna});
 
   @override
-  State<EditPengguna> createState() => _EditPenggunaState();
+  State<ManEditPengguna> createState() => _ManEditPenggunaState();
 }
 
-class _EditPenggunaState extends State<EditPengguna> {
+class _ManEditPenggunaState extends State<ManEditPengguna> {
   final _formKey = GlobalKey<FormState>();
   
   late TextEditingController _namaController;

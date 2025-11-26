@@ -15,7 +15,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.green, // warna ikon & label saat aktif
+      selectedItemColor:Color(0xff8E6CEF), // warna ikon & label saat aktif
       unselectedItemColor: Colors.grey,
       onTap: (index) {
         // Navigasi ke halaman sesuai item yang ditekan

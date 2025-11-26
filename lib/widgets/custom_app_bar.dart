@@ -6,7 +6,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       elevation: 0, // tanpa bayangan
       automaticallyImplyLeading: false,
       titleSpacing: 0,
@@ -22,24 +22,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fontFamily: 'Poppins',
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.green,
+                color: Color(0xff8E6CEF),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // Tombol Pesan
-                IconButton(
-                  icon: const Icon(Icons.message, color: Colors.green),
-                  tooltip: 'Pesan',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pesan_warga');
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.message, color: Colors.green),
+                //   tooltip: 'Pesan',
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, '/pesan_warga');
+                //   },
+                // ),
         
                 // Tombol Profil
                 IconButton(
-                  icon: const Icon(Icons.person, color: Colors.green),
+                  icon: const Icon(Icons.person, color:Color(0xff8E6CEF) ),
                   tooltip: 'Profil',
                   onPressed: () {
                     Navigator.pushNamed(context, '/profil');

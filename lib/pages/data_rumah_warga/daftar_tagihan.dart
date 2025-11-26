@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jawara_pintar_mobile_version/pages/data_rumah_warga/detail_tagihan.dart';
 
-class DaftarTagihan extends StatelessWidget {
-  const DaftarTagihan({super.key});
+class DaftarTagihanRumah extends StatelessWidget {
+  const DaftarTagihanRumah({super.key});
 
   @override
   Widget build(BuildContext context) {

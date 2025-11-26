@@ -95,7 +95,7 @@ class Kegiatan extends StatelessWidget {
                     icon: Icons.event,
                     label: 'Total Kegiatan',
                     value: '25',
-                    color: Colors.green,
+                    color: Color(0xff8E6CEF),
                   ),
                 ),
               ],
