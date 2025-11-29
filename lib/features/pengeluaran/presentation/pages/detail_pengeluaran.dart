@@ -1,12 +1,20 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 
 class DetailPengeluaran extends StatelessWidget {
   final Pengeluaran pengeluaran;
+  final List<KategoriEntity> kategoriList;
 
-  const DetailPengeluaran({super.key, required this.pengeluaran});
+  const DetailPengeluaran({
+    super.key,
+    required this.pengeluaran,
+    required this.kategoriList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +23,19 @@ class DetailPengeluaran extends StatelessWidget {
       symbol: 'Rp ',
       decimalDigits: 0,
     );
+
+    final kategoriNama =
+        kategoriList
+            .firstWhere(
+              (k) => k.id == pengeluaran.kategoriTransaksiId,
+              orElse: () => KategoriEntity(
+                id: 0,
+                jenis: 'Lainnya',
+                nama_kategori: 'Lainnya',
+              ),
+            )
+            .nama_kategori ??
+        'Lainnya';
 
     return Scaffold(
       appBar: AppBar(
@@ -52,30 +73,16 @@ class DetailPengeluaran extends StatelessWidget {
                   'Tanggal',
                   _formatTanggal(pengeluaran.tanggalTransaksi),
                 ),
-                _buildDetailItem(
-                  'Kategori',
-                  _mapKategoriIdToString(pengeluaran.kategoriTransaksiId),
-                ),
+                _buildDetailItem('Kategori', kategoriNama),
                 _buildDetailItem(
                   'Nominal',
                   currencyFormatter.format(pengeluaran.nominal),
                 ),
                 _buildDetailItem(
                   'Keterangan',
-                  (pengeluaran.keterangan != null &&
-                          pengeluaran.keterangan!.isNotEmpty)
+                  pengeluaran.keterangan?.isNotEmpty == true
                       ? pengeluaran.keterangan!
                       : '-',
-                ),
-                _buildDetailItem(
-                  'Tanggal Verifikasi',
-                  pengeluaran.tanggalVerifikasi != null
-                      ? _formatTanggal(pengeluaran.tanggalVerifikasi!)
-                      : '-',
-                ),
-                _buildDetailItem(
-                  'Verifikator',
-                  pengeluaran.verifikatorId?.toString() ?? '-',
                 ),
 
                 const SizedBox(height: 16),
@@ -103,30 +110,12 @@ class DetailPengeluaran extends StatelessWidget {
     );
   }
 
-  // Helper to format date
   String _formatTanggal(DateTime date) {
     return '${date.day.toString().padLeft(2, '0')}/'
         '${date.month.toString().padLeft(2, '0')}/'
         '${date.year}';
   }
 
-  // Map kategori ID ke nama
-  String _mapKategoriIdToString(int id) {
-    switch (id) {
-      case 1:
-        return "Dana Hibah/Donasi";
-      case 2:
-        return "Penjualan Sampah Daur Ulang";
-      case 3:
-        return "Operasional RT";
-      case 4:
-        return "Perbaikan Fasilitas";
-      default:
-        return "Lainnya";
-    }
-  }
-
-  // Widget untuk detail item
   Widget _buildDetailItem(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -146,7 +135,6 @@ class DetailPengeluaran extends StatelessWidget {
     );
   }
 
-  // Widget untuk menampilkan image atau placeholder
   Widget _buildImagePlaceholder({Widget? child}) {
     return Container(
       height: 180,

@@ -1,8 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
@@ -24,9 +27,13 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
   File? buktiGambar;
   final ImagePicker _picker = ImagePicker();
 
+  List<KategoriEntity> _allKategori = [];
+
   @override
   void initState() {
     super.initState();
+
+    context.read<PengeluaranBloc>().add(LoadKategoriPengeluaran());
 
     // Auto-format nominal
     nominalController.addListener(() {
@@ -78,21 +85,6 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
     if (pickedFile != null) setState(() => buktiGambar = File(pickedFile.path));
   }
 
-  int _mapKategoriStringToId(String? kategori) {
-    switch (kategori) {
-      case "Dana Hibah/Donasi":
-        return 1;
-      case "Penjualan Sampah Daur Ulang":
-        return 2;
-      case "Operasional RT":
-        return 3;
-      case "Perbaikan Fasilitas":
-        return 4;
-      default:
-        return 0;
-    }
-  }
-
   void _simpanData() {
     if (namaController.text.isEmpty ||
         nominalController.text.isEmpty ||
@@ -104,16 +96,27 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
       return;
     }
 
+    final kategoriId = _allKategori
+        .firstWhere(
+          (k) => k.nama_kategori == kategori,
+          orElse: () => KategoriEntity(
+            id: 0,
+            nama_kategori: 'Lainnya',
+            jenis: 'Pengeluaran',
+          ),
+        )
+        .id;
+
     final newPengeluaran = Pengeluaran(
       judul: namaController.text,
-      kategoriTransaksiId: _mapKategoriStringToId(kategori),
+      kategoriTransaksiId: kategoriId,
       nominal: double.tryParse(nominalController.text.replaceAll('.', '')) ?? 0,
       tanggalTransaksi: tanggalPengeluaran!,
       buktiFoto: buktiGambar?.path,
       keterangan: keteranganController.text,
-      createdBy: 1, // Sesuaikan dengan user login
-      verifikatorId: null,
-      tanggalVerifikasi: null,
+      createdBy: 1, //TODO: Sesuaikan dengan user login
+     // verifikatorId: null,
+     // tanggalVerifikasi: null,
       createdAt: DateTime.now(),
     );
 
@@ -151,6 +154,8 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
+          } else if (state is KategoriPengeluaranLoaded) {
+            _allKategori = state.kategori;
           }
         },
         child: Padding(
@@ -199,16 +204,14 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
                   filled: true,
                   fillColor: theme.cardColor,
                 ),
-                items:
-                    [
-                          'Dana Hibah/Donasi',
-                          'Penjualan Sampah Daur Ulang',
-                          'Operasional RT',
-                          'Perbaikan Fasilitas',
-                          'Lainnya',
-                        ]
-                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                        .toList(),
+                items: _allKategori
+                    .map(
+                      (k) => DropdownMenuItem(
+                        value: k.nama_kategori,
+                        child: Text(k.nama_kategori ?? 'Lainnya'),
+                      ),
+                    )
+                    .toList(),
                 onChanged: (val) => setState(() => kategori = val),
               ),
               const SizedBox(height: 12),

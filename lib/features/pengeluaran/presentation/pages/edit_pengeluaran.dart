@@ -3,20 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
+import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_state.dart';
-import 'package:intl/intl.dart';
-
 
 class EditPengeluaranPage extends StatefulWidget {
   final Pengeluaran pengeluaran;
-  
+  final List<KategoriEntity> kategoriList;
 
-  const EditPengeluaranPage({super.key, required this.pengeluaran,
+  const EditPengeluaranPage({
+    super.key,
+    required this.pengeluaran,
+    required this.kategoriList,
   });
-  
 
   @override
   State<EditPengeluaranPage> createState() => _EditPengeluaranPageState();
@@ -26,16 +29,18 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
   late TextEditingController namaController;
   late TextEditingController nominalController;
   late TextEditingController keteranganController;
+  late TextEditingController tanggalController;
+
   String? kategori;
   DateTime? tanggalPengeluaran;
   File? buktiGambar;
   final ImagePicker _picker = ImagePicker();
-  late TextEditingController tanggalController;
 
   @override
   void initState() {
     super.initState();
     final data = widget.pengeluaran;
+
     namaController = TextEditingController(text: data.judul);
     keteranganController = TextEditingController(text: data.keterangan);
     nominalController = TextEditingController(
@@ -44,7 +49,6 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
 
     nominalController.addListener(() {
       final text = nominalController.text.replaceAll('.', '');
-
       if (text.isEmpty) return;
 
       final formatted = formatNumber(text);
@@ -58,12 +62,19 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
       }
     });
 
-    kategori = _mapKategoriIdToString(data.kategoriTransaksiId);
+    kategori = widget.kategoriList
+        .firstWhere(
+          (k) => k.id == data.kategoriTransaksiId,
+          orElse: () =>
+              KategoriEntity(id: 0, nama_kategori: 'Lainnya', jenis: 'Lainnya'),
+        )
+        .nama_kategori;
+
+    tanggalPengeluaran = data.tanggalTransaksi;
     tanggalController = TextEditingController(
       text:
           "${data.tanggalTransaksi.day}/${data.tanggalTransaksi.month}/${data.tanggalTransaksi.year}",
     );
-    tanggalPengeluaran = data.tanggalTransaksi;
 
     if (data.buktiFoto != null && data.buktiFoto!.isNotEmpty) {
       buktiGambar = File(data.buktiFoto!);
@@ -78,38 +89,17 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
       kategori = null;
       tanggalPengeluaran = null;
       buktiGambar = null;
+      tanggalController.clear();
     });
   }
 
-
-  String _mapKategoriIdToString(int id) {
-    switch (id) {
-      case 1:
-        return "Dana Hibah/Donasi";
-      case 2:
-        return "Penjualan Sampah Daur Ulang";
-      case 3:
-        return "Operasional RT";
-      case 4:
-        return "Perbaikan Fasilitas";
-      default:
-        return "Lainnya";
-    }
-  }
-
   int _mapKategoriStringToId(String? kategori) {
-    switch (kategori) {
-      case "Dana Hibah/Donasi":
-        return 1;
-      case "Penjualan Sampah Daur Ulang":
-        return 2;
-      case "Operasional RT":
-        return 3;
-      case "Perbaikan Fasilitas":
-        return 4;
-      default:
-        return 0;
-    }
+    final found = widget.kategoriList.firstWhere(
+      (k) => k.nama_kategori == kategori,
+      orElse: () =>
+          KategoriEntity(id: 0, nama_kategori: 'Lainnya', jenis: 'Lainnya'),
+    );
+    return found.id;
   }
 
   Future<void> _pickImage() async {
@@ -155,8 +145,8 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
       buktiFoto: buktiGambar?.path,
       keterangan: keteranganController.text,
       createdBy: widget.pengeluaran.createdBy,
-      verifikatorId: widget.pengeluaran.verifikatorId,
-      tanggalVerifikasi: widget.pengeluaran.tanggalVerifikasi,
+     // verifikatorId: widget.pengeluaran.verifikatorId,
+     // tanggalVerifikasi: widget.pengeluaran.tanggalVerifikasi,
       createdAt: widget.pengeluaran.createdAt,
     );
 
@@ -165,20 +155,16 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     );
   }
 
-  OutlineInputBorder _inputBorder(Color color) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(color: color, width: 1.5),
-    );
-  }
+  OutlineInputBorder _inputBorder(Color color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: color, width: 1.5),
+  );
 
   String formatNumber(String s) {
     if (s.isEmpty) return '';
-    s = s.replaceAll('.', ''); 
-
+    s = s.replaceAll('.', '');
     final number = int.tryParse(s);
     if (number == null) return '';
-
     final formatter = NumberFormat('#,###', 'id_ID');
     return formatter.format(number).replaceAll(',', '.');
   }
@@ -251,14 +237,13 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
                   fillColor:
                       theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                 ),
-                items: [
-                          'Dana Hibah/Donasi',
-                          'Penjualan Sampah Daur Ulang',
-                          'Operasional RT',
-                          'Perbaikan Fasilitas',
-                          'Lainnya',
-                        ]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                items: widget.kategoriList
+                    .map(
+                      (k) => DropdownMenuItem(
+                        value: k.nama_kategori,
+                        child: Text(k.nama_kategori ?? 'Lainnya'),
+                      ),
+                    )
                     .toList(),
                 onChanged: (val) => setState(() => kategori = val),
               ),

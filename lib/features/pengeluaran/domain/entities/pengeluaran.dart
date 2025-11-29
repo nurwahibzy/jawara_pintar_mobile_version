@@ -9,8 +9,8 @@ class Pengeluaran extends Equatable {
   final String? buktiFoto;
   final String? keterangan;
   final int createdBy;
-  final int? verifikatorId;
-  final DateTime? tanggalVerifikasi;
+  //final int? verifikatorId;
+  //final DateTime? tanggalVerifikasi;
   final DateTime createdAt;
 
   const Pengeluaran({
@@ -22,8 +22,8 @@ class Pengeluaran extends Equatable {
     this.buktiFoto,
     this.keterangan,
     required this.createdBy,
-    this.verifikatorId,
-    this.tanggalVerifikasi,
+   // this.verifikatorId,
+   // this.tanggalVerifikasi,
     required this.createdAt,
   });
 
@@ -37,8 +37,8 @@ class Pengeluaran extends Equatable {
     buktiFoto,
     keterangan,
     createdBy,
-    verifikatorId,
-    tanggalVerifikasi,
+   // verifikatorId,
+   // tanggalVerifikasi,
     createdAt,
   ];
 }

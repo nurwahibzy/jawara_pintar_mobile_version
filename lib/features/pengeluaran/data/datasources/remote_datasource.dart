@@ -1,5 +1,8 @@
+import 'package:jawara_pintar_mobile_version/features/pengeluaran/domain/entities/kategori_transaksi.dart';
+
 import '../../../../core/services/supabase_service.dart';
 import '../models/pengeluaran_model.dart';
+import '../models/kategori_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class PengeluaranRemoteDataSource {
@@ -8,6 +11,7 @@ abstract class PengeluaranRemoteDataSource {
   Future<void> createPengeluaran(PengeluaranModel model);
   Future<void> updatePengeluaran(PengeluaranModel model);
   Future<void> deletePengeluaran(int id);
+  Future<List<KategoriEntity>> getKategoriPengeluaran();
 }
 
 class PengeluaranRemoteDataSourceImpl implements PengeluaranRemoteDataSource {
@@ -54,4 +58,21 @@ class PengeluaranRemoteDataSourceImpl implements PengeluaranRemoteDataSource {
   Future<void> deletePengeluaran(int id) async {
     await client.from('pengeluaran').delete().eq('id', id);
   }
+
+ @override
+  Future<List<KategoriEntity>> getKategoriPengeluaran() async {
+    final response = await client
+        .from('kategori_transaksi')
+        .select()
+        .eq('jenis', 'Pengeluaran');
+
+   return (response as List)
+        .map((json) => KategoriModel.fromJson(json))
+        .map(
+          (model) =>
+              KategoriEntity(id: model.id, nama_kategori: model.nama_kategori, jenis: 'Pengeluaran'),
+        )
+        .toList();
+  }
 }
+

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
-import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/detail_pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/edit_pengeluaran.dart';
+
+import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
 import '../../../../../features/pengeluaran/presentation/bloc/pengeluaran_state.dart';
+import '../../../../core/theme/app_colors.dart';
+import 'detail_pengeluaran.dart';
+import 'edit_pengeluaran.dart';
 
 class DaftarPengeluaran extends StatefulWidget {
   const DaftarPengeluaran({super.key});
@@ -34,11 +36,13 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
   DateTime? _filterSampaiTemp;
 
   List<Pengeluaran> _allItems = [];
+  List<KategoriEntity> _allKategori = [];
 
   @override
   void initState() {
     super.initState();
-    context.read<PengeluaranBloc>().add(const LoadPengeluaran());
+    context.read<PengeluaranBloc>().add(LoadPengeluaran());
+    context.read<PengeluaranBloc>().add(LoadKategoriPengeluaran());
   }
 
   List<Pengeluaran> get filteredPengeluaran {
@@ -46,10 +50,22 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
       final searchMatch = item.judul.toLowerCase().contains(
         _searchController.text.toLowerCase(),
       );
+
       final kategoriMatch =
           _filterKategori == null || _filterKategori == '-- Pilih Kategori --'
           ? true
-          : _mapKategoriIdToString(item.kategoriTransaksiId) == _filterKategori;
+          : _allKategori
+                    .firstWhere(
+                      (k) => k.id == item.kategoriTransaksiId,
+                      orElse: () => KategoriEntity(
+                        id: 0,
+                        nama_kategori: 'Lainnya',
+                        jenis: 'Lainnya',
+                      ),
+                    )
+                    .nama_kategori ==
+                _filterKategori;
+
       final dariMatch = _filterDari == null
           ? true
           : item.tanggalTransaksi.isAfter(
@@ -63,21 +79,6 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
 
       return searchMatch && kategoriMatch && dariMatch && sampaiMatch;
     }).toList();
-  }
-
-  String _mapKategoriIdToString(int id) {
-    switch (id) {
-      case 1:
-        return "Dana Hibah/Donasi";
-      case 2:
-        return "Penjualan Sampah Daur Ulang";
-      case 3:
-        return "Operasional RT";
-      case 4:
-        return "Perbaikan Fasilitas";
-      default:
-        return "Lainnya";
-    }
   }
 
   @override
@@ -145,7 +146,6 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 16),
 
                       /// SEARCH INPUT
@@ -159,35 +159,32 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                         ),
                         onChanged: (v) => _filterSearchTemp = v,
                       ),
-
                       const SizedBox(height: 16),
 
                       /// DROPDOWN KATEGORI
-                      DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.secondBackground,
-                        ),
-                        value: _filterKategori ?? '-- Pilih Kategori --',
-                        items:
-                            [
-                                  '-- Pilih Kategori --',
-                                  'Dana Hibah/Donasi',
-                                  'Penjualan Sampah Daur Ulang',
-                                  'Operasional RT',
-                                  'Perbaikan Fasilitas',
-                                  'Lainnya',
-                                ]
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Text(e),
-                                  ),
-                                )
+                      BlocBuilder<PengeluaranBloc, PengeluaranState>(
+                        builder: (context, state) {
+                          final kategoriOptions = [
+                            '-- Pilih Kategori --',
+                            ..._allKategori
+                                .map((k) => k.nama_kategori ?? 'Lainnya')
                                 .toList(),
-                        onChanged: (v) => _filterKategoriTemp = v,
-                      ),
+                          ];
 
+                          return DropdownButtonFormField<String>(
+                            decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: AppColors.secondBackground,
+                            ),
+                            value: _filterKategori ?? '-- Pilih Kategori --',
+                            items: kategoriOptions.map((e) {
+                              return DropdownMenuItem(value: e, child: Text(e));
+                            }).toList(),
+                            onChanged: (v) =>
+                                setState(() => _filterKategoriTemp = v),
+                          );
+                        },
+                      ),
                       const SizedBox(height: 16),
 
                       /// TANGGAL RANGE
@@ -242,9 +239,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 20),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -255,7 +250,6 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                 _filterKategori = '-- Pilih Kategori --';
                                 _filterDari = null;
                                 _filterSampai = null;
-
                                 _filterSearchTemp = null;
                                 _filterKategoriTemp = null;
                                 _filterDariTemp = null;
@@ -303,6 +297,9 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                 } else if (state is PengeluaranLoaded) {
                   _allItems = state.items;
                   setState(() {});
+                } else if (state is KategoriPengeluaranLoaded) {
+                  _allKategori = state.kategori;
+                  setState(() {});
                 }
               },
               builder: (context, state) {
@@ -318,6 +315,18 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       final item = list[index];
+                      final kategoriNama =
+                          _allKategori
+                              .firstWhere(
+                                (k) => k.id == item.kategoriTransaksiId,
+                                orElse: () => KategoriEntity(
+                                  id: 0,
+                                  nama_kategori: 'Lainnya',
+                                  jenis: 'Lainnya',
+                                ),
+                              )
+                              .nama_kategori ??
+                          'Lainnya';
                       return Card(
                         child: ListTile(
                           title: Text(item.judul),
@@ -338,15 +347,11 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                 children: [
                                   const Icon(Icons.category, size: 16),
                                   const SizedBox(width: 4),
-                                  Text(
-                                    _mapKategoriIdToString(
-                                      item.kategoriTransaksiId,
-                                    ),
-                                  ),
+                                  Text(kategoriNama),
                                 ],
                               ),
                               const SizedBox(height: 4),
-                             Text(
+                              Text(
                                 formatter.format(item.nominal),
                                 style: theme.textTheme.bodyLarge!.copyWith(
                                   fontWeight: FontWeight.bold,
@@ -354,15 +359,16 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                               ),
                             ],
                           ),
-
                           trailing: PopupMenuButton<String>(
                             onSelected: (value) {
-                              if (value == 'detail') {
-                                Navigator.push(
+                             if (value == 'detail') {
+                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) =>
-                                        DetailPengeluaran(pengeluaran: item),
+                                    builder: (_) => DetailPengeluaran(
+                                      pengeluaran: item,
+                                      kategoriList: _allKategori, 
+                                    ),
                                   ),
                                 );
                               } else if (value == 'edit') {
@@ -373,6 +379,8 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                       value: context.read<PengeluaranBloc>(),
                                       child: EditPengeluaranPage(
                                         pengeluaran: item,
+                                        kategoriList:
+                                            _allKategori, 
                                       ),
                                     ),
                                   ),

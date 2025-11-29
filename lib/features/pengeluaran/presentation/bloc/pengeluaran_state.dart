@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:jawara_pintar_mobile_version/features/pengeluaran/domain/entities/kategori_transaksi.dart';
 import '../../domain/entities/pengeluaran.dart';
 
 abstract class PengeluaranState extends Equatable {
@@ -35,4 +36,9 @@ class PengeluaranActionSuccess extends PengeluaranState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class KategoriPengeluaranLoaded extends PengeluaranState {
+  final List<KategoriEntity> kategori;
+  KategoriPengeluaranLoaded(this.kategori);
 }

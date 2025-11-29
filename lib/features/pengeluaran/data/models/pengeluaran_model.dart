@@ -10,8 +10,8 @@ class PengeluaranModel extends Pengeluaran {
     super.buktiFoto,
     super.keterangan,
     required super.createdBy,
-    super.verifikatorId,
-    super.tanggalVerifikasi,
+   // super.verifikatorId,
+   // super.tanggalVerifikasi,
     required super.createdAt,
   });
 
@@ -26,10 +26,9 @@ class PengeluaranModel extends Pengeluaran {
       buktiFoto: map['bukti_foto'],
       keterangan: map['keterangan'],
       createdBy: map['created_by'],
-      verifikatorId: map['verifikator_id'],
-      tanggalVerifikasi: map['tanggal_verifikasi'] != null
-          ? DateTime.parse(map['tanggal_verifikasi'])
-          : null,
+     // verifikatorId: map['verifikator_id'],
+     // tanggalVerifikasi: map['tanggal_verifikasi'] != null
+         // ? DateTime.parse(map['tanggal_verifikasi'])  : null,
       createdAt: DateTime.parse(map['created_at']),
     );
   }
@@ -49,8 +48,8 @@ class PengeluaranModel extends Pengeluaran {
       'bukti_foto': buktiFoto,
       'keterangan': keterangan,
       'created_by': createdBy,
-      'verifikator_id': verifikatorId,
-      'tanggal_verifikasi': tanggalVerifikasi?.toIso8601String(),
+     // 'verifikator_id': verifikatorId,
+      //'tanggal_verifikasi': tanggalVerifikasi?.toIso8601String(),
       'created_at': createdAt.toIso8601String(),
     };
 
@@ -76,8 +75,8 @@ class PengeluaranModel extends Pengeluaran {
       buktiFoto: entity.buktiFoto,
       keterangan: entity.keterangan,
       createdBy: entity.createdBy,
-      verifikatorId: entity.verifikatorId,
-      tanggalVerifikasi: entity.tanggalVerifikasi,
+    //  verifikatorId: entity.verifikatorId,
+     // tanggalVerifikasi: entity.tanggalVerifikasi,
       createdAt: entity.createdAt,
     );
   }
@@ -91,8 +90,8 @@ class PengeluaranModel extends Pengeluaran {
       'bukti_foto': buktiFoto,
       'keterangan': keterangan,
       'created_by': createdBy,
-      'verifikator_id': verifikatorId,
-      'tanggal_verifikasi': tanggalVerifikasi?.toIso8601String(),
+     // 'verifikator_id': verifikatorId,
+     // 'tanggal_verifikasi': tanggalVerifikasi?.toIso8601String(),
       'created_at': createdAt.toIso8601String(),
     };
   }

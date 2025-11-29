@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'pengeluaran_event.dart';
-import 'pengeluaran_state.dart';
+
+import '../../../../core/errors/failure.dart';
+import '../../domain/entities/kategori_transaksi.dart';
 import '../../domain/entities/pengeluaran.dart';
 import '../../domain/repositories/pengeluaran_repository.dart';
-import '../../../../core/errors/failure.dart';
+import 'pengeluaran_event.dart';
+import 'pengeluaran_state.dart';
 
 class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
   final PengeluaranRepository repository;
@@ -15,6 +17,7 @@ class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
     on<DeletePengeluaranEvent>(_onDelete);
     on<CreatePengeluaranEvent>(_onCreate);
     on<UpdatePengeluaranEvent>(_onUpdate);
+    on<LoadKategoriPengeluaran>(_onLoadKategori);
   }
 
   Future<void> _onLoad(
@@ -84,6 +87,28 @@ class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
       } else {
         emit(const PengeluaranError('Update gagal'));
       }
+    });
+  }
+
+ Future<void> _onLoadKategori(
+    LoadKategoriPengeluaran event,
+    Emitter<PengeluaranState> emit,
+  ) async {
+    emit(PengeluaranLoading());
+
+    final res = await repository.getKategoriPengeluaran();
+    res.fold((failure) => emit(PengeluaranError(failure.message)), (list) {
+      final kategoriEntities = list
+          .map(
+            (m) => KategoriEntity(
+              id: m.id,
+              jenis: m.jenis,
+              nama_kategori: m.nama_kategori, 
+            ),
+          )
+          .toList();
+
+      emit(KategoriPengeluaranLoaded(kategoriEntities));
     });
   }
 }

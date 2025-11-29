@@ -38,3 +38,5 @@ class UpdatePengeluaranEvent extends PengeluaranEvent {
   @override
   List<Object?> get props => [pengeluaran];
 }
+
+class LoadKategoriPengeluaran extends PengeluaranEvent {}
