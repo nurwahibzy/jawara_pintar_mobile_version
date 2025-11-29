@@ -4,7 +4,7 @@ import 'pengeluaran_event.dart';
 import 'pengeluaran_state.dart';
 import '../../domain/entities/pengeluaran.dart';
 import '../../domain/repositories/pengeluaran_repository.dart';
-import '../../../../core/error/failure.dart';
+import '../../../../core/errors/failure.dart';
 
 class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
   final PengeluaranRepository repository;

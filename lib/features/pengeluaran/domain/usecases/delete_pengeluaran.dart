@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/error/failure.dart';
+import '../../../../core/errors/failure.dart';
 import '../repositories/pengeluaran_repository.dart';
 
 class DeletePengeluaran {

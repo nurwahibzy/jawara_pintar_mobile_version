@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tambah_kategori_iuran.dart';
 import 'detail_kategori_iuran.dart';
- import 'edit_kategori_iuran.dart';
+import 'edit_kategori_iuran.dart';
 
 class DaftarKategoriIuran extends StatefulWidget {
   const DaftarKategoriIuran({super.key});

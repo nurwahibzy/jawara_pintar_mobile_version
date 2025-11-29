@@ -40,7 +40,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.money_off,
                 "Pengeluaran",
-                "/daftar_pengeluaran",
+                "/daftar-pengeluaran",
               ),
               _buildMenuItem(
                 context,

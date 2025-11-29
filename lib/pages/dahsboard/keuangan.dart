@@ -391,11 +391,11 @@ class _KeuanganState extends State<Keuangan> {
 
   String _formatCurrency(double amount) {
     if (amount >= 1000000000) {
-      return 'Rp${(amount / 1000000000).toStringAsFixed(1)}M';
+      return 'Rp${(amount / 1000000000).toStringAsFixed(1)} Miliar';
     } else if (amount >= 1000000) {
-      return 'Rp${(amount / 1000000).toStringAsFixed(1)}Jt';
+      return 'Rp${(amount / 1000000).toStringAsFixed(1)} Juta';
     } else if (amount >= 1000) {
-      return 'Rp${(amount / 1000).toStringAsFixed(0)}K';
+      return 'Rp${(amount / 1000).toStringAsFixed(0)} Ribu';
     } else {
       return 'Rp${amount.toStringAsFixed(0)}';
     }
