@@ -133,6 +133,8 @@ class _PenerimaanWargaPageState extends State<PenerimaanWargaPage> {
 }
 
 class TambahPenerimaanDialog extends StatefulWidget {
+  const TambahPenerimaanDialog({super.key});
+
   @override
   State<TambahPenerimaanDialog> createState() => _TambahPenerimaanDialogState();
 }

@@ -231,14 +231,16 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openAddDialog,
-        child: const Icon(Icons.add),
         tooltip: 'Tambah Transaksi',
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
 class AddTransactionDialog extends StatefulWidget {
+  const AddTransactionDialog({super.key});
+
   @override
   State<AddTransactionDialog> createState() => _AddTransactionDialogState();
 }

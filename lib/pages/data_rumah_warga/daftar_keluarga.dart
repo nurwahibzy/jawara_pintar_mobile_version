@@ -39,7 +39,7 @@ class DaftarKeluarga extends StatelessWidget {
       },
     ];
 
-    Color _getStatusColor(String status) {
+    Color getStatusColor(String status) {
       switch (status) {
         case 'Aktif':
           return Colors.lightGreen.shade800;
@@ -95,7 +95,7 @@ class DaftarKeluarga extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(data['status']),
+                  color: getStatusColor(data['status']),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(

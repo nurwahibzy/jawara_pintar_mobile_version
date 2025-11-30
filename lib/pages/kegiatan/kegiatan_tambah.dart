@@ -108,7 +108,7 @@ class _TambahKegiatanState extends State<TambahKegiatan> {
                         TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
-                  value: _selectedKategori,
+                  initialValue: _selectedKategori,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     contentPadding:
