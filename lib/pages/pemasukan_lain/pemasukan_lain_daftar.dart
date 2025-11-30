@@ -288,7 +288,7 @@ class _PemasukanLainState extends State<PemasukanLain> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: dialogSelectedKategori,
+                      initialValue: dialogSelectedKategori,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.symmetric(

@@ -125,7 +125,7 @@ class LoginPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                 context,
-                                '/daftar-pengeluaran', //buat test langsung ke daftar pengeluaran
+                                '/dashboard-keuangan', 
                               );
                             },
                             child: const Text('Login'),

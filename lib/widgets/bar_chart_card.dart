@@ -312,9 +312,9 @@ class BarChartCard extends StatelessWidget {
 
   String _formatCurrencyFull(double value) {
     if (value >= 1000000) {
-      return 'Rp${(value / 1000000).toStringAsFixed(1)}Jt';
+      return 'Rp${(value / 1000000).toStringAsFixed(1)} Juta';
     } else if (value >= 1000) {
-      return 'Rp${(value / 1000).toStringAsFixed(0)}K';
+      return 'Rp${(value / 1000).toStringAsFixed(0)} Ribu';
     } else {
       return 'Rp${value.toStringAsFixed(0)}';
     }

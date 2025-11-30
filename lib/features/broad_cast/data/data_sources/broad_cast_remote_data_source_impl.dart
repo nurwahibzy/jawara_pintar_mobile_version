@@ -7,7 +7,7 @@ class BroadCastRemoteDataSourceImpl implements BroadCastRemoteDataSource {
     try {
       return await function();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

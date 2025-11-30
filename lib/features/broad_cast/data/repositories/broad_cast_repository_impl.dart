@@ -7,7 +7,7 @@ class BroadCastRepositoryImpl implements BroadCastRepository {
     try {
       return await function();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }
