@@ -9,6 +9,7 @@ import 'app_routes.dart';
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-keuangan/presentation/pages/dashboard_keuangan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-kegiatan/presentation/pages/dashboard_kegiatan_page.dart';
+import 'package:jawara_pintar_mobile_version/features/dashboard-kependudukan/presentation/pages/dashboard_kependudukan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/daftar_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/tambah_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/edit_pengeluaran.dart';
@@ -61,6 +62,8 @@ class AppRouter {
       case AppRoutes.dashboardKegiatan:
         return MaterialPageRoute(builder: (_) => const DashboardKegiatanPage());
 
+      case AppRoutes.kependudukan:
+        return MaterialPageRoute(builder: (_) => const DashboardKependudukanPage());
    // PESAN WARGA
       case AppRoutes.daftarPesanWarga:
         return MaterialPageRoute(
