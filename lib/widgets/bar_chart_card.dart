@@ -30,15 +30,26 @@ class BarChartCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          colors: [
+            backgroundColor,
+            backgroundColor.withOpacity(0.8),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: barColor.withOpacity(0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
+        border: Border.all(
+          color: barColor.withOpacity(0.1),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,10 +58,21 @@ class BarChartCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: barColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [
+                      barColor.withOpacity(0.15),
+                      barColor.withOpacity(0.08),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: barColor.withOpacity(0.2),
+                    width: 1,
+                  ),
                 ),
                 child: Icon(
                   icon,
@@ -89,16 +111,23 @@ class BarChartCard extends StatelessWidget {
                           barRods: [
                             BarChartRodData(
                               toY: entry.value,
-                              color: barColor,
-                              width: 16,
+                              gradient: LinearGradient(
+                                colors: [
+                                  barColor,
+                                  barColor.withOpacity(0.7),
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
+                              width: 18,
                               borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(6),
-                                topRight: Radius.circular(6),
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
                               ),
                               backDrawRodData: BackgroundBarChartRodData(
                                 show: true,
                                 toY: maxValue * 1.2,
-                                color: Colors.grey.withOpacity(0.1),
+                                color: barColor.withOpacity(0.05),
                               ),
                             ),
                           ],
@@ -218,14 +247,28 @@ class BarChartCard extends StatelessWidget {
 
           // Summary Info
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: barColor.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(8),
+              gradient: LinearGradient(
+                colors: [
+                  barColor.withOpacity(0.08),
+                  barColor.withOpacity(0.04),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: barColor.withOpacity(0.2),
+                color: barColor.withOpacity(0.15),
                 width: 1,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: barColor.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

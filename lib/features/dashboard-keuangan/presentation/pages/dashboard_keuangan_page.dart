@@ -12,6 +12,8 @@ import '../../domain/usecases/get_available_years_usecase.dart';
 import '../bloc/dashboard_bloc.dart';
 import '../bloc/dashboard_event.dart';
 import '../bloc/dashboard_state.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
+
 
 /// Dashboard Keuangan dengan Clean Architecture + Supabase
 /// Menggantikan hardcoded keuangan.dart
@@ -40,16 +42,29 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is DashboardLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primary,
+              ),
             );
           } else if (state is DashboardError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64, color: Colors.red.shade400),
-                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.error_outline, 
+                      size: 56, 
+                      color: Colors.red.shade400,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Text(
                     'Terjadi Kesalahan',
                     style: TextStyle(
@@ -64,7 +79,7 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                     child: Text(
                       state.message,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -76,14 +91,18 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                             ),
                           );
                     },
-                    icon: const Icon(Icons.refresh),
+                    icon: const Icon(Icons.refresh, size: 18),
                     label: const Text('Coba Lagi'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade400,
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
+                      elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
-                        vertical: 12,
+                        vertical: 14,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
@@ -99,54 +118,49 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header Section
+                  // Header Section with Year Selector
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Dashboard Keuangan',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Kelola pemasukan dan pengeluaran',
-                            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                          ),
-                        ],
+                      Text(
+                        'Dashboard Keuangan',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[800],
+                        ),
                       ),
                       // Year Selector
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
+                          horizontal: 14,
+                          vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.primary.withOpacity(0.1),
+                              AppColors.primary.withOpacity(0.05),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          border: Border.all(
+                            color: AppColors.primary.withOpacity(0.2),
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: DropdownButton<String>(
                           value: summary.year,
                           underline: const SizedBox(),
-                          icon: const Icon(Icons.arrow_drop_down, size: 20),
+                          icon: Icon(Icons.calendar_today, 
+                            size: 16, 
+                            color: AppColors.primary,
+                          ),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.grey[800],
+                            color: AppColors.primary,
                           ),
                           items: availableYears.map((String year) {
                             return DropdownMenuItem<String>(
@@ -165,158 +179,129 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Menu Keuangan
                   const MenuKeuangan(),
                   const SizedBox(height: 24),
 
-                  Text(
-                    'Ringkasan Keuangan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Summary Cards
+                  // Summary Cards - Modern Minimal Design
                   Row(
                     children: [
                       Expanded(
-                        child: _buildStatCard(
-                          title: 'Total Pemasukan',
+                        child: _buildMinimalStatCard(
                           value: summary.getFormattedTotalPemasukan(),
-                          subtitle: 'Pemasukan',
-                          color: Colors.green.shade400,
-                          icon: Icons.trending_up,
+                          label: 'Pemasukan',
+                          color: Colors.green.shade500,
+                          icon: Icons.arrow_upward,
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 12),
                       Expanded(
-                        child: _buildStatCard(
-                          title: 'Total Pengeluaran',
+                        child: _buildMinimalStatCard(
                           value: summary.getFormattedTotalPengeluaran(),
-                          subtitle: 'Pengeluaran',
-                          color: Colors.red.shade400,
-                          icon: Icons.trending_down,
+                          label: 'Pengeluaran',
+                          color: Colors.red.shade500,
+                          icon: Icons.arrow_downward,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
-                  // Saldo Card
+                  // Saldo Card - Prominent Display
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.blue.shade400, Colors.blue.shade600],
+                        colors: [
+                          AppColors.primary,
+                          AppColors.primary.withOpacity(0.85),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.blue.withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
+                          color: AppColors.primary.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
                               'Saldo',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 13,
                                 color: Colors.white70,
+                                letterSpacing: 0.5,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              summary.getFormattedSaldo(),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(
+                                Icons.account_balance_wallet_outlined,
                                 color: Colors.white,
+                                size: 20,
                               ),
                             ),
                           ],
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.account_balance_wallet,
+                        const SizedBox(height: 8),
+                        Text(
+                          summary.getFormattedSaldo(),
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            size: 32,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
 
-                  // Bar Chart - Pemasukan per Bulan
+                  // Charts Section
                   BarChartCard(
-                    title: 'Pemasukan per Bulan',
+                    title: 'Pemasukan Bulanan',
                     icon: Icons.trending_up,
                     barColor: Colors.green.shade600,
-                    backgroundColor: const Color(0xFFE8F5E9),
                     data: summary.monthlyPemasukan,
                     labels: const [
-                      'Jan',
-                      'Feb',
-                      'Mar',
-                      'Apr',
-                      'Mei',
-                      'Jun',
-                      'Jul',
-                      'Agu',
-                      'Sep',
-                      'Okt',
-                      'Nov',
-                      'Des',
+                      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+                      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
-                  // Bar Chart - Pengeluaran per Bulan
                   BarChartCard(
-                    title: 'Pengeluaran per Bulan',
+                    title: 'Pengeluaran Bulanan',
                     icon: Icons.trending_down,
                     barColor: Colors.red.shade600,
-                    backgroundColor: const Color(0xFFFFEBEE),
                     data: summary.monthlyPengeluaran,
                     labels: const [
-                      'Jan',
-                      'Feb',
-                      'Mar',
-                      'Apr',
-                      'Mei',
-                      'Jun',
-                      'Jul',
-                      'Agu',
-                      'Sep',
-                      'Okt',
-                      'Nov',
-                      'Des',
+                      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+                      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
-                  // Pie Chart - Pemasukan per Kategori
                   PieChartCard(
-                    title: 'Pemasukan per Kategori',
-                    icon: Icons.account_balance_wallet,
-                    backgroundColor: const Color(0xFFE8F5E9),
+                    title: 'Kategori Pemasukan',
+                    icon: Icons.pie_chart_outline,
                     valueFormatter: _formatCurrency,
                     data: summary.kategoriPemasukan.entries.map((entry) {
                       final index =
@@ -328,13 +313,11 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
-                  // Pie Chart - Pengeluaran per Kategori
                   PieChartCard(
-                    title: 'Pengeluaran per Kategori',
-                    icon: Icons.shopping_cart,
-                    backgroundColor: const Color(0xFFFFEBEE),
+                    title: 'Kategori Pengeluaran',
+                    icon: Icons.pie_chart_outline,
                     valueFormatter: _formatCurrency,
                     data: summary.kategoriPengeluaran.entries.map((entry) {
                       final index =
@@ -346,14 +329,17 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                       );
                     }).toList(),
                   ),
+                  const SizedBox(height: 16),
                 ],
               ),
             );
           }
 
           // Initial state
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primary,
+            ),
           );
         },
       ),
@@ -364,63 +350,74 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard({
-    required String title,
+  Widget _buildMinimalStatCard({
     required String value,
-    required String subtitle,
+    required String label,
     required Color color,
     required IconData icon,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            Colors.white,
+            Colors.grey.shade50,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: color.withOpacity(0.15),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: color.withOpacity(0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Icon
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              gradient: LinearGradient(
+                colors: [
+                  color.withOpacity(0.15),
+                  color.withOpacity(0.08),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: color, size: 28),
+            child: Icon(icon, color: color, size: 20),
           ),
-          const SizedBox(width: 12),
-          // Text Info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Value
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    value,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 2),
-                // Subtitle
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 11, color: Colors.grey[500]),
-                ),
-              ],
+          const SizedBox(height: 12),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey[600],
+              letterSpacing: 0.3,
+            ),
+          ),
+          const SizedBox(height: 4),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
             ),
           ),
         ],
@@ -430,23 +427,23 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
 
   Color _getIncomeColor(int index) {
     final colors = [
-      Colors.green.shade400,
+      Colors.green.shade500,
       Colors.green.shade600,
-      Colors.green.shade800,
-      Colors.teal.shade400,
+      Colors.teal.shade500,
       Colors.teal.shade600,
+      Colors.cyan.shade500,
     ];
     return colors[index % colors.length];
   }
 
   Color _getExpenseColor(int index) {
     final colors = [
-      Colors.red.shade400,
+      Colors.red.shade500,
       Colors.red.shade600,
-      Colors.red.shade800,
-      Colors.orange.shade400,
+      Colors.orange.shade500,
       Colors.orange.shade600,
-      Colors.orange.shade800,
+      Colors.deepOrange.shade500,
+      Colors.pink.shade500,
     ];
     return colors[index % colors.length];
   }

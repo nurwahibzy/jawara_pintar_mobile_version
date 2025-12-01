@@ -32,15 +32,26 @@ class _PieChartCardState extends State<PieChartCard> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: widget.backgroundColor,
-        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          colors: [
+            Colors.white,
+            Colors.grey.shade50,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.grey.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.1),
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,18 +60,25 @@ class _PieChartCardState extends State<PieChartCard> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: widget.data.isNotEmpty
-                      ? widget.data[0].color.withOpacity(0.1)
-                      : Colors.grey.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF8E6CEF).withOpacity(0.15),
+                      const Color(0xFF8E6CEF).withOpacity(0.08),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: const Color(0xFF8E6CEF).withOpacity(0.2),
+                    width: 1,
+                  ),
                 ),
                 child: Icon(
                   widget.icon,
-                  color: widget.data.isNotEmpty
-                      ? widget.data[0].color
-                      : Colors.grey,
+                  color: const Color(0xFF8E6CEF),
                   size: 24,
                 ),
               ),
@@ -79,15 +97,15 @@ class _PieChartCardState extends State<PieChartCard> {
           ),
           const SizedBox(height: 24),
           
-          // Pie Chart
-          SizedBox(
-            height: 200,
-            child: Row(
-              children: [
-                // Chart
-                Expanded(
-                  flex: 3,
-                  child: PieChart(
+          // Pie Chart - Centered
+          Center(
+            child: SizedBox(
+              height: 240,
+              width: 240,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  PieChart(
                     PieChartData(
                       pieTouchData: PieTouchData(
                         touchCallback: (FlTouchEvent event, pieTouchResponse) {
@@ -104,57 +122,57 @@ class _PieChartCardState extends State<PieChartCard> {
                         },
                       ),
                       sectionsSpace: 2,
-                      centerSpaceRadius: 50,
+                      centerSpaceRadius: 70,
                       sections: _buildPieChartSections(total),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                
-                // Legend and Details
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Total in center
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
-                          borderRadius: BorderRadius.circular(8),
+                  // Total in center
+                  Container(
+                    width: 110,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF8E6CEF).withOpacity(0.1),
+                          blurRadius: 12,
+                          offset: const Offset(0, 2),
                         ),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Jumlah',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              widget.valueFormatter != null
-                                  ? widget.valueFormatter!(total)
-                                  : total.toInt().toString(),
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[800],
-                              ),
-                            ),
-                          ],
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Total',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        FittedBox(
+                          child: Text(
+                            widget.valueFormatter != null
+                                ? widget.valueFormatter!(total)
+                                : total.toInt().toString(),
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           
           // Legend
           Wrap(
@@ -181,27 +199,30 @@ class _PieChartCardState extends State<PieChartCard> {
   List<PieChartSectionData> _buildPieChartSections(double total) {
     return List.generate(widget.data.length, (index) {
       final isTouched = index == touchedIndex;
-      final radius = isTouched ? 70.0 : 55.0;
-      final fontSize = isTouched ? 13.0 : 14.0;
+      final radius = isTouched ? 42.0 : 35.0;
       final item = widget.data[index];
-      final percentage = (item.value / total * 100).toStringAsFixed(0);
-
-      final formattedValue = widget.valueFormatter != null
-          ? widget.valueFormatter!(item.value)
-          : item.value.toInt().toString();
+      final percentage = (item.value / total * 100).toStringAsFixed(1);
 
       return PieChartSectionData(
         color: item.color,
         value: item.value,
-        title: isTouched 
-            ? '${item.label}\n$formattedValue\n($percentage%)' 
-            : '$percentage%',
+        title: isTouched ? '$percentage%' : '',
         radius: radius,
+        borderSide: BorderSide(
+          color: Colors.white,
+          width: 3,
+        ),
         titleStyle: TextStyle(
-          fontSize: fontSize,
+          fontSize: 13,
           fontWeight: FontWeight.bold,
           color: Colors.white,
-          height: 1.2,
+          shadows: [
+            Shadow(
+              color: Colors.black.withOpacity(0.4),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
         ),
       );
     });
@@ -209,35 +230,61 @@ class _PieChartCardState extends State<PieChartCard> {
 
   Widget _buildLegendItem(
       String label, Color color, String value, String percentage) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 16,
-          height: 16,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(4),
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white,
+            Colors.grey.shade50,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        const SizedBox(width: 8),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[700],
-          ),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1,
         ),
-        const SizedBox(width: 4),
-        Text(
-          '$value ($percentage)',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey[800],
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.08),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
-        ),
-      ],
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            percentage,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
