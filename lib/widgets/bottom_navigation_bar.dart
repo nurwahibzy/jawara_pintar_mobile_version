@@ -62,7 +62,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
                 case 2:
                   Navigator.pushReplacementNamed(
                     context,
-                    '/kependudukan',
+                    '/dashboard-kependudukan',
                   );
                   break;
               }
