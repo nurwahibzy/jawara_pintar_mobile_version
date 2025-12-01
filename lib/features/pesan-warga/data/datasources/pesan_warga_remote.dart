@@ -1,0 +1,81 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../core/services/supabase_service.dart';
+import '../models/pesan_warga_model.dart';
+
+abstract class AspirasiRemoteDataSource {
+  Future<List<AspirasiModel>> getAllAspirasi();
+  Future<AspirasiModel> getAspirasiById(int id);
+  Future<void> addAspirasi(AspirasiModel model);
+  Future<void> updateAspirasi(AspirasiModel model);
+  Future<void> deleteAspirasi(int id);
+}
+
+class AspirasiRemoteDataSourceImpl implements AspirasiRemoteDataSource {
+  final SupabaseClient client;
+
+  AspirasiRemoteDataSourceImpl() : client = SupabaseService.client;
+
+  @override
+  Future<List<AspirasiModel>> getAllAspirasi() async {
+    final response = await client.from('aspirasi').select('''
+    id,
+    warga_id,
+    judul,
+    deskripsi,
+    status,
+    tanggapan_admin,
+    updated_by,
+    created_at,
+    admin:users(id, username),
+    warga:warga(id, nama_lengkap)
+  ''');
+    final dataList = List<Map<String, dynamic>>.from(response);
+    return dataList.map((e) => AspirasiModel.fromMap(e)).toList();
+  }
+
+  @override
+  Future<AspirasiModel> getAspirasiById(int id) async {
+    final response = await client
+        .from('aspirasi')
+        .select('''
+    id,
+    warga_id,
+    judul,
+    deskripsi,
+    status,
+    tanggapan_admin,
+    updated_by,
+    created_at,
+    admin:users(id, username),
+    warga:warga(id, nama_lengkap)
+  ''')
+        .eq('id', id)
+        .maybeSingle();
+
+    if (response == null) {
+      throw Exception('Aspirasi dengan id $id tidak ditemukan');
+    }
+    return AspirasiModel.fromMap(response);
+  }
+
+  @override
+  Future<void> addAspirasi(AspirasiModel model) async {
+    await client.from('aspirasi').insert(model.toMap());
+  }
+
+  @override
+  Future<void> updateAspirasi(AspirasiModel model) async {
+    if (model.id == null) {
+      throw Exception('ID tidak boleh null saat update');
+    }
+    await client
+        .from('aspirasi')
+        .update(model.toMap(forUpdate: true))
+        .eq('id', model.id!);
+  }
+
+  @override
+  Future<void> deleteAspirasi(int id) async {
+    await client.from('aspirasi').delete().eq('id', id);
+  }
+}
