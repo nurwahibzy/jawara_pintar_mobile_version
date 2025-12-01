@@ -10,6 +10,7 @@ import '../../domain/usecases/get_dashboard_kependudukan_usecase.dart';
 import '../bloc/dashboard_bloc.dart';
 import '../bloc/dashboard_event.dart';
 import '../bloc/dashboard_state.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
 /// Dashboard Kependudukan dengan Clean Architecture + Supabase
 class DashboardKependudukanPage extends StatelessWidget {
@@ -37,15 +38,29 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
       body: BlocBuilder<DashboardKependudukanBloc, DashboardKependudukanState>(
         builder: (context, state) {
           if (state is DashboardKependudukanLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primary,
+              ),
+            );
           } else if (state is DashboardKependudukanError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline,
-                      size: 64, color: Colors.red.shade400),
-                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.error_outline,
+                      size: 56,
+                      color: Colors.red.shade400,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Text(
                     'Terjadi Kesalahan',
                     style: TextStyle(
@@ -60,7 +75,7 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
                     child: Text(
                       state.message,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -70,8 +85,20 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
                             const LoadDashboardKependudukanEvent(),
                           );
                     },
-                    icon: const Icon(Icons.refresh),
+                    icon: const Icon(Icons.refresh, size: 18),
                     label: const Text('Coba Lagi'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -82,102 +109,105 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Header Section
                   Text(
                     'Dashboard Kependudukan',
                     style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Kelola data penduduk dan keluarga',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Menu Kependudukan
-                  const MenuKependudukan(),
-
-                  // Statistics Cards
-                  Text(
-                    'Statistik Penduduk',
-                    style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),
                   ),
                   const SizedBox(height: 20),
 
+                  // Menu Kependudukan
+                  const MenuKependudukan(),
+                  const SizedBox(height: 24),
+
+                  // Divider
+                  Container(
+                    height: 1,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.grey.withOpacity(0.3),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Statistics Cards
                   Row(
                     children: [
                       Expanded(
                         child: _buildStatCard(
-                          title: 'Total Keluarga',
+                          icon: Icons.home_outlined,
+                          label: 'Total Keluarga',
                           value: dashboard.totalKeluarga.toString(),
-                          subtitle: 'Jumlah Keluarga',
-                          color: Colors.blue,
+                          color: const Color(0xFF6B5CE7), // Purple variant
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: _buildStatCard(
-                          title: 'Total Penduduk',
+                          icon: Icons.people_outline,
+                          label: 'Total Penduduk',
                           value: dashboard.totalPenduduk.toString(),
-                          subtitle: 'Jumlah Penduduk',
-                          color: Colors.green,
+                          color: const Color(0xFF8E7AE7), // Purple variant
                         ),
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Status Penduduk Chart
                   PieChartCard(
                     title: 'Status Penduduk',
-                    icon: Icons.account_circle,
-                    backgroundColor: Colors.amber.shade50,
+                    icon: Icons.account_circle_outlined,
+                    iconColor: const Color(0xFF6B5CE7),
                     data: dashboard.statusPenduduk.entries.map((entry) {
                       return ChartData(
                         label: entry.key,
                         value: entry.value.toDouble(),
                         color: entry.key == 'Aktif'
-                            ? Colors.teal
-                            : Colors.deepOrange.shade800,
+                            ? const Color(0xFF6B5CE7) // Purple
+                            : const Color(0xFFB8AEE7), // Lighter purple
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Jenis Kelamin Chart
                   PieChartCard(
                     title: 'Jenis Kelamin',
-                    icon: Icons.wc,
-                    backgroundColor: Colors.purple.shade50,
-                    data: dashboard.jenisKelamin.entries.map((entry) {
+                    icon: Icons.wc_outlined,
+                    iconColor: const Color(0xFF7B68EE),
+                    data: dashboard.jenisKelamin.entries.where((entry) {
+                      // Filter only valid gender entries
+                      return entry.key == 'L' || entry.key == 'P';
+                    }).map((entry) {
                       return ChartData(
-                        label: entry.key,
+                        label: entry.key == 'L' ? 'Laki-laki' : 'Perempuan',
                         value: entry.value.toDouble(),
                         color: entry.key == 'L'
-                            ? Colors.blue
-                            : Colors.pink,
+                            ? const Color(0xFF6B5CE7) // Purple for male
+                            : const Color(0xFF9B8CE7), // Light purple for female
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Pekerjaan Penduduk Chart
                   if (dashboard.pekerjaanPenduduk.isNotEmpty)
                     PieChartCard(
                       title: 'Pekerjaan Penduduk',
-                      icon: Icons.work,
-                      backgroundColor: Colors.green.shade50,
+                      icon: Icons.work_outline,
+                      iconColor: const Color(0xFF5F8AE8),
                       data: dashboard.pekerjaanPenduduk.entries
                           .map((entry) {
                             final index = dashboard.pekerjaanPenduduk.keys
@@ -191,14 +221,14 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
                           })
                           .toList(),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Peran dalam Keluarga Chart
                   if (dashboard.peranDalamKeluarga.isNotEmpty)
                     PieChartCard(
                       title: 'Peran dalam Keluarga',
-                      icon: Icons.family_restroom,
-                      backgroundColor: Colors.blue.shade50,
+                      icon: Icons.family_restroom_outlined,
+                      iconColor: const Color(0xFF6B5CE7),
                       data: dashboard.peranDalamKeluarga.entries
                           .map((entry) {
                             final index = dashboard.peranDalamKeluarga.keys
@@ -212,14 +242,14 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
                           })
                           .toList(),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Agama Chart
                   if (dashboard.agama.isNotEmpty)
                     PieChartCard(
                       title: 'Agama',
-                      icon: Icons.mosque,
-                      backgroundColor: Colors.orange.shade50,
+                      icon: Icons.mosque_outlined,
+                      iconColor: const Color(0xFF7B68EE),
                       data: dashboard.agama.entries.map((entry) {
                         final index =
                             dashboard.agama.keys.toList().indexOf(entry.key);
@@ -230,14 +260,14 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
                         );
                       }).toList(),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Pendidikan Chart
                   if (dashboard.pendidikan.isNotEmpty)
                     PieChartCard(
                       title: 'Pendidikan',
-                      icon: Icons.school,
-                      backgroundColor: Colors.pink.shade50,
+                      icon: Icons.school_outlined,
+                      iconColor: const Color(0xFF5F8AE8),
                       data: dashboard.pendidikan.entries.map((entry) {
                         final index = dashboard.pendidikan.keys
                             .toList()
@@ -249,12 +279,17 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
                         );
                       }).toList(),
                     ),
+                  const SizedBox(height: 16),
                 ],
               ),
             );
           }
 
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primary,
+            ),
+          );
         },
       ),
       bottomNavigationBar: BottomNavigationBarWidget(
@@ -265,57 +300,55 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
   }
 
   Widget _buildStatCard({
-    required String title,
+    required IconData icon,
+    required String label,
     required String value,
-    required String subtitle,
     required Color color,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        gradient: LinearGradient(
+          colors: [
+            Colors.white,
+            Colors.grey.shade50,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: color.withOpacity(0.2),
+          width: 1,
+        ),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
-              title.contains('Keluarga') ? Icons.home : Icons.people,
-              color: color,
-              size: 32,
+            child: Icon(icon, color: color, size: 22),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey[600],
+              letterSpacing: 0.2,
             ),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: color,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                ),
-              ],
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: color,
             ),
           ),
         ],
@@ -324,48 +357,52 @@ class _DashboardKependudukanPageContent extends StatelessWidget {
   }
 
   Color _getPekerjaanColor(int index) {
+    // Purple tone variations only
     final colors = [
-      Colors.green,
-      Colors.blue,
-      Colors.orange,
-      Colors.grey,
-      Colors.purple,
-      Colors.teal,
+      const Color(0xFF6B5CE7), // Base purple
+      const Color(0xFF8E7AE7), // Medium light purple
+      const Color(0xFF7B68EE), // Medium purple
+      const Color(0xFFB8AEE7), // Light purple
+      const Color(0xFF9B8CE7), // Lighter purple
+      const Color(0xFF5B4DCE), // Dark purple
     ];
     return colors[index % colors.length];
   }
 
   Color _getPeranColor(int index) {
+    // Purple tone variations only
     final colors = [
-      Colors.blue.shade700,
-      Colors.pink,
-      Colors.purple,
-      Colors.brown,
-      Colors.indigo,
+      const Color(0xFF6B5CE7), // Base purple
+      const Color(0xFF9B8CE7), // Lighter purple
+      const Color(0xFF7B68EE), // Medium purple
+      const Color(0xFFB8AEE7), // Light purple
+      const Color(0xFF5B4DCE), // Dark purple
     ];
     return colors[index % colors.length];
   }
 
   Color _getAgamaColor(int index) {
+    // Purple tone variations only
     final colors = [
-      Colors.green,
-      Colors.blue,
-      Colors.orange,
-      Colors.pink,
-      Colors.deepOrange,
-      Colors.teal,
+      const Color(0xFF7B68EE), // Medium purple
+      const Color(0xFF6B5CE7), // Base purple
+      const Color(0xFF9B8CE7), // Lighter purple
+      const Color(0xFF8E7AE7), // Medium light purple
+      const Color(0xFFB8AEE7), // Light purple
+      const Color(0xFF5B4DCE), // Dark purple
     ];
     return colors[index % colors.length];
   }
 
   Color _getPendidikanColor(int index) {
+    // Purple tone variations only
     final colors = [
-      Colors.deepOrange,
-      Colors.amber,
-      Colors.green,
-      Colors.blue,
-      Colors.purple,
-      Colors.indigo,
+      const Color(0xFF8E7AE7), // Medium light purple
+      const Color(0xFF6B5CE7), // Base purple
+      const Color(0xFFB8AEE7), // Light purple
+      const Color(0xFF7B68EE), // Medium purple
+      const Color(0xFF9B8CE7), // Lighter purple
+      const Color(0xFF5B4DCE), // Dark purple
     ];
     return colors[index % colors.length];
   }
