@@ -6,6 +6,7 @@ class PieChartCard extends StatefulWidget {
   final IconData icon;
   final List<ChartData> data;
   final Color backgroundColor;
+  final Color? iconColor;
   final String Function(double)? valueFormatter;
 
   const PieChartCard({
@@ -14,6 +15,7 @@ class PieChartCard extends StatefulWidget {
     required this.icon,
     required this.data,
     this.backgroundColor = Colors.white,
+    this.iconColor,
     this.valueFormatter,
   });
 
@@ -64,21 +66,21 @@ class _PieChartCardState extends State<PieChartCard> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xFF8E6CEF).withOpacity(0.15),
-                      const Color(0xFF8E6CEF).withOpacity(0.08),
+                      (widget.iconColor ?? const Color(0xFF8E6CEF)).withOpacity(0.15),
+                      (widget.iconColor ?? const Color(0xFF8E6CEF)).withOpacity(0.08),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: const Color(0xFF8E6CEF).withOpacity(0.2),
+                    color: (widget.iconColor ?? const Color(0xFF8E6CEF)).withOpacity(0.2),
                     width: 1,
                   ),
                 ),
                 child: Icon(
                   widget.icon,
-                  color: const Color(0xFF8E6CEF),
+                  color: widget.iconColor ?? const Color(0xFF8E6CEF),
                   size: 24,
                 ),
               ),

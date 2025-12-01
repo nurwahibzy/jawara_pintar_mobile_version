@@ -185,29 +185,20 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                   const MenuKeuangan(),
                   const SizedBox(height: 24),
 
-                  // Summary Cards - Modern Minimal Design
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildMinimalStatCard(
-                          value: summary.getFormattedTotalPemasukan(),
-                          label: 'Pemasukan',
-                          color: Colors.green.shade500,
-                          icon: Icons.arrow_upward,
-                        ),
+                  // Divider
+                  Container(
+                    height: 1,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.grey.withOpacity(0.3),
+                          Colors.transparent,
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildMinimalStatCard(
-                          value: summary.getFormattedTotalPengeluaran(),
-                          label: 'Pengeluaran',
-                          color: Colors.red.shade500,
-                          icon: Icons.arrow_downward,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 24),
 
                   // Saldo Card - Prominent Display
                   Container(
@@ -272,13 +263,37 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 16),
+
+                  // Summary Cards - Modern Minimal Design
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildMinimalStatCard(
+                          value: summary.getFormattedTotalPemasukan(),
+                          label: 'Pemasukan',
+                          color: const Color(0xFF5B8DEE), // Blue-purple
+                          icon: Icons.arrow_upward,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildMinimalStatCard(
+                          value: summary.getFormattedTotalPengeluaran(),
+                          label: 'Pengeluaran',
+                          color: const Color(0xFFE85D9A), // Pink-purple
+                          icon: Icons.arrow_downward,
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 28),
 
                   // Charts Section
                   BarChartCard(
                     title: 'Pemasukan Bulanan',
                     icon: Icons.trending_up,
-                    barColor: Colors.green.shade600,
+                    barColor: const Color(0xFF5B8DEE), // Blue-purple untuk pemasukan
                     data: summary.monthlyPemasukan,
                     labels: const [
                       'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
@@ -290,7 +305,7 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                   BarChartCard(
                     title: 'Pengeluaran Bulanan',
                     icon: Icons.trending_down,
-                    barColor: Colors.red.shade600,
+                    barColor: const Color(0xFFE85D9A), // Pink-purple untuk pengeluaran
                     data: summary.monthlyPengeluaran,
                     labels: const [
                       'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
@@ -302,6 +317,7 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                   PieChartCard(
                     title: 'Kategori Pemasukan',
                     icon: Icons.pie_chart_outline,
+                    iconColor: const Color(0xFF5B8DEE), // Blue-purple untuk pemasukan
                     valueFormatter: _formatCurrency,
                     data: summary.kategoriPemasukan.entries.map((entry) {
                       final index =
@@ -318,6 +334,7 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
                   PieChartCard(
                     title: 'Kategori Pengeluaran',
                     icon: Icons.pie_chart_outline,
+                    iconColor: const Color(0xFFE85D9A), // Pink-purple untuk pengeluaran
                     valueFormatter: _formatCurrency,
                     data: summary.kategoriPengeluaran.entries.map((entry) {
                       final index =
@@ -426,24 +443,27 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
   }
 
   Color _getIncomeColor(int index) {
+    // Blue-purple gradient untuk pemasukan (senada dengan theme)
     final colors = [
-      Colors.green.shade500,
-      Colors.green.shade600,
-      Colors.teal.shade500,
-      Colors.teal.shade600,
-      Colors.cyan.shade500,
+      const Color(0xFF5B8DEE), // Blue-purple terang
+      const Color(0xFF4A7FDB), // Blue-purple medium
+      const Color(0xFF6B9EF5), // Light blue-purple
+      const Color(0xFF3D6FC7), // Deep blue-purple
+      const Color(0xFF7BAEF8), // Sky blue-purple
+      const Color(0xFF4E82D9), // Medium blue-purple
     ];
     return colors[index % colors.length];
   }
 
   Color _getExpenseColor(int index) {
+    // Pink-purple gradient untuk pengeluaran (senada dengan theme)
     final colors = [
-      Colors.red.shade500,
-      Colors.red.shade600,
-      Colors.orange.shade500,
-      Colors.orange.shade600,
-      Colors.deepOrange.shade500,
-      Colors.pink.shade500,
+      const Color(0xFFE85D9A), // Pink-purple medium
+      const Color(0xFFD94B87), // Pink-purple deep
+      const Color(0xFFF06FA8), // Light pink-purple
+      const Color(0xFFDB4A86), // Deep pink-purple
+      const Color(0xFFEE79A7), // Soft pink-purple
+      const Color(0xFFE156A0), // Vibrant pink-purple
     ];
     return colors[index % colors.length];
   }
