@@ -507,7 +507,7 @@ class _DaftarPenggunaState extends State<DaftarPengguna> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: dialogRole,
+                      initialValue: dialogRole,
                       decoration: const InputDecoration(
                         hintText: '-- Pilih Role --',
                         border: OutlineInputBorder(),
@@ -540,7 +540,7 @@ class _DaftarPenggunaState extends State<DaftarPengguna> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: dialogStatusAkun,
+                      initialValue: dialogStatusAkun,
                       decoration: const InputDecoration(
                         hintText: '-- Pilih Status Akun --',
                         border: OutlineInputBorder(),

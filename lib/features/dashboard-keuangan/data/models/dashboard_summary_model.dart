@@ -4,26 +4,16 @@ import '../../domain/entities/keuangan_entity.dart';
 /// Melakukan mapping dari JSON Supabase ke Entity
 class DashboardSummaryModel extends DashboardSummaryEntity {
   const DashboardSummaryModel({
-    required String year,
-    required double totalPemasukan,
-    required double totalPengeluaran,
-    required double saldo,
-    required List<double> monthlyPemasukan,
-    required List<double> monthlyPengeluaran,
-    required Map<String, double> kategoriPemasukan,
-    required Map<String, double> kategoriPengeluaran,
-    required List<String> availableYears,
-  }) : super(
-          year: year,
-          totalPemasukan: totalPemasukan,
-          totalPengeluaran: totalPengeluaran,
-          saldo: saldo,
-          monthlyPemasukan: monthlyPemasukan,
-          monthlyPengeluaran: monthlyPengeluaran,
-          kategoriPemasukan: kategoriPemasukan,
-          kategoriPengeluaran: kategoriPengeluaran,
-          availableYears: availableYears,
-        );
+    required super.year,
+    required super.totalPemasukan,
+    required super.totalPengeluaran,
+    required super.saldo,
+    required super.monthlyPemasukan,
+    required super.monthlyPengeluaran,
+    required super.kategoriPemasukan,
+    required super.kategoriPengeluaran,
+    required super.availableYears,
+  });
 
   /// Factory constructor dari aggregated data
   /// Data sudah dihitung di repository implementation

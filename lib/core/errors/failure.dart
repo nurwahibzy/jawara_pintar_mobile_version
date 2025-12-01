@@ -15,7 +15,7 @@ class ServerFailure extends Failure {
 
 
 class CacheFailure extends Failure {
-  const CacheFailure(String message) : super(message);
+  const CacheFailure(super.message);
 }
 
 class ConnectionFailure extends Failure {
@@ -27,9 +27,9 @@ class UnknownFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure(String message) : super(message);
+  const NetworkFailure(super.message);
 }
 
 class ValidationFailure extends Failure {
-  const ValidationFailure(String message) : super(message);
+  const ValidationFailure(super.message);
 }

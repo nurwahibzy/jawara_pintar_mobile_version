@@ -180,7 +180,7 @@ class _DaftarRumahState extends State<DaftarRumah> {
                               vertical: 8,
                             ),
                           ),
-                          value: _selectedStatus ?? 'Semua',
+                          initialValue: _selectedStatus ?? 'Semua',
                           items: const [
                             DropdownMenuItem(
                               value: 'Semua',
