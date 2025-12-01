@@ -43,7 +43,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
             value: BlocProvider.of<PengeluaranBloc>(context), 
-            child: EditPengeluaranPage(pengeluaran: pengeluaran),
+            child: EditPengeluaranPage(pengeluaran: pengeluaran, kategoriList: [],),
           ),
         );
 

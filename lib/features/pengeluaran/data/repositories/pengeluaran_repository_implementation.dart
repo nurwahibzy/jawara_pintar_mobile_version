@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
 import '../../domain/entities/pengeluaran.dart';
+import '../../domain/entities/kategori_transaksi.dart';
 import '../../domain/repositories/pengeluaran_repository.dart';
 import '../datasources/remote_datasource.dart';
 import '../models/pengeluaran_model.dart';
@@ -10,6 +11,7 @@ class PengeluaranRepositoryImpl implements PengeluaranRepository {
 
   PengeluaranRepositoryImpl(this.remote);
 
+  // ================= Pengeluaran CRUD =================
   @override
   Future<Either<Failure, List<Pengeluaran>>> getAllPengeluaran() async {
     try {
@@ -59,6 +61,18 @@ class PengeluaranRepositoryImpl implements PengeluaranRepository {
     try {
       await remote.deletePengeluaran(id);
       return Right(true);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  // ================= Kategori untuk Pengeluaran =================
+  @override
+  Future<Either<Failure, List<KategoriEntity>>> getKategoriPengeluaran() async {
+    try {
+      final result = await remote
+          .getKategoriPengeluaran(); 
+      return Right(result);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
