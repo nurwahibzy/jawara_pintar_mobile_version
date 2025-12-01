@@ -85,7 +85,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        Navigator.pushNamed(context, '/pesan_warga');
+                        Navigator.pushNamed(context, '/daftar-pesan-warga');
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

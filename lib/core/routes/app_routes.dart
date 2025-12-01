@@ -7,5 +7,8 @@ class AppRoutes {
   static const tambahPengeluaran = '/tambah-pengeluaran';
   static const editPengeluaran = '/edit-pengeluaran';
   static const hapusPengeluaran = '/hapus-pengeluaran';
-
+  static const daftarPesanWarga = '/daftar-pesan-warga';
+  static const tambahPesanWarga = '/tambah-pesan-warga';
+  static const editPesanWarga = '/edit-pesan-warga';
+  static const detailPesanWarga = '/detail-pesan-warga';
 }
