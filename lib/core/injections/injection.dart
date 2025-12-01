@@ -30,6 +30,17 @@ import '../../features/pengeluaran/domain/usecases/update_pengeluaran.dart';
 
 import '../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 
+// PESAN WARGA
+import '../../features/pesan-warga/data/datasources/pesan_warga_remote.dart';
+import '../../features/pesan-warga/data/repositories/pesan_warga_impl.dart';
+import '../../features/pesan-warga/domain/repositories/pesan_warga_repository.dart';
+import '../../features/pesan-warga/presentation/bloc/pesan_warga_bloc.dart';
+import '../../features/pesan-warga/domain/usecases/create_pesan_warga.dart'; 
+import '../../features/pesan-warga/domain/usecases/get_all_pesan_warga.dart'; 
+import '../../features/pesan-warga/domain/usecases/get_pesan_warga.dart';
+import '../../features/pesan-warga/domain/usecases/update_pesan_warga.dart';
+import '../../features/pesan-warga/domain/usecases/delete_pesan_warga.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -86,4 +97,23 @@ Future<void> init() async {
   sl.registerFactory(
     () => PengeluaranBloc(repository: sl<PengeluaranRepository>()),
   );
+
+  // --------------------------------------------------------------------------
+  // PESAN WARGA
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<AspirasiRemoteDataSource>(
+    () => AspirasiRemoteDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<AspirasiRepository>(
+    () => AspirasiRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetAllAspirasi(sl<AspirasiRepository>()),);
+  sl.registerLazySingleton(() => GetAspirasiByIdUseCase(sl<AspirasiRepository>()));
+  sl.registerLazySingleton(() => AddAspirasiUseCase(sl<AspirasiRepository>()));
+  sl.registerLazySingleton(() => UpdateAspirasiUseCase(sl<AspirasiRepository>()),);
+  sl.registerLazySingleton(() => DeleteAspirasiUseCase(sl<AspirasiRepository>()),);
+
+  sl.registerFactory(() => AspirasiBloc(repository: sl<AspirasiRepository>()));
 }

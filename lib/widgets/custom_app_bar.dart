@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   icon: const Icon(Icons.message, color: Colors.green),
                   tooltip: 'Pesan',
                   onPressed: () {
-                    Navigator.pushNamed(context, '/pesan_warga');
+                    Navigator.pushNamed(context, '/daftar-pesan-warga');
                   },
                 ),
         
