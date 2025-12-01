@@ -30,24 +30,10 @@ class BarChartCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            backgroundColor,
-            backgroundColor.withOpacity(0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: barColor.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
         border: Border.all(
-          color: barColor.withOpacity(0.1),
+          color: Colors.grey.withOpacity(0.15),
           width: 1,
         ),
       ),
@@ -60,19 +46,8 @@ class BarChartCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      barColor.withOpacity(0.15),
-                      barColor.withOpacity(0.08),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  color: barColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: barColor.withOpacity(0.2),
-                    width: 1,
-                  ),
                 ),
                 child: Icon(
                   icon,
@@ -249,26 +224,12 @@ class BarChartCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  barColor.withOpacity(0.08),
-                  barColor.withOpacity(0.04),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: barColor.withOpacity(0.05),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: barColor.withOpacity(0.15),
+                color: barColor.withOpacity(0.1),
                 width: 1,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: barColor.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
