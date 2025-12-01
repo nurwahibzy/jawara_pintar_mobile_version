@@ -17,6 +17,12 @@ import '../../features/dashboard-kegiatan/domain/usecases/get_dashboard_kegiatan
 import '../../features/dashboard-kegiatan/data/repositories/dashboard_repository_impl.dart';
 import '../../features/dashboard-kegiatan/data/datasources/dashboard_remote_datasource.dart';
 
+// DASHBOARD KEPENDUDUKAN
+import '../../features/dashboard-kependudukan/domain/repositories/dashboard_repository.dart';
+import '../../features/dashboard-kependudukan/domain/usecases/get_dashboard_kependudukan_usecase.dart';
+import '../../features/dashboard-kependudukan/data/repositories/dashboard_repository_impl.dart';
+import '../../features/dashboard-kependudukan/data/datasources/dashboard_remote_datasource.dart';
+
 // PENGELUARAN
 import '../../features/pengeluaran/data/datasources/remote_datasource.dart';
 import '../../features/pengeluaran/data/repositories/pengeluaran_repository_implementation.dart';
@@ -65,6 +71,19 @@ Future<void> init() async {
   );
 
   sl.registerLazySingleton(() => GetDashboardKegiatanUseCase(sl()));
+
+  // --------------------------------------------------------------------------
+  // DASHBOARD KEPENDUDUKAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<DashboardKependudukanRemoteDataSource>(
+    () => DashboardKependudukanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<DashboardKependudukanRepository>(
+    () => DashboardKependudukanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetDashboardKependudukanUseCase(sl()));
 
   // --------------------------------------------------------------------------
   // PENGELUARAN
