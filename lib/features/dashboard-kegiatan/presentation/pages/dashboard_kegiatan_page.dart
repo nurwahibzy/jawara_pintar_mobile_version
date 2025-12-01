@@ -516,11 +516,11 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
   Color _getWaktuColor(String status) {
     switch (status) {
       case 'Sudah Lewat':
-        return Colors.grey.shade600;
+        return const Color(0xFF6B5CE7); 
       case 'Hari Ini':
-        return const Color(0xFFEB5B9D); // Pink-purple
+        return const Color.fromARGB(255, 81, 65, 207); 
       case 'Akan Datang':
-        return const Color(0xFF6B5CE7); // Purple Variant
+        return const Color(0xFFB8AEE7);
       default:
         return Colors.grey;
     }
