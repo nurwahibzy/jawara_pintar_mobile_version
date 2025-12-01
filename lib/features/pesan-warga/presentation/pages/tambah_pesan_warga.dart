@@ -28,7 +28,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: AppColors.primary,
-        iconTheme: const IconThemeData(color: Colors.white), // warna icon back
+        iconTheme: const IconThemeData(color: Colors.white), 
         centerTitle: true,
       ),
       body: Padding(
@@ -91,7 +91,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
                         if (_formKey.currentState!.validate()) {
                           final newAspirasi = Aspirasi(
                             id: 0,
-                            wargaId: 1, // TODO: ganti dengan user login
+                            wargaId: 1, // TODO: ganti dengan warga yg mengirim
                             judul: _judulController.text,
                             deskripsi: _deskripsiController.text,
                             status: StatusAspirasi.Pending,
@@ -104,7 +104,6 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
                             AddAspirasi(newAspirasi),
                           );
 
-                          // Menampilkan snackbar notif berhasil
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Pesan berhasil ditambahkan!"),

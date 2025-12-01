@@ -11,6 +11,9 @@ class AspirasiModel {
   final String? tanggapanAdmin; 
   final int? updatedBy; 
   final DateTime createdAt;
+  final String? namaAdmin;
+  final String? namaWarga;
+
 
   AspirasiModel({
     this.id,
@@ -21,6 +24,8 @@ class AspirasiModel {
     this.tanggapanAdmin,
     this.updatedBy,
     required this.createdAt,
+    this.namaAdmin,
+    this.namaWarga,
   });
 
   factory AspirasiModel.fromMap(Map<String, dynamic> map) {
@@ -35,6 +40,8 @@ class AspirasiModel {
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'])
           : DateTime.now(),
+      namaAdmin: map['admin']?['username'],
+      namaWarga: map['warga']?['nama_lengkap'],
     );
   }
 
@@ -97,6 +104,8 @@ extension AspirasiModelToEntity on AspirasiModel {
       tanggapanAdmin: tanggapanAdmin,
       updatedBy: updatedBy, 
       createdAt: createdAt,
+      namaAdmin: namaAdmin,
+      namaWarga: namaWarga,
     );
   }
 }

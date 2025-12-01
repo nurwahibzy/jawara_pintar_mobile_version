@@ -307,7 +307,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Pengirim: ${data.wargaId}"), //TODO:ganti dengan nama warga di tabel warga
+                              Text("Pengirim: ${data.namaWarga ?? '-'}"), 
                               Text(
                                 "Tanggal: ${data.createdAt.toString().split(' ')[0]}",
                               ),

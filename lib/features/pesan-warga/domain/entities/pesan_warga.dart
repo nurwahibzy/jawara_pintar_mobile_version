@@ -9,6 +9,8 @@ class Aspirasi {
   final String? tanggapanAdmin; 
   final int? updatedBy; 
   final DateTime createdAt;
+  final String? namaAdmin;
+  final String? namaWarga;
 
   Aspirasi({
     required this.id,
@@ -19,6 +21,8 @@ class Aspirasi {
     this.tanggapanAdmin,
     this.updatedBy,
     required this.createdAt,
+    this.namaAdmin,
+    this.namaWarga,
   });
 }
 
@@ -34,6 +38,8 @@ extension AspirasiEntityToModel on Aspirasi {
       tanggapanAdmin: tanggapanAdmin,
       updatedBy: updatedBy,
       createdAt: createdAt,
+      namaAdmin: namaAdmin,
+      namaWarga: namaWarga,
     );
   }
 }

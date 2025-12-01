@@ -17,14 +17,40 @@ class AspirasiRemoteDataSourceImpl implements AspirasiRemoteDataSource {
 
   @override
   Future<List<AspirasiModel>> getAllAspirasi() async {
-    final response = await client.from('aspirasi').select();
+    final response = await client.from('aspirasi').select('''
+    id,
+    warga_id,
+    judul,
+    deskripsi,
+    status,
+    tanggapan_admin,
+    updated_by,
+    created_at,
+    admin:users(id, username),
+    warga:warga(id, nama_lengkap)
+  ''');
     final dataList = List<Map<String, dynamic>>.from(response);
     return dataList.map((e) => AspirasiModel.fromMap(e)).toList();
   }
 
   @override
   Future<AspirasiModel> getAspirasiById(int id) async {
-    final response = await client.from('aspirasi').select().eq('id', id).maybeSingle();
+    final response = await client
+        .from('aspirasi')
+        .select('''
+    id,
+    warga_id,
+    judul,
+    deskripsi,
+    status,
+    tanggapan_admin,
+    updated_by,
+    created_at,
+    admin:users(id, username),
+    warga:warga(id, nama_lengkap)
+  ''')
+        .eq('id', id)
+        .maybeSingle();
 
     if (response == null) {
       throw Exception('Aspirasi dengan id $id tidak ditemukan');
@@ -42,7 +68,10 @@ class AspirasiRemoteDataSourceImpl implements AspirasiRemoteDataSource {
     if (model.id == null) {
       throw Exception('ID tidak boleh null saat update');
     }
-    await client.from('aspirasi').update(model.toMap(forUpdate: true)).eq('id', model.id!);
+    await client
+        .from('aspirasi')
+        .update(model.toMap(forUpdate: true))
+        .eq('id', model.id!);
   }
 
   @override

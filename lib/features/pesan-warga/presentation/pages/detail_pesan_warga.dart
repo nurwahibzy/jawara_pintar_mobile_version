@@ -104,7 +104,7 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
                     'Dibuat Oleh:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Text('Warga ID: ${pesan.wargaId}'),
+                  Text(pesan.namaWarga ?? '-'),
                   const SizedBox(height: 10),
 
                   // Tanggal dibuat
@@ -120,11 +120,7 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
                     'Diperbarui Oleh:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Text(
-                    pesan.updatedBy != null
-                        ? 'Admin ID: ${pesan.updatedBy}' //TODO:ubah dengan username admin di tabel user
-                        : 'Belum ada',
-                  ),
+                Text(pesan.namaAdmin ?? 'Belum ada'),
                   const SizedBox(height: 20),
 
                   // Tombol edit

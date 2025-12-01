@@ -54,6 +54,15 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  "Nama Warga: ${widget.pesan.namaWarga}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
                 _buildTextField("Judul", _judulController, readOnly: true),
                 const SizedBox(height: 14),
                 _buildTextField(
@@ -62,6 +71,7 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
                   readOnly: true,
                 ),
                 const SizedBox(height: 14),
+
                 _buildDropdown(
                   label: "Status",
                   value: _selectedStatus,
@@ -84,7 +94,9 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
                     setState(() => _selectedStatus = val!);
                   },
                 ),
+
                 const SizedBox(height: 14),
+
                 _buildTextField(
                   "Tanggapan Admin",
                   _tanggapanController,
@@ -98,6 +110,7 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
                   },
                 ),
                 const SizedBox(height: 20),
+
                 Row(
                   children: [
                     Expanded(
@@ -111,8 +124,10 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
                               deskripsi: _deskripsiController.text,
                               status: _selectedStatus,
                               tanggapanAdmin: _tanggapanController.text,
-                              updatedBy: 1, //TODO:ganti dengan id admin yg login 
+                              updatedBy: widget.pesan.updatedBy ?? 1, //TODO:ID admin nanti sesuaikan dgn admin yg login
                               createdAt: widget.pesan.createdAt,
+                              namaWarga: widget.pesan.namaWarga,
+                              namaAdmin: widget.pesan.namaAdmin,
                             );
 
                             context.read<AspirasiBloc>().add(
