@@ -295,7 +295,7 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -385,7 +385,7 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

@@ -291,7 +291,7 @@ class Kegiatan extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -394,7 +394,7 @@ class Kegiatan extends StatelessWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

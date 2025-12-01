@@ -107,7 +107,7 @@ class _TambahRumahState extends State<TambahRumah> {
                   child: DropdownButtonFormField<String>(
                     dropdownColor: Color.fromARGB(255, 235, 241, 232),
                     iconEnabledColor: Colors.green,
-                    value: _selectedStatus,
+                    initialValue: _selectedStatus,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Color.fromARGB(255, 235, 241, 232),
