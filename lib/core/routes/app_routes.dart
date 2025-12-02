@@ -11,4 +11,9 @@ class AppRoutes {
   static const tambahPesanWarga = '/tambah-pesan-warga';
   static const editPesanWarga = '/edit-pesan-warga';
   static const detailPesanWarga = '/detail-pesan-warga';
+
+  static const daftarMutasiKeluarga = '/mutasi-keluarga';
+  static const tambahMutasiKeluarga = '/tambah-mutasi-keluarga';
+  static const editMutasiKeluarga = '/edit-mutasi-keluarga';
+  static const detailMutasiKeluarga = '/detail-mutasi-keluarga';
 }
