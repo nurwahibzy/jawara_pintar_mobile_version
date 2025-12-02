@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jawara_pintar_mobile_version/core/injections/injection.dart';
-import 'package:jawara_pintar_mobile_version/features/pengeluaran/domain/entities/pengeluaran.dart';
-import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
-import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
+import '../injections/injection.dart';
+import '../../features/pengeluaran/domain/entities/pengeluaran.dart';
+import '../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
+import '../../features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
 import 'app_routes.dart';
 // import halaman yg dibutuhkan
 import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-keuangan/presentation/pages/dashboard_keuangan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-kegiatan/presentation/pages/dashboard_kegiatan_page.dart';
+import 'package:jawara_pintar_mobile_version/features/dashboard-kependudukan/presentation/pages/dashboard_kependudukan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/daftar_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/tambah_pengeluaran.dart';
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/presentation/pages/edit_pengeluaran.dart';
+import '../../features/pesan-warga/domain/entities/pesan_warga.dart';
+import '../../features/pesan-warga/presentation/bloc/pesan_warga_bloc.dart';
+import '../../features/pesan-warga/presentation/pages/daftar_pesan_warga.dart';
+import '../../features/pesan-warga/presentation/pages/edit_pesan_warga.dart';
+import '../../features/pesan-warga/presentation/pages/detail_pesan_warga.dart';
+import '../../features/pesan-warga/presentation/pages/tambah_pesan_warga.dart';
+
+import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
+import '../../features/mutasi-keluarga/presentation/pages/daftar_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/presentation/pages/tambah_mutasi_keluarga.dart';
 
 
 class AppRouter {
@@ -21,7 +32,8 @@ class AppRouter {
     switch (settings.name) {
       case AppRoutes.login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
-  //pengeluaran
+
+  //PENGELUARAN
   case AppRoutes.daftarPengeluaran:
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
@@ -46,12 +58,68 @@ class AppRouter {
             child: EditPengeluaranPage(pengeluaran: pengeluaran, kategoriList: [],),
           ),
         );
-
+        
+  // DASHBOARD
       case AppRoutes.dashboardKeuangan:
         return MaterialPageRoute(builder: (_) => const DashboardKeuanganPage());
 
       case AppRoutes.dashboardKegiatan:
         return MaterialPageRoute(builder: (_) => const DashboardKegiatanPage());
+
+      case AppRoutes.kependudukan:
+        return MaterialPageRoute(builder: (_) => const DashboardKependudukanPage());
+   // PESAN WARGA
+      case AppRoutes.daftarPesanWarga:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<AspirasiBloc>()..add(LoadAspirasi()),
+            child: const DaftarPesanWarga(),
+          ),
+        );
+
+      case AppRoutes.tambahPesanWarga:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<AspirasiBloc>(),
+            child: const TambahPesanWarga(),
+          ),
+        );
+
+      case AppRoutes.editPesanWarga:
+        final pesan = args as Aspirasi;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: BlocProvider.of<AspirasiBloc>(context),
+            child: EditPesanWarga(pesan: pesan),
+          ),
+        );
+
+      case AppRoutes.detailPesanWarga:
+        final pesan = args as Aspirasi;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: BlocProvider.of<AspirasiBloc>(context),
+            child: DetailPesanWarga(pesan: pesan),
+          ),
+        );
+
+      // MUTASI KELUARGA
+      case AppRoutes.daftarMutasiKeluarga:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<MutasiKeluargaBloc>(),
+            child: const DaftarMutasiKeluarga(),
+          ),
+        );
+
+      case AppRoutes.tambahMutasiKeluarga:
+      return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (context) => sl<MutasiKeluargaBloc>(),
+          child: const TambahMutasiKeluarga(),
+        ),
+      );
+
 
       // dikebutt moasss
       default:

@@ -17,6 +17,12 @@ import '../../features/dashboard-kegiatan/domain/usecases/get_dashboard_kegiatan
 import '../../features/dashboard-kegiatan/data/repositories/dashboard_repository_impl.dart';
 import '../../features/dashboard-kegiatan/data/datasources/dashboard_remote_datasource.dart';
 
+// DASHBOARD KEPENDUDUKAN
+import '../../features/dashboard-kependudukan/domain/repositories/dashboard_repository.dart';
+import '../../features/dashboard-kependudukan/domain/usecases/get_dashboard_kependudukan_usecase.dart';
+import '../../features/dashboard-kependudukan/data/repositories/dashboard_repository_impl.dart';
+import '../../features/dashboard-kependudukan/data/datasources/dashboard_remote_datasource.dart';
+
 // PENGELUARAN
 import '../../features/pengeluaran/data/datasources/remote_datasource.dart';
 import '../../features/pengeluaran/data/repositories/pengeluaran_repository_implementation.dart';
@@ -29,6 +35,28 @@ import '../../features/pengeluaran/domain/usecases/get_pengeluaran.dart';
 import '../../features/pengeluaran/domain/usecases/update_pengeluaran.dart';
 
 import '../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
+
+// PESAN WARGA
+import '../../features/pesan-warga/data/datasources/pesan_warga_remote.dart';
+import '../../features/pesan-warga/data/repositories/pesan_warga_impl.dart';
+import '../../features/pesan-warga/domain/repositories/pesan_warga_repository.dart';
+import '../../features/pesan-warga/presentation/bloc/pesan_warga_bloc.dart';
+import '../../features/pesan-warga/domain/usecases/create_pesan_warga.dart'; 
+import '../../features/pesan-warga/domain/usecases/get_all_pesan_warga.dart'; 
+import '../../features/pesan-warga/domain/usecases/get_pesan_warga.dart';
+import '../../features/pesan-warga/domain/usecases/update_pesan_warga.dart';
+import '../../features/pesan-warga/domain/usecases/delete_pesan_warga.dart';
+
+// Mutasi Keluarga
+import '../../features/mutasi-keluarga/data/datasources/mutasi_keluarga_datasource.dart';
+import '../../features/mutasi-keluarga/data/repositories/mutasi_keluarga_repository_implementation.dart';
+import '../../features/mutasi-keluarga/domain/repositories/mutasi_keluarga_repository.dart';
+import '../../features/mutasi-keluarga/domain/usecases/create_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/domain/usecases/get_all_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/domain/usecases/get_form_data_options.dart';
+import '../../features/mutasi-keluarga/domain/usecases/get_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
+
 
 final sl = GetIt.instance;
 
@@ -67,6 +95,19 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetDashboardKegiatanUseCase(sl()));
 
   // --------------------------------------------------------------------------
+  // DASHBOARD KEPENDUDUKAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<DashboardKependudukanRemoteDataSource>(
+    () => DashboardKependudukanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<DashboardKependudukanRepository>(
+    () => DashboardKependudukanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetDashboardKependudukanUseCase(sl()));
+
+  // --------------------------------------------------------------------------
   // PENGELUARAN
   // --------------------------------------------------------------------------
   sl.registerLazySingleton<PengeluaranRemoteDataSource>(
@@ -86,4 +127,49 @@ Future<void> init() async {
   sl.registerFactory(
     () => PengeluaranBloc(repository: sl<PengeluaranRepository>()),
   );
+
+  // --------------------------------------------------------------------------
+  // PESAN WARGA
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<AspirasiRemoteDataSource>(
+    () => AspirasiRemoteDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<AspirasiRepository>(
+    () => AspirasiRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetAllAspirasi(sl<AspirasiRepository>()),);
+  sl.registerLazySingleton(() => GetAspirasiByIdUseCase(sl<AspirasiRepository>()));
+  sl.registerLazySingleton(() => AddAspirasiUseCase(sl<AspirasiRepository>()));
+  sl.registerLazySingleton(() => UpdateAspirasiUseCase(sl<AspirasiRepository>()),);
+  sl.registerLazySingleton(() => DeleteAspirasiUseCase(sl<AspirasiRepository>()),);
+
+  sl.registerFactory(() => AspirasiBloc(repository: sl<AspirasiRepository>()));
+
+  // --------------------------------------------------------------------------
+  // MUTASI KELUARGA
+  // --------------------------------------------------------------------------
+
+   // datasource
+  sl.registerLazySingleton<MutasiKeluargaDatasource>(() => MutasiKeluargaDatasourceImplementation());
+
+  // repository
+  sl.registerLazySingleton<MutasiKeluargaRepository>(() => MutasiKeluargaRepositoryImplementation(
+    datasource: sl(),
+  ));
+
+  // Usecases
+  sl.registerLazySingleton(() => GetAllMutasiKeluarga(sl()));
+  sl.registerLazySingleton(() => GetMutasiKeluarga(sl()));
+  sl.registerLazySingleton(() => CreateMutasiKeluarga(sl()));
+  sl.registerLazySingleton(() => GetFormDataOptions(sl()));
+
+  // bloc
+  sl.registerFactory(() => MutasiKeluargaBloc(
+    getAllMutasiKeluarga: sl(),
+    getMutasiKeluarga: sl(),
+    createMutasiKeluarga: sl(),
+    getFormDataOptions: sl()
+  ));
 }
