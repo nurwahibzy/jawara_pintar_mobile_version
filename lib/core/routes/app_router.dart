@@ -20,6 +20,10 @@ import '../../features/pesan-warga/presentation/pages/edit_pesan_warga.dart';
 import '../../features/pesan-warga/presentation/pages/detail_pesan_warga.dart';
 import '../../features/pesan-warga/presentation/pages/tambah_pesan_warga.dart';
 
+import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
+import '../../features/mutasi-keluarga/presentation/pages/daftar_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/presentation/pages/tambah_mutasi_keluarga.dart';
+
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -98,6 +102,24 @@ class AppRouter {
             child: DetailPesanWarga(pesan: pesan),
           ),
         );
+
+      // MUTASI KELUARGA
+      case AppRoutes.daftarMutasiKeluarga:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<MutasiKeluargaBloc>(),
+            child: const DaftarMutasiKeluarga(),
+          ),
+        );
+
+      case AppRoutes.tambahMutasiKeluarga:
+      return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (context) => sl<MutasiKeluargaBloc>(),
+          child: const TambahMutasiKeluarga(),
+        ),
+      );
+
 
       // dikebutt moasss
       default:
