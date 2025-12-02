@@ -11,6 +11,7 @@ import '../../domain/usecases/get_dashboard_kegiatan_usecase.dart';
 import '../bloc/dashboard_bloc.dart';
 import '../bloc/dashboard_event.dart';
 import '../bloc/dashboard_state.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
 /// Dashboard Kegiatan dengan Clean Architecture + Supabase
 class DashboardKegiatanPage extends StatelessWidget {
@@ -37,14 +38,27 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
       body: BlocBuilder<DashboardKegiatanBloc, DashboardKegiatanState>(
         builder: (context, state) {
           if (state is DashboardKegiatanLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            );
           } else if (state is DashboardKegiatanError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64, color: Colors.red.shade400),
-                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.error_outline,
+                      size: 56,
+                      color: Colors.red.shade400,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Text(
                     'Terjadi Kesalahan',
                     style: TextStyle(
@@ -59,18 +73,30 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
                     child: Text(
                       state.message,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
                     onPressed: () {
                       context.read<DashboardKegiatanBloc>().add(
-                            const LoadDashboardKegiatanEvent(),
-                          );
+                        const LoadDashboardKegiatanEvent(),
+                      );
                     },
-                    icon: const Icon(Icons.refresh),
+                    icon: const Icon(Icons.refresh, size: 18),
                     label: const Text('Coba Lagi'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -86,48 +112,50 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
                   Text(
                     'Dashboard Kegiatan',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Kelola data kegiatan warga',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Menu Kegiatan
                   const MenuKegiatan(),
                   const SizedBox(height: 24),
 
-                  Text(
-                    'Statistik Kegiatan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
+                  // Divider
+                  Container(
+                    height: 1,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.grey.withOpacity(0.3),
+                          Colors.transparent,
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Total Kegiatan Card
-                  _buildStatCard(
-                    icon: Icons.event,
-                    label: 'Total Kegiatan',
-                    value: dashboard.totalKegiatan.toString(),
-                    color: Colors.green,
                   ),
                   const SizedBox(height: 24),
 
+                  // Total Kegiatan Card
+                  _buildStatCard(
+                    icon: Icons.event_available,
+                    label: 'Total Kegiatan',
+                    value: dashboard.totalKegiatan.toString(),
+                    color: const Color(0xFF6B5CE7), // Purple variant
+                  ),
+                  const SizedBox(height: 20),
+
                   // Pie Chart - Kegiatan per Kategori
                   PieChartCard(
-                    title: 'Kegiatan per Kategori',
-                    icon: Icons.pie_chart,
-                    backgroundColor: Colors.blue.shade50,
+                    title: 'Kategori Kegiatan',
+                    icon: Icons.category_outlined,
+                    iconColor: const Color(0xFF6B5CE7), // Purple variant
                     data: dashboard.kegiatanPerKategori.entries.map((entry) {
-                      final index = dashboard.kegiatanPerKategori.keys.toList().indexOf(entry.key);
+                      final index = dashboard.kegiatanPerKategori.keys
+                          .toList()
+                          .indexOf(entry.key);
                       return ChartData(
                         label: entry.key,
                         value: entry.value.toDouble(),
@@ -135,35 +163,53 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Kegiatan berdasarkan Waktu
-                  _buildKegiatanBerdasarkanWaktuCard(dashboard.kegiatanBerdasarkanWaktu),
-                  const SizedBox(height: 24),
+                  _buildKegiatanBerdasarkanWaktuCard(
+                    dashboard.kegiatanBerdasarkanWaktu,
+                  ),
+                  const SizedBox(height: 20),
 
                   // Penanggung Jawab Terbanyak
-                  _buildPenanggungJawabTerbanyakCard(dashboard.penanggungJawabTerbanyak),
-                  const SizedBox(height: 24),
+                  _buildPenanggungJawabTerbanyakCard(
+                    dashboard.penanggungJawabTerbanyak,
+                  ),
+                  const SizedBox(height: 20),
 
                   // Bar Chart - Kegiatan per Bulan
                   BarChartCard(
-                    title: 'Kegiatan per Bulan (Tahun ${DateTime.now().year})',
+                    title: 'Kegiatan Bulanan',
                     icon: Icons.bar_chart,
-                    barColor: Colors.teal.shade600,
-                    backgroundColor: Colors.teal.shade50,
-                    data: dashboard.kegiatanPerBulan.map((e) => e.toDouble()).toList(),
+                    barColor: const Color(0xFF6B5CE7), // Purple variant
+                    data: dashboard.kegiatanPerBulan
+                        .map((e) => e.toDouble())
+                        .toList(),
                     labels: const [
-                      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-                      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
+                      'Jan',
+                      'Feb',
+                      'Mar',
+                      'Apr',
+                      'Mei',
+                      'Jun',
+                      'Jul',
+                      'Agu',
+                      'Sep',
+                      'Okt',
+                      'Nov',
+                      'Des',
                     ],
                     useCurrencyFormat: false,
                   ),
+                  const SizedBox(height: 16),
                 ],
               ),
             );
           }
 
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
         },
       ),
       bottomNavigationBar: BottomNavigationBarWidget(
@@ -180,42 +226,50 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        gradient: LinearGradient(
+          colors: [Colors.white, Colors.grey.shade50],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withOpacity(0.2), width: 1),
       ),
-      child: Column(
+      child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: color, size: 32),
+            child: Icon(icon, color: color, size: 28),
           ),
-          const SizedBox(height: 12),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: color,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                    letterSpacing: 0.3,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -223,18 +277,19 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
   }
 
   Widget _buildKegiatanBerdasarkanWaktuCard(Map<String, int> data) {
+    final firstColor = data.isNotEmpty
+        ? _getWaktuColor(data.keys.first)
+        : Colors.grey;
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.amber.shade50,
+        gradient: LinearGradient(
+          colors: [Colors.white, Colors.grey.shade50],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(color: Colors.grey.withOpacity(0.15), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,57 +297,82 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+                  color: firstColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.access_time, color: Colors.orange, size: 24),
+                child: Icon(
+                  Icons.schedule_outlined,
+                  color: firstColor,
+                  size: 22,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
-                'Kegiatan berdasarkan Waktu',
+                'Status Waktu',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[800],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           ...data.entries.map((entry) {
+            final color = _getWaktuColor(entry.key);
+            final IconData icon = entry.key == 'Sudah Lewat'
+                ? Icons.check_circle_outline
+                : entry.key == 'Hari Ini'
+                ? Icons.today_outlined
+                : Icons.event_outlined;
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: _getWaktuColor(entry.key),
-                          borderRadius: BorderRadius.circular(3),
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: color.withOpacity(0.15), width: 1),
+                ),
+                child: Row(
+                  children: [
+                    Icon(icon, size: 18, color: color),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        entry.key,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Text(
-                        entry.key,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    entry.value.toString(),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: _getWaktuColor(entry.key),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '${entry.value} kegiatan',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: color,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
@@ -302,18 +382,17 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
   }
 
   Widget _buildPenanggungJawabTerbanyakCard(List<dynamic> data) {
+    const cardColor = Color(0xFF6B5CE7); // Purple variant matching theme
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.purple.shade50,
+        gradient: LinearGradient(
+          colors: [Colors.white, Colors.grey.shade50],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        border: Border.all(color: Colors.grey.withOpacity(0.15), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,68 +400,98 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.purple.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+                  color: cardColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.person, color: Colors.purple, size: 24),
+                child: const Icon(
+                  Icons.person_outline,
+                  color: cardColor,
+                  size: 22,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
-                'Penanggung Jawab Terbanyak',
+                'Penanggung Jawab',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[800],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          ...data.map((item) {
+          const SizedBox(height: 18),
+          ...data.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.purple.shade100,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.person_outline,
-                          color: Colors.purple.shade700,
-                          size: 16,
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: cardColor.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: cardColor.withOpacity(0.15),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: cardColor.withOpacity(0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${index + 1}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: cardColor,
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Text(
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
                         item.nama,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.purple.shade100,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      item.jumlah.toString(),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple.shade700,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: cardColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        '${item.jumlah} kegiatan',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: cardColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
@@ -392,13 +501,14 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
   }
 
   Color _getKategoriColor(int index) {
+    // Purple theme variations
     final colors = [
-      Colors.blue,
-      Colors.greenAccent,
-      Colors.purpleAccent,
-      Colors.orangeAccent,
-      Colors.red,
-      Colors.blueGrey,
+      const Color(0xFF6B5CE7), // Base purple
+      const Color(0xFF8E7AE7), // Medium light purple
+      const Color(0xFF7B68EE), // Medium purple
+      const Color(0xFFB8AEE7), // Light purple
+      const Color(0xFF9B8CE7), // Lighter purple
+      const Color(0xFF5B4DCE), // Dark purple
     ];
     return colors[index % colors.length];
   }
@@ -406,11 +516,11 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
   Color _getWaktuColor(String status) {
     switch (status) {
       case 'Sudah Lewat':
-        return Colors.grey.shade600;
+        return const Color(0xFF6B5CE7); 
       case 'Hari Ini':
-        return Colors.orange;
+        return const Color.fromARGB(255, 81, 65, 207); 
       case 'Akan Datang':
-        return Colors.blue;
+        return const Color(0xFFB8AEE7);
       default:
         return Colors.grey;
     }
