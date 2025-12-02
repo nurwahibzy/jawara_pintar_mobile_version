@@ -47,6 +47,17 @@ import '../../features/pesan-warga/domain/usecases/get_pesan_warga.dart';
 import '../../features/pesan-warga/domain/usecases/update_pesan_warga.dart';
 import '../../features/pesan-warga/domain/usecases/delete_pesan_warga.dart';
 
+// Mutasi Keluarga
+import '../../features/mutasi-keluarga/data/datasources/mutasi_keluarga_datasource.dart';
+import '../../features/mutasi-keluarga/data/repositories/mutasi_keluarga_repository_implementation.dart';
+import '../../features/mutasi-keluarga/domain/repositories/mutasi_keluarga_repository.dart';
+import '../../features/mutasi-keluarga/domain/usecases/create_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/domain/usecases/get_all_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/domain/usecases/get_form_data_options.dart';
+import '../../features/mutasi-keluarga/domain/usecases/get_mutasi_keluarga.dart';
+import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
+
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -135,4 +146,30 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeleteAspirasiUseCase(sl<AspirasiRepository>()),);
 
   sl.registerFactory(() => AspirasiBloc(repository: sl<AspirasiRepository>()));
+
+  // --------------------------------------------------------------------------
+  // MUTASI KELUARGA
+  // --------------------------------------------------------------------------
+
+   // datasource
+  sl.registerLazySingleton<MutasiKeluargaDatasource>(() => MutasiKeluargaDatasourceImplementation());
+
+  // repository
+  sl.registerLazySingleton<MutasiKeluargaRepository>(() => MutasiKeluargaRepositoryImplementation(
+    datasource: sl(),
+  ));
+
+  // Usecases
+  sl.registerLazySingleton(() => GetAllMutasiKeluarga(sl()));
+  sl.registerLazySingleton(() => GetMutasiKeluarga(sl()));
+  sl.registerLazySingleton(() => CreateMutasiKeluarga(sl()));
+  sl.registerLazySingleton(() => GetFormDataOptions(sl()));
+
+  // bloc
+  sl.registerFactory(() => MutasiKeluargaBloc(
+    getAllMutasiKeluarga: sl(),
+    getMutasiKeluarga: sl(),
+    createMutasiKeluarga: sl(),
+    getFormDataOptions: sl()
+  ));
 }
