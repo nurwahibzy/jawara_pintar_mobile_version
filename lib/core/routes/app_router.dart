@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_keluarga.dart';
+import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_warga.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengguna/profil.dart';
 import '../injections/injection.dart';
 import '../../features/pengeluaran/domain/entities/pengeluaran.dart';
@@ -129,6 +132,22 @@ class AppRouter {
         // Implement logout logic here if needed
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
+        );
+        
+      case AppRoutes.daftarWarga:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<WargaBloc>()..add(LoadWarga()),
+            child: const DaftarWargaPage(),
+          ),
+        );
+
+      case AppRoutes.daftarKeluarga:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<WargaBloc>()..add(LoadAllKeluargaWithRelations()),
+            child: const DaftarKeluargaPage(),
+          ),
         );
 
 
