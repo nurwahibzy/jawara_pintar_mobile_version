@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jawara_pintar_mobile_version/pages/pengguna/profil.dart';
 import '../injections/injection.dart';
 import '../../features/pengeluaran/domain/entities/pengeluaran.dart';
 import '../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 import '../../features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
 import 'app_routes.dart';
 // import halaman yg dibutuhkan
-import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
+// import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
+import 'package:jawara_pintar_mobile_version/core/auth/login_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-keuangan/presentation/pages/dashboard_keuangan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-kegiatan/presentation/pages/dashboard_kegiatan_page.dart';
 import 'package:jawara_pintar_mobile_version/features/dashboard-kependudukan/presentation/pages/dashboard_kependudukan_page.dart';
@@ -32,6 +34,9 @@ class AppRouter {
     switch (settings.name) {
       case AppRoutes.login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
+
+      case AppRoutes.profil:
+        return MaterialPageRoute(builder: (_) => Profil());
 
   //PENGELUARAN
   case AppRoutes.daftarPengeluaran:
@@ -119,6 +124,12 @@ class AppRouter {
           child: const TambahMutasiKeluarga(),
         ),
       );
+
+      case AppRoutes.logout:
+        // Implement logout logic here if needed
+        return MaterialPageRoute(
+          builder: (_) => const LoginPage(),
+        );
 
 
       // dikebutt moasss
