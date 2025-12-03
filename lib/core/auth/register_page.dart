@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/auth_services.dart';
 import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final authServices = AuthServices();
 
   // text controller
