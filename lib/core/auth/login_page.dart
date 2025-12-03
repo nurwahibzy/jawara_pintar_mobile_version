@@ -225,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/signin');
+                                Navigator.pushNamed(context, '/register');
                               },
                               child: Text(
                                 'Daftar',
