@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_keluarga.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_warga.dart';
-import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
 import 'package:jawara_pintar_mobile_version/pages/pengguna/profil.dart';
 import '../injections/injection.dart';
 import '../../features/pengeluaran/domain/entities/pengeluaran.dart';
@@ -38,9 +37,6 @@ class AppRouter {
     switch (settings.name) {
       case AppRoutes.login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
-
-      case AppRoutes.register:
-        return MaterialPageRoute(builder: (_) => const RegisterPage());
 
       case AppRoutes.profil:
         return MaterialPageRoute(builder: (_) => Profil());
