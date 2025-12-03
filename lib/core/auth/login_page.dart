@@ -16,16 +16,55 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  String? _emailError;
+  String? _passwordError;
+
+  bool _validateInputs() {
+    bool isValid = true;
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    setState(() {
+      if (email.isEmpty) {
+        _emailError = 'Email tidak boleh kosong';
+        isValid = false;
+      } else if (!email.contains('@') || !email.contains('.')) {
+        _emailError = 'Format email tidak valid';
+        isValid = false;
+      } else {
+        _emailError = null;
+      }
+
+      if (password.isEmpty) {
+        _passwordError = 'Password tidak boleh kosong';
+        isValid = false;
+      } else if (password.length < 6) {
+        _passwordError = 'Password minimal 6 karakter';
+        isValid = false;
+      } else {
+        _passwordError = null;
+      }
+    });
+    return isValid;
+  }
+
   void login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
+
+    if (!_validateInputs()) {
+      return;
+    }
     try {
       await authServices.signIn(email, password);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Center(child: Text('Login gagal')),backgroundColor: Colors.red,));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(child: Text('Login gagal')),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -116,9 +155,17 @@ class _LoginPageState extends State<LoginPage> {
                         TextField(
                           controller: _emailController,
                           cursorColor: AppColors.primary,
-                          decoration: const InputDecoration(
-                            hintText: 'Masukkan email disini',
-                            prefixIcon: Icon(Icons.mail),
+                          // Hapus error saat user mengetik
+                          onChanged: (value) {
+                            if (_emailError != null) {
+                              setState(() => _emailError = null);
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Masukkan email',
+                            prefixIcon: const Icon(Icons.mail),
+                            // Tampilkan Error Disini
+                            errorText: _emailError,
                           ),
                         ),
 
@@ -136,9 +183,19 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                           cursorColor: AppColors.primary,
                           obscureText: true,
-                          decoration: const InputDecoration(
-                            hintText: 'Masukkan password disini',
-                            prefixIcon: Icon(Icons.lock),
+                          onChanged: (value) {
+                            // Hapus error password & confirm saat mengetik
+                            if (_passwordError != null) {
+                              setState(() {
+                                _passwordError = null;
+                              });
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Masukkan password',
+                            prefixIcon: const Icon(Icons.lock),
+                            // Tampilkan Error Disini
+                            errorText: _passwordError,
                           ),
                         ),
 
@@ -168,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/register');
+                                Navigator.pushNamed(context, '/signin');
                               },
                               child: Text(
                                 'Daftar',
