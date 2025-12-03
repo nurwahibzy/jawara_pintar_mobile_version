@@ -1,5 +1,7 @@
 class AppRoutes {
   static const String login = '/login';
+  static const String profil = '/profil';
+  static const String logout = '/logout';
   static const String dashboardKeuangan = '/dashboard-keuangan';
   static const String dashboardKegiatan = '/dashboard-kegiatan';
   static const String kependudukan = '/dashboard-kependudukan';
@@ -16,4 +18,8 @@ class AppRoutes {
   static const tambahMutasiKeluarga = '/tambah-mutasi-keluarga';
   static const editMutasiKeluarga = '/edit-mutasi-keluarga';
   static const detailMutasiKeluarga = '/detail-mutasi-keluarga';
+
+
+  static const daftarWarga = '/daftar-warga';
+  static const daftarKeluarga = '/daftar-keluarga';
 }

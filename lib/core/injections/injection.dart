@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Core
@@ -57,6 +58,16 @@ import '../../features/mutasi-keluarga/domain/usecases/get_form_data_options.dar
 import '../../features/mutasi-keluarga/domain/usecases/get_mutasi_keluarga.dart';
 import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
 
+// WARGA
+import '../../features/warga/data/datasources/warga_remote_datasource.dart';
+import '../../features/warga/data/repositories/warga_repository_impl.dart';
+import '../../features/warga/domain/repositories/warga_repository.dart';
+
+import '../../features/warga/domain/usecases/create_warga.dart';
+import '../../features/warga/domain/usecases/filter_warga.dart';
+import '../../features/warga/domain/usecases/get_all_warga.dart';
+import '../../features/warga/domain/usecases/get_warga.dart';
+import '../../features/warga/domain/usecases/update_warga.dart';
 
 final sl = GetIt.instance;
 
@@ -172,4 +183,21 @@ Future<void> init() async {
     createMutasiKeluarga: sl(),
     getFormDataOptions: sl()
   ));
+
+  
+  // --------------------------------------------------------------------------
+  // WARGA & KELUARGA
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<WargaRemoteDataSource>(
+    () => WargaRemoteDataSourceImpl(),
+  );
+  sl.registerLazySingleton<WargaRepository>(() => WargaRepositoryImpl(sl()));
+
+  sl.registerLazySingleton(() => CreateWarga(sl()));
+  sl.registerLazySingleton(() => FilterWarga(sl()));
+  sl.registerLazySingleton(() => GetWarga(sl()));
+  sl.registerLazySingleton(() => GetAllWarga(sl()));
+  sl.registerLazySingleton(() => UpdateWarga(sl()));
+
+  sl.registerFactory(() => WargaBloc(repository: sl<WargaRepository>()));
 }
