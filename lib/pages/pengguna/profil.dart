@@ -20,7 +20,7 @@ class Profil extends StatelessWidget {
   logout(BuildContext context) async {
     await authServices.signOut();
     if (context.mounted) {
-      Navigator.pushNamed(context, '/login');
+      Navigator.pop(context);
     }
   }
 
