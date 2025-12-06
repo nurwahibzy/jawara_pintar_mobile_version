@@ -79,6 +79,15 @@ import '../../features/laporan-keuangan/data/repositories/laporan_repository_imp
 import '../../features/laporan-keuangan/data/datasources/laporan_remote_data_source.dart';
 import '../../features/laporan-keuangan/presentation/bloc/laporan_keuangan_bloc.dart';
 
+// CETAK LAPORAN
+import '../../features/cetak-laporan/domain/repositories/cetak_laporan_repository.dart';
+import '../../features/cetak-laporan/domain/usecases/get_laporan_data_usecase.dart';
+import '../../features/cetak-laporan/domain/usecases/generate_pdf_usecase.dart';
+import '../../features/cetak-laporan/domain/usecases/share_pdf_usecase.dart';
+import '../../features/cetak-laporan/data/repositories/cetak_laporan_repository_impl.dart';
+import '../../features/cetak-laporan/data/datasources/cetak_laporan_remote_datasource.dart';
+import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -244,6 +253,29 @@ Future<void> init() async {
       getAllPengeluaranUseCase: sl(),
       getLaporanSummaryUseCase: sl(),
       generatePdfLaporanUseCase: sl(),
+    ),
+  );
+
+  // --------------------------------------------------------------------------
+  // CETAK LAPORAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<CetakLaporanRemoteDataSource>(
+    () => CetakLaporanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<CetakLaporanRepository>(
+    () => CetakLaporanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetLaporanDataUseCase(sl()));
+  sl.registerLazySingleton(() => GeneratePdfUseCase(sl()));
+  sl.registerLazySingleton(() => SharePdfUseCase(sl()));
+
+  sl.registerFactory(
+    () => CetakLaporanBloc(
+      getLaporanDataUseCase: sl(),
+      generatePdfUseCase: sl(),
+      sharePdfUseCase: sl(),
     ),
   );
 }

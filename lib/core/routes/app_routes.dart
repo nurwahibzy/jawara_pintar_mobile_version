@@ -23,4 +23,5 @@ class AppRoutes {
   static const daftarWarga = '/daftar-warga';
   static const daftarKeluarga = '/daftar-keluarga';
   static const laporanKeuangan = '/laporan-keuangan';
+  static const cetakLaporan = '/cetak-laporan';
 }

@@ -33,6 +33,9 @@ import '../../features/mutasi-keluarga/presentation/pages/tambah_mutasi_keluarga
 import '../../features/laporan-keuangan/presentation/bloc/laporan_keuangan_bloc.dart';
 import '../../features/laporan-keuangan/presentation/pages/laporan_keuangan_main_page.dart';
 
+import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
+import '../../features/cetak-laporan/presentation/pages/cetak_laporan_page.dart';
+
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -165,6 +168,15 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => sl<LaporanKeuanganBloc>(),
             child: const LaporanKeuanganMainPage(),
+          ),
+        );
+
+      // CETAK LAPORAN
+      case AppRoutes.cetakLaporan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<CetakLaporanBloc>(),
+            child: const CetakLaporanPage(),
           ),
         );
 
