@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
@@ -141,7 +142,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
       kategoriTransaksiId: _mapKategoriStringToId(kategori),
       nominal: double.tryParse(nominalController.text.replaceAll('.', '')) ?? 0,
       tanggalTransaksi: tanggalPengeluaran!,
-      buktiFoto: widget.pengeluaran.buktiFoto, // tetap pakai URL lama
+      buktiFoto: widget.pengeluaran.buktiFoto, 
       keterangan: keteranganController.text,
       createdBy: widget.pengeluaran.createdBy,
       createdAt: widget.pengeluaran.createdAt,
@@ -150,8 +151,8 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     context.read<PengeluaranBloc>().add(
       UpdatePengeluaranEvent(
         pengeluaran: updatedPengeluaran,
-        buktiFile: buktiGambar, // file baru
-        oldBuktiUrl: widget.pengeluaran.buktiFoto, // URL lama
+        buktiFile: buktiGambar, 
+        oldBuktiUrl: widget.pengeluaran.buktiFoto, 
       ),
     );
   }
@@ -175,7 +176,15 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Pengeluaran"), centerTitle: true),
+    appBar: AppBar(
+        backgroundColor: AppColors.primary, 
+        centerTitle: true,
+        title: const Text(
+          "Edit Pengeluaran",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: BlocListener<PengeluaranBloc, PengeluaranState>(
         listener: (context, state) {
           if (state is PengeluaranActionSuccess) {
@@ -338,19 +347,20 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
   ),
 ),
               const SizedBox(height: 24),
+              // Bagian tombol Simpan & Reset di build()
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _simpanData,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.primary,
+                        backgroundColor: AppColors.primary, 
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: Text(
                         "Perbarui",
                         style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.onPrimary,
+                          color: Colors.white, 
                         ),
                       ),
                     ),
@@ -360,13 +370,13 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
                     child: ElevatedButton(
                       onPressed: _resetForm,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.secondary,
+                        backgroundColor: Colors.grey, 
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: Text(
                         "Reset",
                         style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.onSecondary,
+                          color: Colors.white, 
                         ),
                       ),
                     ),

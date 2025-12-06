@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
@@ -89,7 +90,6 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
   }
 
   void _simpanData() async {
-    // <-- jadikan async
     if (namaController.text.isEmpty ||
         nominalController.text.isEmpty ||
         kategori == null ||
@@ -156,9 +156,14 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tambah Pengeluaran"),
+     appBar: AppBar(
+        backgroundColor: AppColors.primary, 
         centerTitle: true,
+        title: const Text(
+          "Tambah Pengeluaran",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
       body: BlocListener<PengeluaranBloc, PengeluaranState>(
         listener: (context, state) {
@@ -279,19 +284,37 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
               const SizedBox(height: 24),
 
               // Tombol Simpan & Reset
-              Row(
+             Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _simpanData,
-                      child: const Text("Simpan"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: Text(
+                        "Simpan",
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _resetForm,
-                      child: const Text("Reset"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: Text(
+                        "Reset",
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
