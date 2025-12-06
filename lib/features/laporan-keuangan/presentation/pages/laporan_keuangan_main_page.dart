@@ -27,111 +27,187 @@ class LaporanKeuanganMainPage extends StatelessWidget {
   }
 }
 
-class _LaporanKeuanganMainPageContent extends StatelessWidget {
+class _LaporanKeuanganMainPageContent extends StatefulWidget {
   const _LaporanKeuanganMainPageContent();
 
   @override
+  State<_LaporanKeuanganMainPageContent> createState() =>
+      _LaporanKeuanganMainPageContentState();
+}
+
+class _LaporanKeuanganMainPageContentState
+    extends State<_LaporanKeuanganMainPageContent>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        body: Column(
-          children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
+    return Scaffold(
+      body: Column(
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Laporan Keuangan',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Laporan Keuangan',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          // Custom Tab Bar
+          Container(
+            margin: const EdgeInsets.all(16),
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: AnimatedBuilder(
+              animation: _tabController,
+              builder: (context, child) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _tabController.animateTo(0),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          decoration: BoxDecoration(
+                            color: _tabController.index == 0
+                                ? AppColors.primary
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.trending_up,
+                                size: 20,
+                                color: _tabController.index == 0
+                                    ? Colors.white
+                                    : Colors.grey[600],
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Lihat semua transaksi keuangan',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.white.withOpacity(0.9),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Pemasukan',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: _tabController.index == 0
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
+                                  color: _tabController.index == 0
+                                      ? Colors.white
+                                      : Colors.grey[600],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _tabController.animateTo(1),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          decoration: BoxDecoration(
+                            color: _tabController.index == 1
+                                ? AppColors.primary
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.trending_down,
+                                size: 20,
+                                color: _tabController.index == 1
+                                    ? Colors.white
+                                    : Colors.grey[600],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Pengeluaran',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: _tabController.index == 1
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
+                                  color: _tabController.index == 1
+                                      ? Colors.white
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
+          ),
 
-            // Tab Bar
-            Container(
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TabBar(
-                indicator: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.grey[600],
-                labelStyle: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                ),
-                unselectedLabelStyle: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.normal,
-                ),
-                tabs: const [
-                  Tab(
-                    icon: Icon(Icons.trending_up, size: 20),
-                    text: 'Pemasukan',
-                  ),
-                  Tab(
-                    icon: Icon(Icons.trending_down, size: 20),
-                    text: 'Pengeluaran',
-                  ),
-                ],
-              ),
+          // Tab Views
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [PemasukanListPage(), PengeluaranListPage()],
             ),
-
-            // Tab Views
-            const Expanded(
-              child: TabBarView(
-                children: [PemasukanListPage(), PengeluaranListPage()],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
