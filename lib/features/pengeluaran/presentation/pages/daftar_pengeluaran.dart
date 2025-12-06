@@ -87,14 +87,23 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.primary, 
         title: const Text(
           'Daftar Pengeluaran',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white, 
+          ),
         ),
         centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white), 
+
         actions: [
           IconButton(
-            icon: Icon(_showFilter ? Icons.filter_alt_off : Icons.filter_alt),
+            icon: Icon(
+              _showFilter ? Icons.filter_alt_off : Icons.filter_alt,
+              color: Colors.white, 
+            ),
             onPressed: () {
               setState(() {
                 _showFilter = !_showFilter;
@@ -188,19 +197,10 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                       const SizedBox(height: 16),
 
                       /// TANGGAL RANGE
-                      Row(
+                     Row(
                         children: [
                           Expanded(
-                            child: TextField(
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                labelText: 'Dari Tanggal',
-                                filled: true,
-                                fillColor: AppColors.secondBackground,
-                                hintText: _filterDariTemp == null
-                                    ? '--/--/----'
-                                    : '${_filterDariTemp!.day}/${_filterDariTemp!.month}/${_filterDariTemp!.year}',
-                              ),
+                            child: InkWell(
                               onTap: () async {
                                 final picked = await showDatePicker(
                                   context: context,
@@ -211,20 +211,30 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                 if (picked != null)
                                   setState(() => _filterDariTemp = picked);
                               },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.secondBackground,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  _filterDariTemp == null
+                                      ? "Dari Tanggal"
+                                      : DateFormat(
+                                          "dd/MM/yyyy",
+                                        ).format(_filterDariTemp!),
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
+
                           Expanded(
-                            child: TextField(
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                labelText: 'Sampai Tanggal',
-                                filled: true,
-                                fillColor: AppColors.secondBackground,
-                                hintText: _filterSampaiTemp == null
-                                    ? '--/--/----'
-                                    : '${_filterSampaiTemp!.day}/${_filterSampaiTemp!.month}/${_filterSampaiTemp!.year}',
-                              ),
+                            child: InkWell(
                               onTap: () async {
                                 final picked = await showDatePicker(
                                   context: context,
@@ -235,6 +245,24 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                 if (picked != null)
                                   setState(() => _filterSampaiTemp = picked);
                               },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.secondBackground,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  _filterSampaiTemp == null
+                                      ? "Sampai Tanggal"
+                                      : DateFormat(
+                                          "dd/MM/yyyy",
+                                        ).format(_filterSampaiTemp!),
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -310,8 +338,18 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                 } else if (state is PengeluaranLoaded ||
                     state is PengeluaranActionSuccess) {
                   final list = filteredPengeluaran;
+
+                  if (list.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Belum ada data pengeluaran yang cocok',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
+                  
                   return ListView.builder(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 100),
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       final item = list[index];
@@ -414,17 +452,21 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () async {
-          final result = await Navigator.pushNamed(
-            context,
-            '/tambah-pengeluaran',
-          );
-          if (result == true) {
-            context.read<PengeluaranBloc>().add(const LoadPengeluaran());
-          }
-        },
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0, right: 16.0),
+        child: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            final result = await Navigator.pushNamed(
+              context,
+              '/tambah-pengeluaran',
+            );
+            if (result == true) {
+              context.read<PengeluaranBloc>().add(const LoadPengeluaran());
+            }
+          },
+        ),
       ),
     );
   }

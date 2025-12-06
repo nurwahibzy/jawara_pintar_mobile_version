@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Core
@@ -41,8 +42,8 @@ import '../../features/pesan-warga/data/datasources/pesan_warga_remote.dart';
 import '../../features/pesan-warga/data/repositories/pesan_warga_impl.dart';
 import '../../features/pesan-warga/domain/repositories/pesan_warga_repository.dart';
 import '../../features/pesan-warga/presentation/bloc/pesan_warga_bloc.dart';
-import '../../features/pesan-warga/domain/usecases/create_pesan_warga.dart'; 
-import '../../features/pesan-warga/domain/usecases/get_all_pesan_warga.dart'; 
+import '../../features/pesan-warga/domain/usecases/create_pesan_warga.dart';
+import '../../features/pesan-warga/domain/usecases/get_all_pesan_warga.dart';
 import '../../features/pesan-warga/domain/usecases/get_pesan_warga.dart';
 import '../../features/pesan-warga/domain/usecases/update_pesan_warga.dart';
 import '../../features/pesan-warga/domain/usecases/delete_pesan_warga.dart';
@@ -57,6 +58,35 @@ import '../../features/mutasi-keluarga/domain/usecases/get_form_data_options.dar
 import '../../features/mutasi-keluarga/domain/usecases/get_mutasi_keluarga.dart';
 import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
 
+// WARGA
+import '../../features/warga/data/datasources/warga_remote_datasource.dart';
+import '../../features/warga/data/repositories/warga_repository_impl.dart';
+import '../../features/warga/domain/repositories/warga_repository.dart';
+
+import '../../features/warga/domain/usecases/create_warga.dart';
+import '../../features/warga/domain/usecases/filter_warga.dart';
+import '../../features/warga/domain/usecases/get_all_warga.dart';
+import '../../features/warga/domain/usecases/get_warga.dart';
+import '../../features/warga/domain/usecases/update_warga.dart';
+
+// LAPORAN KEUANGAN
+import '../../features/laporan-keuangan/domain/repositories/laporan_repository.dart';
+import '../../features/laporan-keuangan/domain/usecases/get_all_pemasukan_usecase.dart';
+import '../../features/laporan-keuangan/domain/usecases/get_all_pengeluaran_usecase.dart';
+import '../../features/laporan-keuangan/domain/usecases/get_laporan_summary_usecase.dart';
+import '../../features/laporan-keuangan/domain/usecases/generate_pdf_laporan_usecase.dart';
+import '../../features/laporan-keuangan/data/repositories/laporan_repository_impl.dart';
+import '../../features/laporan-keuangan/data/datasources/laporan_remote_data_source.dart';
+import '../../features/laporan-keuangan/presentation/bloc/laporan_keuangan_bloc.dart';
+
+// CETAK LAPORAN
+import '../../features/cetak-laporan/domain/repositories/cetak_laporan_repository.dart';
+import '../../features/cetak-laporan/domain/usecases/get_laporan_data_usecase.dart';
+import '../../features/cetak-laporan/domain/usecases/generate_pdf_usecase.dart';
+import '../../features/cetak-laporan/domain/usecases/share_pdf_usecase.dart';
+import '../../features/cetak-laporan/data/repositories/cetak_laporan_repository_impl.dart';
+import '../../features/cetak-laporan/data/datasources/cetak_laporan_remote_datasource.dart';
+import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -98,7 +128,9 @@ Future<void> init() async {
   // DASHBOARD KEPENDUDUKAN
   // --------------------------------------------------------------------------
   sl.registerLazySingleton<DashboardKependudukanRemoteDataSource>(
-    () => DashboardKependudukanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+    () => DashboardKependudukanRemoteDataSourceImpl(
+      supabaseClient: supabaseClient,
+    ),
   );
 
   sl.registerLazySingleton<DashboardKependudukanRepository>(
@@ -139,11 +171,17 @@ Future<void> init() async {
     () => AspirasiRepositoryImpl(remoteDataSource: sl()),
   );
 
-  sl.registerLazySingleton(() => GetAllAspirasi(sl<AspirasiRepository>()),);
-  sl.registerLazySingleton(() => GetAspirasiByIdUseCase(sl<AspirasiRepository>()));
+  sl.registerLazySingleton(() => GetAllAspirasi(sl<AspirasiRepository>()));
+  sl.registerLazySingleton(
+    () => GetAspirasiByIdUseCase(sl<AspirasiRepository>()),
+  );
   sl.registerLazySingleton(() => AddAspirasiUseCase(sl<AspirasiRepository>()));
-  sl.registerLazySingleton(() => UpdateAspirasiUseCase(sl<AspirasiRepository>()),);
-  sl.registerLazySingleton(() => DeleteAspirasiUseCase(sl<AspirasiRepository>()),);
+  sl.registerLazySingleton(
+    () => UpdateAspirasiUseCase(sl<AspirasiRepository>()),
+  );
+  sl.registerLazySingleton(
+    () => DeleteAspirasiUseCase(sl<AspirasiRepository>()),
+  );
 
   sl.registerFactory(() => AspirasiBloc(repository: sl<AspirasiRepository>()));
 
@@ -151,13 +189,15 @@ Future<void> init() async {
   // MUTASI KELUARGA
   // --------------------------------------------------------------------------
 
-   // datasource
-  sl.registerLazySingleton<MutasiKeluargaDatasource>(() => MutasiKeluargaDatasourceImplementation());
+  // datasource
+  sl.registerLazySingleton<MutasiKeluargaDatasource>(
+    () => MutasiKeluargaDatasourceImplementation(),
+  );
 
   // repository
-  sl.registerLazySingleton<MutasiKeluargaRepository>(() => MutasiKeluargaRepositoryImplementation(
-    datasource: sl(),
-  ));
+  sl.registerLazySingleton<MutasiKeluargaRepository>(
+    () => MutasiKeluargaRepositoryImplementation(datasource: sl()),
+  );
 
   // Usecases
   sl.registerLazySingleton(() => GetAllMutasiKeluarga(sl()));
@@ -166,10 +206,76 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetFormDataOptions(sl()));
 
   // bloc
-  sl.registerFactory(() => MutasiKeluargaBloc(
-    getAllMutasiKeluarga: sl(),
-    getMutasiKeluarga: sl(),
-    createMutasiKeluarga: sl(),
-    getFormDataOptions: sl()
-  ));
+  sl.registerFactory(
+    () => MutasiKeluargaBloc(
+      getAllMutasiKeluarga: sl(),
+      getMutasiKeluarga: sl(),
+      createMutasiKeluarga: sl(),
+      getFormDataOptions: sl(),
+    ),
+  );
+
+  // --------------------------------------------------------------------------
+  // WARGA & KELUARGA
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<WargaRemoteDataSource>(
+    () => WargaRemoteDataSourceImpl(),
+  );
+  sl.registerLazySingleton<WargaRepository>(() => WargaRepositoryImpl(sl()));
+
+  sl.registerLazySingleton(() => CreateWarga(sl()));
+  sl.registerLazySingleton(() => FilterWarga(sl()));
+  sl.registerLazySingleton(() => GetWarga(sl()));
+  sl.registerLazySingleton(() => GetAllWarga(sl()));
+  sl.registerLazySingleton(() => UpdateWarga(sl()));
+
+  sl.registerFactory(() => WargaBloc(repository: sl<WargaRepository>()));
+
+  // --------------------------------------------------------------------------
+  // LAPORAN KEUANGAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<LaporanRemoteDataSource>(
+    () => LaporanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<LaporanRepository>(
+    () => LaporanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetAllPemasukanUseCase(sl()));
+  sl.registerLazySingleton(() => GetAllPengeluaranUseCase(sl()));
+  sl.registerLazySingleton(() => GetLaporanSummaryUseCase(sl()));
+  sl.registerLazySingleton(() => GeneratePdfLaporanUseCase(sl()));
+
+  sl.registerFactory(
+    () => LaporanKeuanganBloc(
+      getAllPemasukanUseCase: sl(),
+      getAllPengeluaranUseCase: sl(),
+      getLaporanSummaryUseCase: sl(),
+      generatePdfLaporanUseCase: sl(),
+    ),
+  );
+
+  // --------------------------------------------------------------------------
+  // CETAK LAPORAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<CetakLaporanRemoteDataSource>(
+    () => CetakLaporanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<CetakLaporanRepository>(
+    () => CetakLaporanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetLaporanDataUseCase(sl()));
+  sl.registerLazySingleton(() => GeneratePdfUseCase(sl()));
+  sl.registerLazySingleton(() => SharePdfUseCase(sl()));
+
+  sl.registerFactory(
+    () => CetakLaporanBloc(
+      getLaporanDataUseCase: sl(),
+      generatePdfUseCase: sl(),
+      sharePdfUseCase: sl(),
+    ),
+  );
 }

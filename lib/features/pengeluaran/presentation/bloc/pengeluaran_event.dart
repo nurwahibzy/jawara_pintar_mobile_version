@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/pengeluaran.dart';
 
 abstract class PengeluaranEvent extends Equatable {
@@ -25,18 +28,24 @@ class DeletePengeluaranEvent extends PengeluaranEvent {
 
 class CreatePengeluaranEvent extends PengeluaranEvent {
   final Pengeluaran pengeluaran;
-  const CreatePengeluaranEvent(this.pengeluaran);
+  final File? buktiFile;
 
-  @override
-  List<Object?> get props => [pengeluaran];
+  CreatePengeluaranEvent(this.pengeluaran, {this.buktiFile});
 }
 
 class UpdatePengeluaranEvent extends PengeluaranEvent {
   final Pengeluaran pengeluaran;
-  const UpdatePengeluaranEvent(this.pengeluaran);
+  final File? buktiFile;
+  final String? oldBuktiUrl; 
+
+  const UpdatePengeluaranEvent({
+    required this.pengeluaran,
+    this.buktiFile,
+    this.oldBuktiUrl,
+  });
 
   @override
-  List<Object?> get props => [pengeluaran];
+  List<Object?> get props => [pengeluaran, buktiFile, oldBuktiUrl];
 }
 
 class LoadKategoriPengeluaran extends PengeluaranEvent {}
