@@ -1,6 +1,8 @@
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/domain/entities/pengeluaran.dart';
 
 class PengeluaranModel extends Pengeluaran {
+  final String? createdByName;
+
   const PengeluaranModel({
     super.id,
     required super.judul,
@@ -13,6 +15,7 @@ class PengeluaranModel extends Pengeluaran {
    // super.verifikatorId,
    // super.tanggalVerifikasi,
     required super.createdAt,
+    this.createdByName,
   });
 
   /// Convert Map ke Model
@@ -25,11 +28,12 @@ class PengeluaranModel extends Pengeluaran {
       tanggalTransaksi: DateTime.parse(map['tanggal_transaksi']),
       buktiFoto: map['bukti_foto'],
       keterangan: map['keterangan'],
-      createdBy: map['created_by'],
+      createdBy: map['created_by'] == null ? '' : map['created_by'].toString(),
      // verifikatorId: map['verifikator_id'],
      // tanggalVerifikasi: map['tanggal_verifikasi'] != null
          // ? DateTime.parse(map['tanggal_verifikasi'])  : null,
       createdAt: DateTime.parse(map['created_at']),
+      createdByName: map['created_by_name'],
     );
   }
 
@@ -78,6 +82,7 @@ class PengeluaranModel extends Pengeluaran {
     //  verifikatorId: entity.verifikatorId,
      // tanggalVerifikasi: entity.tanggalVerifikasi,
       createdAt: entity.createdAt,
+      createdByName: entity.createdByName,
     );
   }
 
@@ -96,5 +101,46 @@ class PengeluaranModel extends Pengeluaran {
     };
   }
 
+  PengeluaranModel copyWith({
+    int? id,
+    String? judul,
+    int? kategoriTransaksiId,
+    double? nominal,
+    DateTime? tanggalTransaksi,
+    String? buktiFoto,
+    String? keterangan,
+    String? createdBy,
+    String? createdByName,
+    DateTime? createdAt,
+  }) {
+    return PengeluaranModel(
+      id: id ?? this.id,
+      judul: judul ?? this.judul,
+      kategoriTransaksiId: kategoriTransaksiId ?? this.kategoriTransaksiId,
+      nominal: nominal ?? this.nominal,
+      tanggalTransaksi: tanggalTransaksi ?? this.tanggalTransaksi,
+      buktiFoto: buktiFoto ?? this.buktiFoto,
+      keterangan: keterangan ?? this.keterangan,
+      createdBy: createdBy ?? this.createdBy,
+      createdByName: createdByName,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  // Convert Model -> Entity 
+  Pengeluaran toEntity() {
+    return Pengeluaran(
+      id: id,
+      judul: judul,
+      kategoriTransaksiId: kategoriTransaksiId,
+      nominal: nominal,
+      tanggalTransaksi: tanggalTransaksi,
+      buktiFoto: buktiFoto,
+      keterangan: keterangan,
+      createdBy: createdBy,
+      createdByName: null, 
+      createdAt: createdAt,
+    );
+  }
 
 }
