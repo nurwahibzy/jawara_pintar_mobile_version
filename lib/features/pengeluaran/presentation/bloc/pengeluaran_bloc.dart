@@ -59,17 +59,28 @@ class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
     Emitter<PengeluaranState> emit,
   ) async {
     emit(PengeluaranLoading());
-    final Either<Failure, bool> res = await repository.createPengeluaran(
-      event.pengeluaran,
-    );
-    res.fold((failure) => emit(PengeluaranError(failure.message)), (ok) {
-      if (ok) {
-        add(const RefreshPengeluaran());
-        emit(const PengeluaranActionSuccess('Create berhasil'));
-      } else {
-        emit(const PengeluaranError('Create gagal'));
+
+    try {
+      String? fotoUrl;
+      if (event.buktiFile != null) {
+        fotoUrl = await repository.uploadBukti(event.buktiFile!);
       }
-    });
+
+      final dataToSave = event.pengeluaran.copyWith(buktiFoto: fotoUrl);
+
+      final res = await repository.createPengeluaran(dataToSave);
+
+      res.fold((failure) => emit(PengeluaranError(failure.message)), (ok) {
+        if (ok) {
+          add(const RefreshPengeluaran());
+          emit(const PengeluaranActionSuccess("Create berhasil"));
+        } else {
+          emit(const PengeluaranError("Create gagal"));
+        }
+      });
+    } catch (e) {
+      emit(PengeluaranError(e.toString()));
+    }
   }
 
   Future<void> _onUpdate(
@@ -77,20 +88,37 @@ class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
     Emitter<PengeluaranState> emit,
   ) async {
     emit(PengeluaranLoading());
-    final Either<Failure, bool> res = await repository.updatePengeluaran(
-      event.pengeluaran,
-    );
-    res.fold((failure) => emit(PengeluaranError(failure.message)), (ok) {
-      if (ok) {
-        add(const RefreshPengeluaran());
-        emit(const PengeluaranActionSuccess('Update berhasil'));
-      } else {
-        emit(const PengeluaranError('Update gagal'));
+    try {
+      String? fotoUrl = event.pengeluaran.buktiFoto;
+
+      if (event.buktiFile != null) {
+        // Upload file baru → overwrite kalau ada oldUrl
+        fotoUrl = await repository.uploadBukti(
+          event.buktiFile!,
+          oldUrl: event.oldBuktiUrl, // pakai oldUrl untuk replace
+        );
       }
-    });
+
+      final updatedPengeluaran = event.pengeluaran.copyWith(buktiFoto: fotoUrl);
+
+      final Either<Failure, bool> res = await repository.updatePengeluaran(
+        updatedPengeluaran,
+      );
+
+      res.fold((failure) => emit(PengeluaranError(failure.message)), (ok) {
+        if (ok) {
+          emit(const PengeluaranActionSuccess('Update berhasil'));
+          add(const RefreshPengeluaran());
+        } else {
+          emit(const PengeluaranError('Update gagal'));
+        }
+      });
+    } catch (e) {
+      emit(PengeluaranError(e.toString()));
+    }
   }
 
- Future<void> _onLoadKategori(
+  Future<void> _onLoadKategori(
     LoadKategoriPengeluaran event,
     Emitter<PengeluaranState> emit,
   ) async {
@@ -103,7 +131,7 @@ class PengeluaranBloc extends Bloc<PengeluaranEvent, PengeluaranState> {
             (m) => KategoriEntity(
               id: m.id,
               jenis: m.jenis,
-              nama_kategori: m.nama_kategori, 
+              nama_kategori: m.nama_kategori,
             ),
           )
           .toList();
