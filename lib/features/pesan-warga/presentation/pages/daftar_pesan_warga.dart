@@ -307,9 +307,14 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Pengirim: ${data.namaWarga ?? '-'}"), 
+                              Text("Pengirim: ${data.namaWarga ?? '-'}"),
+                              SizedBox(height: 4),
                               Text(
-                                "Tanggal: ${data.createdAt.toString().split(' ')[0]}",
+                                "Tanggal: ${DateFormat('dd/MM/yyyy').format(data.createdAt)}",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                             ],
                           ),

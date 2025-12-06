@@ -115,14 +115,6 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
                   Text(pesan.createdAt.toLocal().toString().split(' ')[0]),
                   const SizedBox(height: 20),
 
-                  // Updated By
-                  const Text(
-                    'Diperbarui Oleh:',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                Text(pesan.namaAdmin ?? 'Belum ada'),
-                  const SizedBox(height: 20),
-
                   // Tombol edit
                   Center(
                     child: SizedBox(
@@ -141,7 +133,8 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
 
                           if (result != null && result is Aspirasi) {
                             setState(() {
-                              pesan = result;
+                              pesan =
+                                  result;
                             });
                           }
                         },
