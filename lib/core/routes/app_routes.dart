@@ -20,7 +20,8 @@ class AppRoutes {
   static const editMutasiKeluarga = '/edit-mutasi-keluarga';
   static const detailMutasiKeluarga = '/detail-mutasi-keluarga';
 
-
   static const daftarWarga = '/daftar-warga';
   static const daftarKeluarga = '/daftar-keluarga';
+  static const laporanKeuangan = '/laporan-keuangan';
+  static const cetakLaporan = '/cetak-laporan';
 }

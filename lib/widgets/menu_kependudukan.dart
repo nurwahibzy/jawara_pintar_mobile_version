@@ -124,7 +124,7 @@ class MenuKependudukan extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 9,
                     height: 1.2,
                     fontWeight: FontWeight.w600,
                     color: Colors.grey[800],
