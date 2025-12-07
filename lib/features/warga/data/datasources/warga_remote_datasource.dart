@@ -55,7 +55,9 @@ class WargaRemoteDataSourceImpl implements WargaRemoteDataSource {
   @override
   Future<void> createWarga(WargaModel warga) {
     try {
-      return supabaseClient.from('warga').insert(warga.toJson());
+      final data = warga.toJson();
+      data.remove('id');
+      return supabaseClient.from('warga').insert(data);
     } catch (e) {
       throw Exception(e.toString());
     }

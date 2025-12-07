@@ -6,12 +6,15 @@ import 'core/theme/app_theme.dart';
 import 'core/utils/erors_checkers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/injections/injection.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
+    // Initialize locale data for date formatting
+    await initializeDateFormatting('id_ID', null);
+
     // Load Env
     await dotenv.load(fileName: ".env");
 
