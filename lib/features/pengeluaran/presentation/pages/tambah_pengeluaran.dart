@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
@@ -26,6 +28,8 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
   String? kategori;
   File? buktiGambar;
   final ImagePicker _picker = ImagePicker();
+  final userId = Supabase.instance.client.auth.currentUser?.id;
+  
 
   List<KategoriEntity> _allKategori = [];
 
@@ -85,7 +89,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
     if (pickedFile != null) setState(() => buktiGambar = File(pickedFile.path));
   }
 
-  void _simpanData() {
+  void _simpanData() async {
     if (namaController.text.isEmpty ||
         nominalController.text.isEmpty ||
         kategori == null ||
@@ -96,6 +100,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
       return;
     }
 
+    // Ambil ID kategori
     final kategoriId = _allKategori
         .firstWhere(
           (k) => k.nama_kategori == kategori,
@@ -107,20 +112,32 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
         )
         .id;
 
+    // Ambil user login
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('User belum login')));
+      return;
+    }
+
+    // Buat objek pengeluaran
     final newPengeluaran = Pengeluaran(
       judul: namaController.text,
       kategoriTransaksiId: kategoriId,
       nominal: double.tryParse(nominalController.text.replaceAll('.', '')) ?? 0,
       tanggalTransaksi: tanggalPengeluaran!,
-      buktiFoto: buktiGambar?.path,
+      buktiFoto: null,
       keterangan: keteranganController.text,
-      createdBy: 1, //TODO: Sesuaikan dengan user login
-     // verifikatorId: null,
-     // tanggalVerifikasi: null,
+      createdBy: user.id, 
       createdAt: DateTime.now(),
     );
 
-    context.read<PengeluaranBloc>().add(CreatePengeluaranEvent(newPengeluaran));
+    // Kirim event ke bloc
+    context.read<PengeluaranBloc>().add(
+      CreatePengeluaranEvent(newPengeluaran, buktiFile: buktiGambar),
+    );
   }
 
   void _resetForm() {
@@ -139,9 +156,14 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tambah Pengeluaran"),
+     appBar: AppBar(
+        backgroundColor: AppColors.primary, 
         centerTitle: true,
+        title: const Text(
+          "Tambah Pengeluaran",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
       body: BlocListener<PengeluaranBloc, PengeluaranState>(
         listener: (context, state) {
@@ -262,19 +284,37 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
               const SizedBox(height: 24),
 
               // Tombol Simpan & Reset
-              Row(
+             Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _simpanData,
-                      child: const Text("Simpan"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: Text(
+                        "Simpan",
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _resetForm,
-                      child: const Text("Reset"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: Text(
+                        "Reset",
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],

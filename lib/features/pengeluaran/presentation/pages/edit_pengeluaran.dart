@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
 import '../../../../../features/pengeluaran/domain/entities/pengeluaran.dart';
 import '../../../../../features/pengeluaran/domain/entities/kategori_transaksi.dart';
@@ -76,8 +77,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
           "${data.tanggalTransaksi.day}/${data.tanggalTransaksi.month}/${data.tanggalTransaksi.year}",
     );
 
-    if (data.buktiFoto != null && data.buktiFoto!.isNotEmpty) {
-      buktiGambar = File(data.buktiFoto!);
+    if (data.buktiFoto != null && data.buktiFoto!.isNotEmpty && !data.buktiFoto!.startsWith("http")) {buktiGambar = File(data.buktiFoto!);
     }
   }
 
@@ -125,7 +125,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     }
   }
 
-  void _simpanData() {
+ void _simpanData() {
     if (namaController.text.isEmpty ||
         nominalController.text.isEmpty ||
         kategori == null ||
@@ -142,16 +142,18 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
       kategoriTransaksiId: _mapKategoriStringToId(kategori),
       nominal: double.tryParse(nominalController.text.replaceAll('.', '')) ?? 0,
       tanggalTransaksi: tanggalPengeluaran!,
-      buktiFoto: buktiGambar?.path,
+      buktiFoto: widget.pengeluaran.buktiFoto, 
       keterangan: keteranganController.text,
       createdBy: widget.pengeluaran.createdBy,
-     // verifikatorId: widget.pengeluaran.verifikatorId,
-     // tanggalVerifikasi: widget.pengeluaran.tanggalVerifikasi,
       createdAt: widget.pengeluaran.createdAt,
     );
 
     context.read<PengeluaranBloc>().add(
-      UpdatePengeluaranEvent(updatedPengeluaran),
+      UpdatePengeluaranEvent(
+        pengeluaran: updatedPengeluaran,
+        buktiFile: buktiGambar, 
+        oldBuktiUrl: widget.pengeluaran.buktiFoto, 
+      ),
     );
   }
 
@@ -174,7 +176,15 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Pengeluaran"), centerTitle: true),
+    appBar: AppBar(
+        backgroundColor: AppColors.primary, 
+        centerTitle: true,
+        title: const Text(
+          "Edit Pengeluaran",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: BlocListener<PengeluaranBloc, PengeluaranState>(
         listener: (context, state) {
           if (state is PengeluaranActionSuccess) {
@@ -288,45 +298,69 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
                 ),
               ),
               const SizedBox(height: 8),
-              GestureDetector(
-                onTap: _pickImage,
-                child: Container(
-                  height: 150,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: theme.dividerColor),
-                    borderRadius: BorderRadius.circular(10),
-                    color: theme.cardColor,
+             GestureDetector(
+  onTap: _pickImage,
+  child: Container(
+    height: 150,
+    width: double.infinity,
+    decoration: BoxDecoration(
+      color: theme.cardColor,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: theme.dividerColor),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.05),
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: buktiGambar != null
+          ? Image.file(
+              buktiGambar!,
+              fit: BoxFit.contain,
+            )
+          : (widget.pengeluaran.buktiFoto != null &&
+                  widget.pengeluaran.buktiFoto!.isNotEmpty)
+              ? Image.network(
+                  widget.pengeluaran.buktiFoto!,
+                  fit: BoxFit.contain,
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.image, color: theme.hintColor, size: 40),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Klik untuk unggah bukti (PNG/JPG)",
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(color: theme.hintColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  child: buktiGambar == null
-                      ? Center(
-                          child: Text(
-                            "Klik untuk unggah bukti (PNG/JPG)",
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.hintColor,
-                            ),
-                          ),
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(buktiGambar!, fit: BoxFit.cover),
-                        ),
                 ),
-              ),
+    ),
+  ),
+),
               const SizedBox(height: 24),
+              // Bagian tombol Simpan & Reset di build()
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _simpanData,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.primary,
+                        backgroundColor: AppColors.primary, 
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: Text(
                         "Perbarui",
                         style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.onPrimary,
+                          color: Colors.white, 
                         ),
                       ),
                     ),
@@ -336,13 +370,13 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
                     child: ElevatedButton(
                       onPressed: _resetForm,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.secondary,
+                        backgroundColor: Colors.grey, 
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: Text(
                         "Reset",
                         style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.onSecondary,
+                          color: Colors.white, 
                         ),
                       ),
                     ),

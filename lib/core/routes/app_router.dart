@@ -33,6 +33,11 @@ import '../../features/mutasi-keluarga/presentation/pages/tambah_mutasi_keluarga
 import '../../features/rumah/presentation/pages/daftar_rumah.dart';
 import '../../features/rumah/presentation/bloc/rumah_bloc.dart';
 
+import '../../features/laporan-keuangan/presentation/bloc/laporan_keuangan_bloc.dart';
+import '../../features/laporan-keuangan/presentation/pages/laporan_keuangan_main_page.dart';
+
+import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
+import '../../features/cetak-laporan/presentation/pages/cetak_laporan_page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -48,33 +53,36 @@ class AppRouter {
       case AppRoutes.register:
         return MaterialPageRoute(builder: (_) => RegisterPage());
 
-  //PENGELUARAN
-  case AppRoutes.daftarPengeluaran:
-    return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => sl<PengeluaranBloc>()..add(const LoadPengeluaran()),
-        child: const DaftarPengeluaran(),
-      ),
-    );
+      //PENGELUARAN
+      case AppRoutes.daftarPengeluaran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PengeluaranBloc>()..add(const LoadPengeluaran()),
+            child: const DaftarPengeluaran(),
+          ),
+        );
 
-  case AppRoutes.tambahPengeluaran:
-    return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => sl<PengeluaranBloc>(),
-        child: const TambahPengeluaranPage(),
-      ),
-    );
+      case AppRoutes.tambahPengeluaran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PengeluaranBloc>(),
+            child: const TambahPengeluaranPage(),
+          ),
+        );
 
-  case AppRoutes.editPengeluaran:
+      case AppRoutes.editPengeluaran:
         final pengeluaran = settings.arguments as Pengeluaran;
         return MaterialPageRoute(
           builder: (context) => BlocProvider.value(
-            value: BlocProvider.of<PengeluaranBloc>(context), 
-            child: EditPengeluaranPage(pengeluaran: pengeluaran, kategoriList: [],),
+            value: BlocProvider.of<PengeluaranBloc>(context),
+            child: EditPengeluaranPage(
+              pengeluaran: pengeluaran,
+              kategoriList: [],
+            ),
           ),
         );
-        
-  // DASHBOARD
+
+      // DASHBOARD
       case AppRoutes.dashboardKeuangan:
         return MaterialPageRoute(builder: (_) => const DashboardKeuanganPage());
 
@@ -82,8 +90,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const DashboardKegiatanPage());
 
       case AppRoutes.kependudukan:
-        return MaterialPageRoute(builder: (_) => const DashboardKependudukanPage());
-   // PESAN WARGA
+        return MaterialPageRoute(
+          builder: (_) => const DashboardKependudukanPage(),
+        );
+      // PESAN WARGA
       case AppRoutes.daftarPesanWarga:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -128,19 +138,17 @@ class AppRouter {
         );
 
       case AppRoutes.tambahMutasiKeluarga:
-      return MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (context) => sl<MutasiKeluargaBloc>(),
-          child: const TambahMutasiKeluarga(),
-        ),
-      );
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<MutasiKeluargaBloc>(),
+            child: const TambahMutasiKeluarga(),
+          ),
+        );
 
       case AppRoutes.logout:
         // Implement logout logic here if needed
-        return MaterialPageRoute(
-          builder: (_) => const LoginPage(),
-        );
-        
+        return MaterialPageRoute(builder: (_) => const LoginPage());
+
       case AppRoutes.daftarWarga:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -157,6 +165,23 @@ class AppRouter {
           ),
         );
 
+      // LAPORAN KEUANGAN
+      case AppRoutes.laporanKeuangan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<LaporanKeuanganBloc>(),
+            child: const LaporanKeuanganMainPage(),
+          ),
+        );
+
+      // CETAK LAPORAN
+      case AppRoutes.cetakLaporan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<CetakLaporanBloc>(),
+            child: const CetakLaporanPage(),
+          ),
+        );
         case AppRoutes.daftarRumah:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
