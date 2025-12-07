@@ -101,6 +101,18 @@ import '../../features/rumah/domain/usecases/get_all_rumah.dart';
 import '../../features/rumah/domain/usecases/get_rumah_detail.dart';
 import '../../features/rumah/domain/usecases/update_rumah.dart';
 
+// MASTER IURAN
+import '../../features/kategori-tagihan/data/datasources/master_iuran_remote_datasource.dart';
+import '../../features/kategori-tagihan/data/repositories/master_iuran_repository_impl.dart';
+import '../../features/kategori-tagihan/domain/repositories/master_iuran_repository.dart';
+import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_list.dart';
+import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_by_id.dart';
+import '../../features/kategori-tagihan/domain/usecases/create_master_iuran.dart';
+import '../../features/kategori-tagihan/domain/usecases/update_master_iuran.dart';
+import '../../features/kategori-tagihan/domain/usecases/delete_master_iuran.dart';
+import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_by_kategori.dart';
+import '../../features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -292,8 +304,6 @@ Future<void> init() async {
     ),
   );
 
-
-
   // --------------------------------------------------------------------------
   // RUMAH
   // --------------------------------------------------------------------------
@@ -312,4 +322,33 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateRumah(sl()));
 
   sl.registerFactory(() => RumahBloc(repository: sl<RumahRepository>()));
+
+  // --------------------------------------------------------------------------
+  // MASTER IURAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<MasterIuranRemoteDataSource>(
+    () => MasterIuranRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<MasterIuranRepository>(
+    () => MasterIuranRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetMasterIuranList(sl()));
+  sl.registerLazySingleton(() => GetMasterIuranById(sl()));
+  sl.registerLazySingleton(() => CreateMasterIuran(sl()));
+  sl.registerLazySingleton(() => UpdateMasterIuran(sl()));
+  sl.registerLazySingleton(() => DeleteMasterIuran(sl()));
+  sl.registerLazySingleton(() => GetMasterIuranByKategori(sl()));
+
+  sl.registerFactory(
+    () => MasterIuranBloc(
+      getMasterIuranList: sl(),
+      getMasterIuranById: sl(),
+      createMasterIuran: sl(),
+      updateMasterIuran: sl(),
+      deleteMasterIuran: sl(),
+      getMasterIuranByKategori: sl(),
+    ),
+  );
 }

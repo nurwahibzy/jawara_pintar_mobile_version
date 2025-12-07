@@ -25,4 +25,5 @@ class AppRoutes {
   static const laporanKeuangan = '/laporan-keuangan';
   static const cetakLaporan = '/cetak-laporan';
   static const daftarRumah = '/daftar-rumah';
+  static const daftarKategoriIuran = '/daftar-kategori-iuran';
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
+import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_event.dart';
+import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/pages/daftar_kategori_tagihan.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_keluarga.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_warga.dart';
@@ -182,11 +185,22 @@ class AppRouter {
             child: const CetakLaporanPage(),
           ),
         );
-        case AppRoutes.daftarRumah:
+      
+      // DAFTAR RUMAH
+      case AppRoutes.daftarRumah:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) => sl<RumahBloc>()..add(LoadAllRumah()),
             child: const DaftarRumahPage(),
+          ),
+        );
+
+      // DAFTR KATEGORI IURAN
+      case AppRoutes.daftarKategoriIuran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<MasterIuranBloc>()..add(const LoadMasterIuranList()),
+            child: const DaftarKategoriTagihanPage(),
           ),
         );
 

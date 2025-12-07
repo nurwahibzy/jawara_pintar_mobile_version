@@ -59,8 +59,8 @@ class MenuKeuangan extends StatelessWidget {
               _buildMenuItem(
                 context,
                 Icons.category,
-                "Kategori\nIuran",
-                "/daftar_kategori_iuran",
+                "Kategori\nTagihan",
+                "/daftar-kategori-iuran",
               ),
               _buildMenuItem(
                 context,
