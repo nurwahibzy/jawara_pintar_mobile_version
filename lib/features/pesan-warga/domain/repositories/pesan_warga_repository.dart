@@ -6,4 +6,6 @@ abstract class AspirasiRepository {
   Future<void> addAspirasi(Aspirasi aspirasi);
   Future<void> updateAspirasi(Aspirasi aspirasi);
   Future<void> deleteAspirasi(int id);
+  Future<String?> getCurrentUserRole(); 
+  Future<int?> getCurrentUserId();
 }

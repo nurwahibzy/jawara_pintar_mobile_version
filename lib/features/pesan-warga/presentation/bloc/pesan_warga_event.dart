@@ -40,3 +40,7 @@ class DeleteAspirasi extends AspirasiEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class GetUserRoleEvent extends AspirasiEvent {}
+
+class LoadUserData extends AspirasiEvent {}

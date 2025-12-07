@@ -42,3 +42,10 @@ class AspirasiDetailLoaded extends AspirasiState {
   @override
   List<Object?> get props => [aspirasi];
 }
+
+class UserRoleLoaded extends AspirasiState {
+  final String? role; 
+  UserRoleLoaded(this.role);
+}
+
+class GetUserIdEvent extends AspirasiEvent {} 
