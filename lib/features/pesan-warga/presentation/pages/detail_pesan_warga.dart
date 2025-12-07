@@ -22,6 +22,7 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
   void initState() {
     super.initState();
     pesan = widget.pesan;
+    context.read<AspirasiBloc>().add(GetUserRoleEvent());
   }
 
   Color _getStatusColor(StatusAspirasi status) {
@@ -60,7 +61,7 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+               crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Judul
                   const Text(
@@ -78,23 +79,27 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
                   Text(pesan.deskripsi),
                   const SizedBox(height: 10),
 
-                  // Status
+                 // Status
                   const Text(
                     'Status:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _getStatusColor(pesan.status),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      pesan.status.name.toUpperCase(),
-                      style: const TextStyle(color: Colors.white),
+                  Align(
+                    alignment:
+                        Alignment.centerLeft, 
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _getStatusColor(pesan.status),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        pesan.status.name.toUpperCase(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -115,55 +120,68 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
                   Text(pesan.createdAt.toLocal().toString().split(' ')[0]),
                   const SizedBox(height: 20),
 
-                  // Updated By
+                  // Tanggapan Admin
                   const Text(
-                    'Diperbarui Oleh:',
+                    'Tanggapan Admin:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                Text(pesan.namaAdmin ?? 'Belum ada'),
+                  Text(pesan.tanggapanAdmin ?? '-'),
                   const SizedBox(height: 20),
 
                   // Tombol edit
-                  Center(
-                    child: SizedBox(
-                      width: 150,
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                value: context.read<AspirasiBloc>(),
-                                child: EditPesanWarga(pesan: pesan),
+                BlocBuilder<AspirasiBloc, AspirasiState>(
+                    builder: (context, state) {
+                      final role = context
+                          .read<AspirasiBloc>()
+                          .currentRole; 
+
+                      final bool canEdit =
+                          role == "Admin" ||
+                          (role == "Warga" &&
+                              pesan.status == StatusAspirasi.Pending);
+
+                      return Visibility(
+                        visible: canEdit,
+                        child: Center(
+                          child: SizedBox(
+                            width: 160,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => BlocProvider.value(
+                                      value: context.read<AspirasiBloc>(),
+                                      child: EditPesanWarga(pesan: pesan),
+                                    ),
+                                  ),
+                                );
+
+                                if (result != null && result is Aspirasi) {
+                                  setState(() => pesan = result);
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              icon: const Icon(Icons.edit, color: Colors.white),
+                              label: const Text(
+                                'Edit',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          );
-
-                          if (result != null && result is Aspirasi) {
-                            setState(() {
-                              pesan = result;
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        icon: const Icon(Icons.edit, color: Colors.white),
-                        label: const Text(
-                          'Edit',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                      );
+                    },
+                  )
                 ],
               ),
             ),

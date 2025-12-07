@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:jawara_pintar_mobile_version/features/pesan-warga/domain/usecases/get_user_role.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../data/models/pesan_warga_model.dart';
@@ -69,6 +71,13 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    context.read<AspirasiBloc>().add(GetUserRoleEvent());
+    context.read<AspirasiBloc>().add(LoadAspirasi());
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     _dariController.dispose();
@@ -99,20 +108,27 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add, color: Colors.white),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BlocProvider.value(
-                value: context
-                    .read<AspirasiBloc>(), 
-                child: const TambahPesanWarga(), //TODO: disable buat admin ( fitur punya warga)
-              ),
-            ),
-          );
+    floatingActionButton: BlocBuilder<AspirasiBloc, AspirasiState>(
+        builder: (context, state) {
+          final role = context.read<AspirasiBloc>().currentRole;
+          if (role == "Warga") {
+            return FloatingActionButton(
+              backgroundColor: AppColors.primary,
+              child: Icon(Icons.add, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BlocProvider.value(
+                      value: context.read<AspirasiBloc>(),
+                      child: const TambahPesanWarga(),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          return const SizedBox.shrink();
         },
       ),
       body: Column(
@@ -307,9 +323,14 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Pengirim: ${data.namaWarga ?? '-'}"), 
+                              Text("Pengirim: ${data.namaWarga ?? '-'}"),
+                              SizedBox(height: 4),
                               Text(
-                                "Tanggal: ${data.createdAt.toString().split(' ')[0]}",
+                                "Tanggal: ${DateFormat('dd/MM/yyyy').format(data.createdAt)}",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                             ],
                           ),
