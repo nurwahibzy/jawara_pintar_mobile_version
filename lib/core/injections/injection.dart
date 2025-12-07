@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:jawara_pintar_mobile_version/features/rumah/presentation/bloc/rumah_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -87,6 +88,18 @@ import '../../features/cetak-laporan/domain/usecases/share_pdf_usecase.dart';
 import '../../features/cetak-laporan/data/repositories/cetak_laporan_repository_impl.dart';
 import '../../features/cetak-laporan/data/datasources/cetak_laporan_remote_datasource.dart';
 import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
+
+// RUMAH
+import '../../features/rumah/data/datasources/rumah_remote_datasource.dart';
+import '../../features/rumah/data/repositories/rumah_repository_impl.dart';
+import '../../features/rumah/domain/repositories/rumah_repository.dart';
+
+import '../../features/rumah/domain/usecases/create_rumah.dart';
+import '../../features/rumah/domain/usecases/delete_rumah.dart';
+import '../../features/rumah/domain/usecases/filter_rumah.dart';
+import '../../features/rumah/domain/usecases/get_all_rumah.dart';
+import '../../features/rumah/domain/usecases/get_rumah_detail.dart';
+import '../../features/rumah/domain/usecases/update_rumah.dart';
 
 final sl = GetIt.instance;
 
@@ -278,4 +291,25 @@ Future<void> init() async {
       sharePdfUseCase: sl(),
     ),
   );
+
+
+
+  // --------------------------------------------------------------------------
+  // RUMAH
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<RumahRemoteDataSource>(
+    () => RumahRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+  sl.registerLazySingleton<RumahRepository>(
+    () => RumahRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => CreateRumah(sl()));
+  sl.registerLazySingleton(() => DeleteRumah(sl()));
+  sl.registerLazySingleton(() => FilterRumah(sl()));
+  sl.registerLazySingleton(() => GetAllRumah(sl()));
+  sl.registerLazySingleton(() => GetRumahDetail(sl()));
+  sl.registerLazySingleton(() => UpdateRumah(sl()));
+
+  sl.registerFactory(() => RumahBloc(repository: sl<RumahRepository>()));
 }

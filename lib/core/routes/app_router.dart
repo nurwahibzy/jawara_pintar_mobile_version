@@ -30,6 +30,8 @@ import '../../features/pesan-warga/presentation/pages/tambah_pesan_warga.dart';
 import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
 import '../../features/mutasi-keluarga/presentation/pages/daftar_mutasi_keluarga.dart';
 import '../../features/mutasi-keluarga/presentation/pages/tambah_mutasi_keluarga.dart';
+import '../../features/rumah/presentation/pages/daftar_rumah.dart';
+import '../../features/rumah/presentation/bloc/rumah_bloc.dart';
 
 import '../../features/laporan-keuangan/presentation/bloc/laporan_keuangan_bloc.dart';
 import '../../features/laporan-keuangan/presentation/pages/laporan_keuangan_main_page.dart';
@@ -178,6 +180,13 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => sl<CetakLaporanBloc>(),
             child: const CetakLaporanPage(),
+          ),
+        );
+        case AppRoutes.daftarRumah:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<RumahBloc>()..add(LoadAllRumah()),
+            child: const DaftarRumahPage(),
           ),
         );
 
