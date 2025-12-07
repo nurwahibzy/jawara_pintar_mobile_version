@@ -1,4 +1,10 @@
 import 'package:get_it/get_it.dart';
+import 'package:jawara_pintar_mobile_version/features/rumah/presentation/bloc/rumah_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/data/datasources/log_aktivitas_datasource.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/data/repositories/log_aktivitas_repository_implementation.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/domain/repositories/log_aktivitas_repository.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/domain/usecases/get_all_log_aktivitas.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/presentation/bloc/log_aktivitas_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -87,6 +93,30 @@ import '../../features/cetak-laporan/domain/usecases/share_pdf_usecase.dart';
 import '../../features/cetak-laporan/data/repositories/cetak_laporan_repository_impl.dart';
 import '../../features/cetak-laporan/data/datasources/cetak_laporan_remote_datasource.dart';
 import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
+
+// RUMAH
+import '../../features/rumah/data/datasources/rumah_remote_datasource.dart';
+import '../../features/rumah/data/repositories/rumah_repository_impl.dart';
+import '../../features/rumah/domain/repositories/rumah_repository.dart';
+
+import '../../features/rumah/domain/usecases/create_rumah.dart';
+import '../../features/rumah/domain/usecases/delete_rumah.dart';
+import '../../features/rumah/domain/usecases/filter_rumah.dart';
+import '../../features/rumah/domain/usecases/get_all_rumah.dart';
+import '../../features/rumah/domain/usecases/get_rumah_detail.dart';
+import '../../features/rumah/domain/usecases/update_rumah.dart';
+
+// MASTER IURAN
+import '../../features/kategori-tagihan/data/datasources/master_iuran_remote_datasource.dart';
+import '../../features/kategori-tagihan/data/repositories/master_iuran_repository_impl.dart';
+import '../../features/kategori-tagihan/domain/repositories/master_iuran_repository.dart';
+import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_list.dart';
+import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_by_id.dart';
+import '../../features/kategori-tagihan/domain/usecases/create_master_iuran.dart';
+import '../../features/kategori-tagihan/domain/usecases/update_master_iuran.dart';
+import '../../features/kategori-tagihan/domain/usecases/delete_master_iuran.dart';
+import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_by_kategori.dart';
+import '../../features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -216,6 +246,26 @@ Future<void> init() async {
   );
 
   // --------------------------------------------------------------------------
+  // LOG AKTIVITAS
+  // --------------------------------------------------------------------------
+
+  // datasource
+  sl.registerLazySingleton<LogAktivitasDatasource>(
+    () => LogAktivitasDatasourceImplementation(),
+  );
+
+  // repository
+  sl.registerLazySingleton<LogAktivitasRepository>(
+    () => LogAktivitasRepositoryImplementation(datasource: sl()),
+  );
+
+  // Usecases
+  sl.registerLazySingleton(() => GetAllLogAktivitas(sl()));
+
+  // bloc
+  sl.registerFactory(() => LogAktivitasBloc(getAllLogAktivitas: sl()));
+
+  // --------------------------------------------------------------------------
   // WARGA & KELUARGA
   // --------------------------------------------------------------------------
   sl.registerLazySingleton<WargaRemoteDataSource>(
@@ -276,6 +326,54 @@ Future<void> init() async {
       getLaporanDataUseCase: sl(),
       generatePdfUseCase: sl(),
       sharePdfUseCase: sl(),
+    ),
+  );
+
+  // --------------------------------------------------------------------------
+  // RUMAH
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<RumahRemoteDataSource>(
+    () => RumahRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+  sl.registerLazySingleton<RumahRepository>(
+    () => RumahRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => CreateRumah(sl()));
+  sl.registerLazySingleton(() => DeleteRumah(sl()));
+  sl.registerLazySingleton(() => FilterRumah(sl()));
+  sl.registerLazySingleton(() => GetAllRumah(sl()));
+  sl.registerLazySingleton(() => GetRumahDetail(sl()));
+  sl.registerLazySingleton(() => UpdateRumah(sl()));
+
+  sl.registerFactory(() => RumahBloc(repository: sl<RumahRepository>()));
+
+  // --------------------------------------------------------------------------
+  // MASTER IURAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<MasterIuranRemoteDataSource>(
+    () => MasterIuranRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<MasterIuranRepository>(
+    () => MasterIuranRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetMasterIuranList(sl()));
+  sl.registerLazySingleton(() => GetMasterIuranById(sl()));
+  sl.registerLazySingleton(() => CreateMasterIuran(sl()));
+  sl.registerLazySingleton(() => UpdateMasterIuran(sl()));
+  sl.registerLazySingleton(() => DeleteMasterIuran(sl()));
+  sl.registerLazySingleton(() => GetMasterIuranByKategori(sl()));
+
+  sl.registerFactory(
+    () => MasterIuranBloc(
+      getMasterIuranList: sl(),
+      getMasterIuranById: sl(),
+      createMasterIuran: sl(),
+      updateMasterIuran: sl(),
+      deleteMasterIuran: sl(),
+      getMasterIuranByKategori: sl(),
     ),
   );
 }

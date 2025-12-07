@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
+import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_event.dart';
+import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/pages/daftar_kategori_tagihan.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_keluarga.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_warga.dart';
@@ -30,12 +33,17 @@ import '../../features/pesan-warga/presentation/pages/tambah_pesan_warga.dart';
 import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
 import '../../features/mutasi-keluarga/presentation/pages/daftar_mutasi_keluarga.dart';
 import '../../features/mutasi-keluarga/presentation/pages/tambah_mutasi_keluarga.dart';
+import '../../features/rumah/presentation/pages/daftar_rumah.dart';
+import '../../features/rumah/presentation/bloc/rumah_bloc.dart';
 
 import '../../features/laporan-keuangan/presentation/bloc/laporan_keuangan_bloc.dart';
 import '../../features/laporan-keuangan/presentation/pages/laporan_keuangan_main_page.dart';
 
 import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
 import '../../features/cetak-laporan/presentation/pages/cetak_laporan_page.dart';
+
+import '../../features/log-aktivitas/presentation/pages/daftar_log_aktivitas.dart';
+import '../../features/log-aktivitas/presentation/bloc/log_aktivitas_bloc.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -180,7 +188,32 @@ class AppRouter {
             child: const CetakLaporanPage(),
           ),
         );
+      
+      // DAFTAR RUMAH
+      case AppRoutes.daftarRumah:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<RumahBloc>()..add(LoadAllRumah()),
+            child: const DaftarRumahPage(),
+          ),
+        );
 
+      // DAFTR KATEGORI IURAN
+      case AppRoutes.daftarKategoriIuran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<MasterIuranBloc>()..add(const LoadMasterIuranList()),
+            child: const DaftarKategoriTagihanPage(),
+          ),
+        );
+
+      case AppRoutes.daftarLogAktivitas:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<LogAktivitasBloc>(),
+            child: const DaftarLogAktivitas(),
+          ),
+        );
       // dikebutt moasss
       default:
         return _errorRoute();
