@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:jawara_pintar_mobile_version/features/rumah/presentation/bloc/rumah_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/data/datasources/log_aktivitas_datasource.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/data/repositories/log_aktivitas_repository_implementation.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/domain/repositories/log_aktivitas_repository.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/domain/usecases/get_all_log_aktivitas.dart';
+import 'package:jawara_pintar_mobile_version/features/log-aktivitas/presentation/bloc/log_aktivitas_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -227,6 +232,26 @@ Future<void> init() async {
       getFormDataOptions: sl(),
     ),
   );
+
+  // --------------------------------------------------------------------------
+  // LOG AKTIVITAS
+  // --------------------------------------------------------------------------
+
+  // datasource
+  sl.registerLazySingleton<LogAktivitasDatasource>(
+    () => LogAktivitasDatasourceImplementation(),
+  );
+
+  // repository
+  sl.registerLazySingleton<LogAktivitasRepository>(
+    () => LogAktivitasRepositoryImplementation(datasource: sl()),
+  );
+
+  // Usecases
+  sl.registerLazySingleton(() => GetAllLogAktivitas(sl()));
+
+  // bloc
+  sl.registerFactory(() => LogAktivitasBloc(getAllLogAktivitas: sl()));
 
   // --------------------------------------------------------------------------
   // WARGA & KELUARGA
