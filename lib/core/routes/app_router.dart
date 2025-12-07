@@ -42,6 +42,9 @@ import '../../features/laporan-keuangan/presentation/pages/laporan_keuangan_main
 import '../../features/cetak-laporan/presentation/bloc/cetak_laporan_bloc.dart';
 import '../../features/cetak-laporan/presentation/pages/cetak_laporan_page.dart';
 
+import '../../features/log-aktivitas/presentation/pages/daftar_log_aktivitas.dart';
+import '../../features/log-aktivitas/presentation/bloc/log_aktivitas_bloc.dart';
+
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -204,6 +207,13 @@ class AppRouter {
           ),
         );
 
+      case AppRoutes.daftarLogAktivitas:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<LogAktivitasBloc>(),
+            child: const DaftarLogAktivitas(),
+          ),
+        );
       // dikebutt moasss
       default:
         return _errorRoute();
