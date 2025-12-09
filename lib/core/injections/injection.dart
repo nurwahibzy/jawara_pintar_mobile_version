@@ -118,6 +118,17 @@ import '../../features/kategori-tagihan/domain/usecases/delete_master_iuran.dart
 import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_by_kategori.dart';
 import '../../features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
 
+// CHANNEL TRANSFER
+import '../../features/channel-transfer/data/datasources/channel_transfer_datasource.dart';
+import '../../features/channel-transfer/data/repositories/channel_transfer_impl.dart';
+import '../../features/channel-transfer/domain/repositories/channel_transfer_repository.dart';
+import '../../features/channel-transfer/domain/usecases/get_all_channel_transfer.dart';
+import '../../features/channel-transfer/domain/usecases/get_channel_transfer.dart';
+import '../../features/channel-transfer/domain/usecases/create_channel_transfer.dart';
+import '../../features/channel-transfer/domain/usecases/update_channel_transfer.dart';
+import '../../features/channel-transfer/domain/usecases/delete_channel_transfer.dart';
+import '../../features/channel-transfer/presentation/bloc/channel_transfer_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -375,5 +386,28 @@ Future<void> init() async {
       deleteMasterIuran: sl(),
       getMasterIuranByKategori: sl(),
     ),
+  );
+
+  // --------------------------------------------------------------------------
+  // CHANNEL TRANSFER
+  // --------------------------------------------------------------------------
+
+  sl.registerLazySingleton<TransferChannelRemoteDataSource>(
+    () => TransferChannelRemoteDataSourceImpl(),
+  );
+
+ sl.registerLazySingleton<TransferChannelRepository>(
+    () => TransferChannelRepositoryImpl(sl<TransferChannelRemoteDataSource>()),
+  );
+
+
+  sl.registerLazySingleton(() => GetAllTransferChannels(sl()));
+  sl.registerLazySingleton(() => GetTransferChannelById(sl()));
+  sl.registerLazySingleton(() => CreateTransferChannel(sl()));
+  sl.registerLazySingleton(() => UpdateTransferChannel(sl()));
+  sl.registerLazySingleton(() => DeleteTransferChannel(sl()));
+
+sl.registerFactory(
+    () => TransferChannelBloc(repository: sl<TransferChannelRepository>()),
   );
 }

@@ -28,4 +28,9 @@ class AppRoutes {
   static const daftarLogAktivitas = '/log-aktivitas';
   static const daftarRumah = '/daftar-rumah';
   static const daftarKategoriIuran = '/daftar-kategori-iuran';
+
+  static const daftarChannelTransfer = '/daftar-channel-transfer';
+  static const tambahChannelTransfer = '/tambah-channel-transfer';
+  static const editChannelTransfer = '/edit-channel-transfer';
+  static const detailChannelTransfer = '/detail-channel-transfer';
 }
