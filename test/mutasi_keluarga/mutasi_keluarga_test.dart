@@ -8,13 +8,13 @@ import 'package:mockito/mockito.dart';
 import 'mutasi_keluarga_test.mocks.dart';
 
 void main() {
-  // 1. Definisi Variable di luar agar bisa dipakai semua test (mocking)
+  // Definisi Variable di luar agar bisa dipakai semua test (mocking)
   late MockMutasiKeluargaDatasourceImplementation mockDatasource;
   late List<MutasiKeluargaModel> fakeListMutasi;
   late MutasiKeluargaModel fakeMutasiDetail;
   final int tId = 1;
 
-  // 2. setUp: Dijalankan sebelum SETIAP test case (agar state bersih)
+  // setUp: Dijalankan sebelum setiap test case (agar state bersih)
   setUp(() {
     mockDatasource = MockMutasiKeluargaDatasourceImplementation();
 
@@ -38,15 +38,15 @@ void main() {
 
   group('get all data mutasi keluarga', () {
     test('berhasil mengembalikan List MutasiKeluargaModel', () async {
-      // arrange (siapkan skenario)
+      // arrange (mempersiapkan skenario)
       when(
         mockDatasource.getAllMutasiKeluarga(),
       ).thenAnswer((_) async => fakeListMutasi);
 
-      // act (jalankan fungsi)
+      // act (menjalankan fungsi)
       final result = await mockDatasource.getAllMutasiKeluarga();
 
-      // assert (pastikan hasilnya benar)
+      // assert (memastikan hasilnya benar)
       expect(result, equals(fakeListMutasi));
       expect(result.length, 1);
     });
@@ -97,13 +97,12 @@ void main() {
   group('create mutasi keluarga', () {
     test('berhasil membuat data (return void/future complete)', () async {
       // arrange
-      // Karena void, biasanya kita cek apakah dia complete tanpa error
+      // Karena void, maka dicek apakah dia complete tanpa error
       when(
         mockDatasource.createMutasiKeluarga(any),
       ).thenAnswer((_) async => Future.value());
 
       // act
-      // Kita panggil fungsinya
       await mockDatasource.createMutasiKeluarga(fakeMutasiDetail);
 
       // assert
