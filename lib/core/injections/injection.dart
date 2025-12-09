@@ -118,6 +118,14 @@ import '../../features/kategori-tagihan/domain/usecases/delete_master_iuran.dart
 import '../../features/kategori-tagihan/domain/usecases/get_master_iuran_by_kategori.dart';
 import '../../features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
 
+// TAGIH IURAN
+import '../../features/tagih-iuran/data/datasources/tagih_iuran_remote_datasource.dart';
+import '../../features/tagih-iuran/data/repositories/tagih_iuran_repository_impl.dart';
+import '../../features/tagih-iuran/domain/repositories/tagih_iuran_repository.dart';
+import '../../features/tagih-iuran/domain/usecases/get_master_iuran_dropdown.dart';
+import '../../features/tagih-iuran/domain/usecases/create_tagih_iuran.dart';
+import '../../features/tagih-iuran/presentation/bloc/tagih_iuran_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -375,5 +383,23 @@ Future<void> init() async {
       deleteMasterIuran: sl(),
       getMasterIuranByKategori: sl(),
     ),
+  );
+
+  // --------------------------------------------------------------------------
+  // TAGIH IURAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<TagihIuranRemoteDataSource>(
+    () => TagihIuranRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<TagihIuranRepository>(
+    () => TagihIuranRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetMasterIuranDropdown(sl()));
+  sl.registerLazySingleton(() => CreateTagihIuran(sl()));
+
+  sl.registerFactory(
+    () => TagihIuranBloc(getMasterIuranDropdown: sl(), createTagihIuran: sl()),
   );
 }
