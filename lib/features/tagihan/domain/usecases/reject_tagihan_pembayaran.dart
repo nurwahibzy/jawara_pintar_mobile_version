@@ -9,8 +9,8 @@ class RejectTagihanPembayaran {
 
   Future<Either<Failure, void>> call({
     required int id,
-    required String catatan,
+    required String keterangan,
   }) async {
-    return await repository.rejectTagihanPembayaran(id: id, catatan: catatan);
+    return await repository.rejectTagihanPembayaran(id: id, keterangan: keterangan);
   }
 }

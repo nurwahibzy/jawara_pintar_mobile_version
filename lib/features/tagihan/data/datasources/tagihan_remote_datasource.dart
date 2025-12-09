@@ -5,12 +5,13 @@ import '../../../../core/errors/exceptions.dart';
 abstract class TagihanRemoteDataSource {
   Future<List<TagihanPembayaranModel>> getTagihanPembayaranList({
     String? statusFilter,
+    String? metodeFilter,
   });
   Future<TagihanPembayaranModel> getTagihanPembayaranDetail(int id);
-  Future<void> approveTagihanPembayaran({required int id, String? catatan});
+  Future<void> approveTagihanPembayaran({required int id, String? keterangan});
   Future<void> rejectTagihanPembayaran({
     required int id,
-    required String catatan,
+    required String keterangan,
   });
 }
 
@@ -22,6 +23,7 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
   @override
   Future<List<TagihanPembayaranModel>> getTagihanPembayaranList({
     String? statusFilter,
+    String? metodeFilter,
   }) async {
     try {
       var query = supabaseClient.from('pembayaran_tagihan').select('''
@@ -49,6 +51,10 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
 
       if (statusFilter != null && statusFilter.isNotEmpty) {
         query = query.eq('status_verifikasi', statusFilter);
+      }
+
+      if (metodeFilter != null && metodeFilter.isNotEmpty) {
+        query = query.eq('metode_pembayaran', metodeFilter);
       }
 
       final response = await query.order('created_at', ascending: false);
@@ -100,7 +106,7 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
   @override
   Future<void> approveTagihanPembayaran({
     required int id,
-    String? catatan,
+    String? keterangan,
   }) async {
     try {
       final authId = supabaseClient.auth.currentUser?.id;
@@ -121,8 +127,8 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
 
       final updateData = <String, dynamic>{'status_verifikasi': 'Diterima'};
 
-      if (catatan != null && catatan.isNotEmpty) {
-        updateData['catatan_admin'] = catatan;
+      if (keterangan != null && keterangan.isNotEmpty) {
+        updateData['catatan_admin'] = keterangan;
       }
 
       if (wargaId != null) {
@@ -141,7 +147,7 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
   @override
   Future<void> rejectTagihanPembayaran({
     required int id,
-    required String catatan,
+    required String keterangan,
   }) async {
     try {
       final authId = supabaseClient.auth.currentUser?.id;
@@ -162,7 +168,7 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
 
       final updateData = <String, dynamic>{
         'status_verifikasi': 'Ditolak',
-        'catatan_admin': catatan,
+        'catatan_admin': keterangan,
       };
 
       if (wargaId != null) {

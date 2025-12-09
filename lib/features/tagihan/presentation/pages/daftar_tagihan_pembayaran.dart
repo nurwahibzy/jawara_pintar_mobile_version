@@ -242,8 +242,8 @@ class _DaftarTagihanPembayaranPageState
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (buildContext) => BlocProvider.value(
@@ -252,6 +252,12 @@ class _DaftarTagihanPembayaranPageState
               ),
             ),
           );
+          // Reload list setelah kembali dari detail
+          if (mounted) {
+            context.read<TagihanBloc>().add(
+              LoadTagihanPembayaranList(statusFilter: _filterStatus),
+            );
+          }
         },
         borderRadius: BorderRadius.circular(12),
         child: Padding(

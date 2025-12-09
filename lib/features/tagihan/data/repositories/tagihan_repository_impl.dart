@@ -13,10 +13,12 @@ class TagihanRepositoryImpl implements TagihanRepository {
   @override
   Future<Either<Failure, List<TagihanPembayaran>>> getTagihanPembayaranList({
     String? statusFilter,
+    String? metodeFilter,
   }) async {
     try {
       final result = await remoteDataSource.getTagihanPembayaranList(
         statusFilter: statusFilter,
+        metodeFilter: metodeFilter,
       );
       return Right(result);
     } on ServerException catch (e) {
@@ -43,10 +45,13 @@ class TagihanRepositoryImpl implements TagihanRepository {
   @override
   Future<Either<Failure, void>> approveTagihanPembayaran({
     required int id,
-    String? catatan,
+    String? keterangan,
   }) async {
     try {
-      await remoteDataSource.approveTagihanPembayaran(id: id, catatan: catatan);
+      await remoteDataSource.approveTagihanPembayaran(
+        id: id,
+        keterangan: keterangan,
+      );
       return const Right(null);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
@@ -58,10 +63,13 @@ class TagihanRepositoryImpl implements TagihanRepository {
   @override
   Future<Either<Failure, void>> rejectTagihanPembayaran({
     required int id,
-    required String catatan,
+    required String keterangan,
   }) async {
     try {
-      await remoteDataSource.rejectTagihanPembayaran(id: id, catatan: catatan);
+      await remoteDataSource.rejectTagihanPembayaran(
+        id: id,
+        keterangan: keterangan,
+      );
       return const Right(null);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));

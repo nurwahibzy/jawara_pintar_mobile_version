@@ -7,7 +7,7 @@ class ApproveTagihanPembayaran {
 
   ApproveTagihanPembayaran(this.repository);
 
-  Future<Either<Failure, void>> call({required int id, String? catatan}) async {
-    return await repository.approveTagihanPembayaran(id: id, catatan: catatan);
+  Future<Either<Failure, void>> call({required int id, String? keterangan}) async {
+    return await repository.approveTagihanPembayaran(id: id, keterangan: keterangan);
   }
 }

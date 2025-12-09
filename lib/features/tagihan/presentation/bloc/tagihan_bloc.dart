@@ -60,7 +60,7 @@ class TagihanBloc extends Bloc<TagihanEvent, TagihanState> {
     emit(TagihanLoading());
     final result = await approveTagihanPembayaran(
       id: event.id,
-      catatan: event.catatan,
+      keterangan: event.catatan,
     );
     result.fold(
       (failure) => emit(TagihanError(failure.message)),
@@ -75,7 +75,7 @@ class TagihanBloc extends Bloc<TagihanEvent, TagihanState> {
     emit(TagihanLoading());
     final result = await rejectTagihanPembayaran(
       id: event.id,
-      catatan: event.catatan,
+      keterangan: event.catatan,
     );
     result.fold(
       (failure) => emit(TagihanError(failure.message)),
