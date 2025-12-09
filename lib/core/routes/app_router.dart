@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
+import 'package:jawara_pintar_mobile_version/features/channel-transfer/domain/repositories/channel_transfer_repository.dart';
+import 'package:jawara_pintar_mobile_version/features/channel-transfer/presentation/bloc/channel_transfer_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/pages/daftar_kategori_tagihan.dart';
@@ -44,6 +46,13 @@ import '../../features/cetak-laporan/presentation/pages/cetak_laporan_page.dart'
 
 import '../../features/log-aktivitas/presentation/pages/daftar_log_aktivitas.dart';
 import '../../features/log-aktivitas/presentation/bloc/log_aktivitas_bloc.dart';
+
+import '../../features/channel-transfer/domain/entities/channel_transfer_entities.dart';
+import '../../features/channel-transfer/presentation/bloc/channel_transfer_bloc.dart';
+import '../../features/channel-transfer/presentation/pages/daftar_channel_transfer.dart';
+import '../../features/channel-transfer/presentation/pages/tambah_channel_transfer.dart';
+import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
+import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -214,6 +223,46 @@ class AppRouter {
             child: const DaftarLogAktivitas(),
           ),
         );
+
+       // DAFTAR CHANNEL TRANSFER
+      case AppRoutes.daftarChannelTransfer:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                TransferChannelBloc(repository: sl<TransferChannelRepository>())
+                  ..add(LoadTransferChannels()),
+            child: const DaftarTransferChannel(),
+          ),
+        );
+
+      // TAMBAH CHANNEL TRANSFER
+      case AppRoutes.tambahChannelTransfer:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => TransferChannelBloc(
+              repository: sl<TransferChannelRepository>(),
+            ),
+            child: const TambahTransferChannelPage(),
+          ),
+        );
+
+
+      case AppRoutes.editChannelTransfer:
+        final channel = settings.arguments as TransferChannel;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: BlocProvider.of<TransferChannelBloc>(context),
+            child: EditTransferChannelPage(channel: channel),
+          ),
+        );
+
+      case AppRoutes.detailChannelTransfer:
+        final channel = settings.arguments as TransferChannel;
+        return MaterialPageRoute(
+          builder: (context) => DetailTransferChannelPage(channel: channel),
+        );
+
+
       // dikebutt moasss
       default:
         return _errorRoute();
