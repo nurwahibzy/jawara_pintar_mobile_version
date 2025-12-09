@@ -56,6 +56,10 @@ import '../../features/channel-transfer/presentation/pages/tambah_channel_transf
 import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
 
+import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
+import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
+import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
+
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -236,7 +240,7 @@ class AppRouter {
           ),
         );
 
-       // DAFTAR CHANNEL TRANSFER
+      // DAFTAR CHANNEL TRANSFER
       case AppRoutes.daftarChannelTransfer:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -258,7 +262,6 @@ class AppRouter {
           ),
         );
 
-
       case AppRoutes.editChannelTransfer:
         final channel = settings.arguments as TransferChannel;
         return MaterialPageRoute(
@@ -274,6 +277,25 @@ class AppRouter {
           builder: (context) => DetailTransferChannelPage(channel: channel),
         );
 
+      // TAGIHAN PEMBAYARAN
+      case AppRoutes.daftarTagihanPembayaran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                sl<TagihanBloc>()..add(const LoadTagihanPembayaranList()),
+            child: const DaftarTagihanPembayaranPage(),
+          ),
+        );
+
+      case AppRoutes.detailTagihanPembayaran:
+        final tagihanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) =>
+                sl<TagihanBloc>()..add(LoadTagihanPembayaranDetail(tagihanId)),
+            child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
+          ),
+        );
 
       // dikebutt moasss
       default:
