@@ -5,14 +5,15 @@ import '../entities/tagihan_pembayaran.dart';
 abstract class TagihanRepository {
   Future<Either<Failure, List<TagihanPembayaran>>> getTagihanPembayaranList({
     String? statusFilter,
+    String? metodeFilter,
   });
   Future<Either<Failure, TagihanPembayaran>> getTagihanPembayaranDetail(int id);
   Future<Either<Failure, void>> approveTagihanPembayaran({
     required int id,
-    String? catatan,
+    String? keterangan,
   });
   Future<Either<Failure, void>> rejectTagihanPembayaran({
     required int id,
-    required String catatan,
+    required String keterangan,
   });
 }
