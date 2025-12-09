@@ -48,13 +48,13 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.list_alt,
                 "Tagihan",
-                "/daftar_tagihan",
+                "/daftar-tagihan-pembayaran",
               ),
               _buildMenuItem(
                 context,
                 Icons.receipt,
                 "Tagih\nIuran",
-                "/tagih-iuran",
+                "/tambah-tagih-iuran",
               ),
               _buildMenuItem(
                 context,

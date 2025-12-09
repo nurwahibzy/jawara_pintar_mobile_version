@@ -129,6 +129,24 @@ import '../../features/channel-transfer/domain/usecases/update_channel_transfer.
 import '../../features/channel-transfer/domain/usecases/delete_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/bloc/channel_transfer_bloc.dart';
 
+// TAGIH IURAN
+import '../../features/tagih-iuran/data/datasources/tagih_iuran_remote_datasource.dart';
+import '../../features/tagih-iuran/data/repositories/tagih_iuran_repository_impl.dart';
+import '../../features/tagih-iuran/domain/repositories/tagih_iuran_repository.dart';
+import '../../features/tagih-iuran/domain/usecases/get_master_iuran_dropdown.dart';
+import '../../features/tagih-iuran/domain/usecases/create_tagih_iuran.dart';
+import '../../features/tagih-iuran/presentation/bloc/tagih_iuran_bloc.dart';
+
+// TAGIHAN PEMBAYARAN
+import '../../features/tagihan/data/datasources/tagihan_remote_datasource.dart';
+import '../../features/tagihan/data/repositories/tagihan_repository_impl.dart';
+import '../../features/tagihan/domain/repositories/tagihan_repository.dart';
+import '../../features/tagihan/domain/usecases/get_tagihan_pembayaran_list.dart';
+import '../../features/tagihan/domain/usecases/get_tagihan_pembayaran_detail.dart';
+import '../../features/tagihan/domain/usecases/approve_tagihan_pembayaran.dart';
+import '../../features/tagihan/domain/usecases/reject_tagihan_pembayaran.dart';
+import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -396,10 +414,9 @@ Future<void> init() async {
     () => TransferChannelRemoteDataSourceImpl(),
   );
 
- sl.registerLazySingleton<TransferChannelRepository>(
+  sl.registerLazySingleton<TransferChannelRepository>(
     () => TransferChannelRepositoryImpl(sl<TransferChannelRemoteDataSource>()),
   );
-
 
   sl.registerLazySingleton(() => GetAllTransferChannels(sl()));
   sl.registerLazySingleton(() => GetTransferChannelById(sl()));
@@ -407,7 +424,50 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateTransferChannel(sl()));
   sl.registerLazySingleton(() => DeleteTransferChannel(sl()));
 
-sl.registerFactory(
+  sl.registerFactory(
     () => TransferChannelBloc(repository: sl<TransferChannelRepository>()),
+  );
+
+  // --------------------------------------------------------------------------
+  // TAGIH IURAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<TagihIuranRemoteDataSource>(
+    () => TagihIuranRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<TagihIuranRepository>(
+    () => TagihIuranRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetMasterIuranDropdown(sl()));
+  sl.registerLazySingleton(() => CreateTagihIuran(sl()));
+
+  sl.registerFactory(
+    () => TagihIuranBloc(getMasterIuranDropdown: sl(), createTagihIuran: sl()),
+  );
+
+  // --------------------------------------------------------------------------
+  // TAGIHAN PEMBAYARAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<TagihanRemoteDataSource>(
+    () => TagihanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<TagihanRepository>(
+    () => TagihanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetTagihanPembayaranList(sl()));
+  sl.registerLazySingleton(() => GetTagihanPembayaranDetail(sl()));
+  sl.registerLazySingleton(() => ApproveTagihanPembayaran(sl()));
+  sl.registerLazySingleton(() => RejectTagihanPembayaran(sl()));
+
+  sl.registerFactory(
+    () => TagihanBloc(
+      getTagihanPembayaranList: sl(),
+      getTagihanPembayaranDetail: sl(),
+      approveTagihanPembayaran: sl(),
+      rejectTagihanPembayaran: sl(),
+    ),
   );
 }

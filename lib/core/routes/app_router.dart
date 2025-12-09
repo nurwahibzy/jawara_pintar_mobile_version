@@ -6,6 +6,8 @@ import 'package:jawara_pintar_mobile_version/features/channel-transfer/presentat
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/pages/daftar_kategori_tagihan.dart';
+import 'package:jawara_pintar_mobile_version/features/tagih-iuran/presentation/bloc/tagih_iuran_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/tagih-iuran/presentation/pages/tambah_tagih_iuran_page.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_keluarga.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_warga.dart';
@@ -53,6 +55,10 @@ import '../../features/channel-transfer/presentation/pages/daftar_channel_transf
 import '../../features/channel-transfer/presentation/pages/tambah_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
+
+import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
+import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
+import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -197,7 +203,7 @@ class AppRouter {
             child: const CetakLaporanPage(),
           ),
         );
-      
+
       // DAFTAR RUMAH
       case AppRoutes.daftarRumah:
         return MaterialPageRoute(
@@ -211,8 +217,18 @@ class AppRouter {
       case AppRoutes.daftarKategoriIuran:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) => sl<MasterIuranBloc>()..add(const LoadMasterIuranList()),
+            create: (_) =>
+                sl<MasterIuranBloc>()..add(const LoadMasterIuranList()),
             child: const DaftarKategoriTagihanPage(),
+          ),
+        );
+
+      // TAGIH IURAN
+      case AppRoutes.tambahTagihIuran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<TagihIuranBloc>(),
+            child: const TambahTagihIuranPage(),
           ),
         );
 
@@ -224,7 +240,7 @@ class AppRouter {
           ),
         );
 
-       // DAFTAR CHANNEL TRANSFER
+      // DAFTAR CHANNEL TRANSFER
       case AppRoutes.daftarChannelTransfer:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -246,7 +262,6 @@ class AppRouter {
           ),
         );
 
-
       case AppRoutes.editChannelTransfer:
         final channel = settings.arguments as TransferChannel;
         return MaterialPageRoute(
@@ -262,6 +277,25 @@ class AppRouter {
           builder: (context) => DetailTransferChannelPage(channel: channel),
         );
 
+      // TAGIHAN PEMBAYARAN
+      case AppRoutes.daftarTagihanPembayaran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                sl<TagihanBloc>()..add(const LoadTagihanPembayaranList()),
+            child: const DaftarTagihanPembayaranPage(),
+          ),
+        );
+
+      case AppRoutes.detailTagihanPembayaran:
+        final tagihanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) =>
+                sl<TagihanBloc>()..add(LoadTagihanPembayaranDetail(tagihanId)),
+            child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
+          ),
+        );
 
       // dikebutt moasss
       default:
