@@ -66,7 +66,7 @@ class MenuKeuangan extends StatelessWidget {
                 context,
                 Icons.account_balance,
                 "Channel\nTransfer",
-                "/channel-transfer",
+                "/daftar-channel-transfer",
               ),
               _buildMenuItem(
                 context,

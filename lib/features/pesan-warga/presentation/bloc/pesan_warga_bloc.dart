@@ -9,6 +9,8 @@ part 'pesan_warga_state.dart';
 
 class AspirasiBloc extends Bloc<AspirasiEvent, AspirasiState> {
   final AspirasiRepository repository;
+  String? currentRole;
+  int? currentUserId;
 
   AspirasiBloc({required this.repository}) : super(AspirasiInitial()) {
     on<LoadAspirasi>((event, emit) async {
@@ -66,5 +68,53 @@ class AspirasiBloc extends Bloc<AspirasiEvent, AspirasiState> {
         emit(AspirasiOperationFailure(e.toString()));
       }
     });
+
+   on<GetUserRoleEvent>((event, emit) async {
+      try {
+        final role = await repository
+            .getCurrentUserRole(); 
+        currentRole = role;
+
+        final s = state;
+        if (s is AspirasiLoaded) {
+          emit(AspirasiLoaded(s.aspirasiList));
+        } else if (s is AspirasiInitial) {
+          emit(AspirasiInitial());
+        } else if (s is AspirasiLoading) {
+          emit(AspirasiLoading());
+        } else if (s is AspirasiDetailLoaded) {
+          emit(AspirasiDetailLoaded(s.aspirasi));
+        } else if (s is AspirasiOperationFailure) {
+          emit(AspirasiOperationFailure(s.message));
+        } else {
+          emit(AspirasiInitial());
+        }
+      } catch (e) {
+        emit(AspirasiOperationFailure("Gagal mengambil role: $e"));
+      }
+    });
+
+    on<GetUserIdEvent>((event, emit) async {
+      try {
+        final id = await repository
+            .getCurrentUserId(); 
+        currentUserId = id;
+      } catch (e) {
+        emit(AspirasiOperationFailure("Gagal mendapatkan userId: $e"));
+      }
+    });
+
+on<LoadUserData>((event, emit) async {
+  try {
+    currentRole = await repository.getCurrentUserRole();
+    currentUserId = await repository.getCurrentUserId();
+
+    if (state is AspirasiLoaded) {
+      emit(AspirasiLoaded((state as AspirasiLoaded).aspirasiList));
+    }
+  } catch (e) {
+    emit(AspirasiOperationFailure("Gagal memuat user data: $e"));
+  }
+});
   }
 }

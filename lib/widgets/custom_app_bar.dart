@@ -44,7 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
-                      Icons.diamond,
+                      Icons.book_rounded,
                       color: Colors.white,
                       size: 24,
                     ),
