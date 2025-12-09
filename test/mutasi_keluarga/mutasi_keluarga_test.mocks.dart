@@ -101,4 +101,46 @@ class MockMutasiKeluargaDatasourceImplementation extends _i1.Mock
                 ),
           )
           as _i5.Future<_i3.MutasiKeluargaModel>);
+
+  @override
+  _i5.Future<List<Map<String, dynamic>>> getOptionKeluarga() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOptionKeluarga, []),
+            returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+            returnValueForMissingStub:
+                _i5.Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[],
+                ),
+          )
+          as _i5.Future<List<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<List<Map<String, dynamic>>> getOptionRumah() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOptionRumah, []),
+            returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+            returnValueForMissingStub:
+                _i5.Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[],
+                ),
+          )
+          as _i5.Future<List<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<List<Map<String, dynamic>>> getOptionWarga() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOptionWarga, []),
+            returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+            returnValueForMissingStub:
+                _i5.Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[],
+                ),
+          )
+          as _i5.Future<List<Map<String, dynamic>>>);
 }
