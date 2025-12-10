@@ -33,4 +33,7 @@ class AppRoutes {
   static const tambahChannelTransfer = '/tambah-channel-transfer';
   static const editChannelTransfer = '/edit-channel-transfer';
   static const detailChannelTransfer = '/detail-channel-transfer';
+
+  // static const penerimaanWarga = '/penerimaan-warga';
+
 }
