@@ -34,9 +34,7 @@ class AppRoutes {
   static const editChannelTransfer = '/edit-channel-transfer';
   static const detailChannelTransfer = '/detail-channel-transfer';
 
-<<<<<<< HEAD
-  // static const penerimaanWarga = '/penerimaan-warga';
-=======
+
   static const tambahTagihIuran = '/tambah-tagih-iuran';
 
   static const daftarTagihanPembayaran = '/daftar-tagihan-pembayaran';
@@ -51,6 +49,6 @@ class AppRoutes {
   static const tambahUser = '/tambah-user';
   static const editUser = '/edit-user';
   static const hapusUser = '/hapus-user';
->>>>>>> ca1d6b39775f4c13ccf54fe7aff26cf62a15d2b7
+
 
 }
