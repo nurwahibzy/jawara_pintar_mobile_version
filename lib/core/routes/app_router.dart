@@ -6,6 +6,8 @@ import 'package:jawara_pintar_mobile_version/features/channel-transfer/presentat
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/pages/daftar_kategori_tagihan.dart';
+import 'package:jawara_pintar_mobile_version/features/tagih-iuran/presentation/bloc/tagih_iuran_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/tagih-iuran/presentation/pages/tambah_tagih_iuran_page.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_keluarga.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/daftar_warga.dart';
@@ -54,7 +56,24 @@ import '../../features/channel-transfer/presentation/pages/tambah_channel_transf
 import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
 
+<<<<<<< HEAD
 // import 'package:flutter/material.dart';
+=======
+import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
+import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
+import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
+
+import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
+import '../../features/pemasukan/presentation/pages/daftar_pemasukan_page.dart';
+import '../../features/pemasukan/presentation/pages/detail_pemasukan_page.dart';
+import '../../features/pemasukan/presentation/pages/form_pemasukan_page.dart';
+
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_event.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/daftar_users.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/tambah_users.dart';
+
+>>>>>>> ca1d6b39775f4c13ccf54fe7aff26cf62a15d2b7
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -199,7 +218,7 @@ class AppRouter {
             child: const CetakLaporanPage(),
           ),
         );
-      
+
       // DAFTAR RUMAH
       case AppRoutes.daftarRumah:
         return MaterialPageRoute(
@@ -213,8 +232,18 @@ class AppRouter {
       case AppRoutes.daftarKategoriIuran:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) => sl<MasterIuranBloc>()..add(const LoadMasterIuranList()),
+            create: (_) =>
+                sl<MasterIuranBloc>()..add(const LoadMasterIuranList()),
             child: const DaftarKategoriTagihanPage(),
+          ),
+        );
+
+      // TAGIH IURAN
+      case AppRoutes.tambahTagihIuran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<TagihIuranBloc>(),
+            child: const TambahTagihIuranPage(),
           ),
         );
 
@@ -226,7 +255,7 @@ class AppRouter {
           ),
         );
 
-       // DAFTAR CHANNEL TRANSFER
+      // DAFTAR CHANNEL TRANSFER
       case AppRoutes.daftarChannelTransfer:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -248,7 +277,6 @@ class AppRouter {
           ),
         );
 
-
       case AppRoutes.editChannelTransfer:
         final channel = settings.arguments as TransferChannel;
         return MaterialPageRoute(
@@ -262,6 +290,71 @@ class AppRouter {
         final channel = settings.arguments as TransferChannel;
         return MaterialPageRoute(
           builder: (context) => DetailTransferChannelPage(channel: channel),
+        );
+
+      // TAGIHAN PEMBAYARAN
+      case AppRoutes.daftarTagihanPembayaran:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                sl<TagihanBloc>()..add(const LoadTagihanPembayaranList()),
+            child: const DaftarTagihanPembayaranPage(),
+          ),
+        );
+
+      case AppRoutes.detailTagihanPembayaran:
+        final tagihanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) =>
+                sl<TagihanBloc>()..add(LoadTagihanPembayaranDetail(tagihanId)),
+            child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
+          ),
+        );
+
+      // PEMASUKAN
+      case AppRoutes.daftarPemasukan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                sl<PemasukanBloc>()..add(const GetPemasukanListEvent()),
+            child: const DaftarPemasukanPage(),
+          ),
+        );
+
+      case AppRoutes.detailPemasukan:
+        final pemasukanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) =>
+                sl<PemasukanBloc>()..add(GetPemasukanDetailEvent(pemasukanId)),
+            child: DetailPemasukanPage(pemasukanId: pemasukanId),
+          ),
+        );
+
+      case AppRoutes.formPemasukan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PemasukanBloc>(),
+            child: const FormPemasukanPage(),
+          ),
+        );
+
+         //Manajemen User
+      case AppRoutes.daftarUser:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<UsersBloc>()..add(const LoadUsers()),
+            child: const DaftarUsers(),
+          ),
+        );
+
+      case AppRoutes.tambahUser:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<UsersBloc>(),
+            child: const TambahUsers(),
+          ),
         );
 
 

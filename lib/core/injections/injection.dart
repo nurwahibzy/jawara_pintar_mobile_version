@@ -129,6 +129,46 @@ import '../../features/channel-transfer/domain/usecases/update_channel_transfer.
 import '../../features/channel-transfer/domain/usecases/delete_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/bloc/channel_transfer_bloc.dart';
 
+// TAGIH IURAN
+import '../../features/tagih-iuran/data/datasources/tagih_iuran_remote_datasource.dart';
+import '../../features/tagih-iuran/data/repositories/tagih_iuran_repository_impl.dart';
+import '../../features/tagih-iuran/domain/repositories/tagih_iuran_repository.dart';
+import '../../features/tagih-iuran/domain/usecases/get_master_iuran_dropdown.dart';
+import '../../features/tagih-iuran/domain/usecases/create_tagih_iuran.dart';
+import '../../features/tagih-iuran/presentation/bloc/tagih_iuran_bloc.dart';
+
+// TAGIHAN PEMBAYARAN
+import '../../features/tagihan/data/datasources/tagihan_remote_datasource.dart';
+import '../../features/tagihan/data/repositories/tagihan_repository_impl.dart';
+import '../../features/tagihan/domain/repositories/tagihan_repository.dart';
+import '../../features/tagihan/domain/usecases/get_tagihan_pembayaran_list.dart';
+import '../../features/tagihan/domain/usecases/get_tagihan_pembayaran_detail.dart';
+import '../../features/tagihan/domain/usecases/approve_tagihan_pembayaran.dart';
+import '../../features/tagihan/domain/usecases/reject_tagihan_pembayaran.dart';
+import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
+
+// PEMASUKAN
+import '../../features/pemasukan/data/datasources/pemasukan_remote_datasource.dart';
+import '../../features/pemasukan/data/repositories/pemasukan_repository_impl.dart';
+import '../../features/pemasukan/domain/repositories/pemasukan_repository.dart';
+import '../../features/pemasukan/domain/usecases/get_pemasukan_list.dart';
+import '../../features/pemasukan/domain/usecases/get_pemasukan_detail.dart';
+import '../../features/pemasukan/domain/usecases/create_pemasukan.dart';
+import '../../features/pemasukan/domain/usecases/update_pemasukan.dart';
+import '../../features/pemasukan/domain/usecases/delete_pemasukan.dart';
+import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
+
+// Manajemen Pengguna
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/datasources/users_datasource.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/repositories/users_repository_implementation.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/repositories/users_repository.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/create_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/delete_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_all_users.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/update_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -396,10 +436,9 @@ Future<void> init() async {
     () => TransferChannelRemoteDataSourceImpl(),
   );
 
- sl.registerLazySingleton<TransferChannelRepository>(
+  sl.registerLazySingleton<TransferChannelRepository>(
     () => TransferChannelRepositoryImpl(sl<TransferChannelRemoteDataSource>()),
   );
-
 
   sl.registerLazySingleton(() => GetAllTransferChannels(sl()));
   sl.registerLazySingleton(() => GetTransferChannelById(sl()));
@@ -407,7 +446,96 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateTransferChannel(sl()));
   sl.registerLazySingleton(() => DeleteTransferChannel(sl()));
 
-sl.registerFactory(
+  sl.registerFactory(
     () => TransferChannelBloc(repository: sl<TransferChannelRepository>()),
   );
+
+  // --------------------------------------------------------------------------
+  // TAGIH IURAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<TagihIuranRemoteDataSource>(
+    () => TagihIuranRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<TagihIuranRepository>(
+    () => TagihIuranRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetMasterIuranDropdown(sl()));
+  sl.registerLazySingleton(() => CreateTagihIuran(sl()));
+
+  sl.registerFactory(
+    () => TagihIuranBloc(getMasterIuranDropdown: sl(), createTagihIuran: sl()),
+  );
+
+  // --------------------------------------------------------------------------
+  // TAGIHAN PEMBAYARAN
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<TagihanRemoteDataSource>(
+    () => TagihanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<TagihanRepository>(
+    () => TagihanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetTagihanPembayaranList(sl()));
+  sl.registerLazySingleton(() => GetTagihanPembayaranDetail(sl()));
+  sl.registerLazySingleton(() => ApproveTagihanPembayaran(sl()));
+  sl.registerLazySingleton(() => RejectTagihanPembayaran(sl()));
+
+  sl.registerFactory(
+    () => TagihanBloc(
+      getTagihanPembayaranList: sl(),
+      getTagihanPembayaranDetail: sl(),
+      approveTagihanPembayaran: sl(),
+      rejectTagihanPembayaran: sl(),
+    ),
+  );
+
+  // PEMASUKAN
+  sl.registerLazySingleton<PemasukanRemoteDataSource>(
+    () => PemasukanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<PemasukanRepository>(
+    () => PemasukanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetPemasukanList(sl()));
+  sl.registerLazySingleton(() => GetPemasukanDetail(sl()));
+  sl.registerLazySingleton(() => CreatePemasukan(sl()));
+  sl.registerLazySingleton(() => UpdatePemasukan(sl()));
+  sl.registerLazySingleton(() => DeletePemasukan(sl()));
+
+  sl.registerFactory(
+    () => PemasukanBloc(
+      getPemasukanList: sl(),
+      getPemasukanDetail: sl(),
+      createPemasukan: sl(),
+      updatePemasukan: sl(),
+      deletePemasukan: sl(),
+      repository: sl(),
+    ),
+  );
+
+  // --------------------------------------------------------------------------
+  // Manajemen Pengguna
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<UsersDataSource>(
+    () => UsersDataSourceImplementation(),
+  );
+
+  sl.registerLazySingleton<UsersRepository>(
+    () => UsersRepositoryImplementation(sl(), supabaseClient),
+  );
+
+  sl.registerLazySingleton(() => GetAllUsers(sl()));
+  sl.registerLazySingleton(() => GetUserById(sl()));
+  sl.registerLazySingleton(() => CreateUser(sl()));
+  sl.registerLazySingleton(() => UpdateUser(sl()));
+  sl.registerLazySingleton(() => DeleteUser(sl()));
+  // sl.registerLazySingleton(() => DeleteUser(sl()));
+
+  sl.registerFactory(() => UsersBloc(repository: sl<UsersRepository>()));
 }

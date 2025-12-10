@@ -9,10 +9,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppColors.primary,
-            AppColors.primary.withOpacity(0.85),
-          ],
+          colors: [AppColors.primary, AppColors.primary.withOpacity(0.85)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -106,13 +103,62 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  // Tombol Profil
+                  // Tombol Logout
                   Material(
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        Navigator.pushNamed(context, '/profil');
+                        // TAMPILKAN DIALOG KONFIRMASI
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Konfirmasi Logout"),
+                              content: const Text(
+                                "Apakah Anda yakin ingin keluar dari aplikasi?",
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              actions: [
+                                // Tombol Batal
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Tutup dialog
+                                  },
+                                  child: const Text(
+                                    "Batal",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                                // Tombol Ya/Keluar
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // Tutup dialog terlebih dahulu
+
+                                    // LAKUKAN AKSI LOGOUT DI SINI
+                                    // Disarankan menggunakan pushNamedAndRemoveUntil agar user tidak bisa 'Back' lagi
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      '/logout', // Ganti dengan rute login page Anda (misal '/login')
+                                      (route) => false,
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Ya, Keluar",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),
@@ -125,7 +171,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         child: const Icon(
-                          Icons.person_rounded,
+                          Icons.logout,
                           color: Colors.white,
                           size: 20,
                         ),
