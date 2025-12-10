@@ -7,6 +7,8 @@ import 'core/utils/erors_checkers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/injections/injection.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter/material.dart';
+import 'core/routes/app_router.dart'; 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

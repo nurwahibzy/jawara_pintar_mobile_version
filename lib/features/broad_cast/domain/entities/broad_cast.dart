@@ -8,6 +8,6 @@ class BroadCast {
     required this.id,
     required this.judul,
     required this.pesan,
-    required this.createdAt,
+    required this.createdAt, String? lampiranGambar, lampiranDokumen, createdBy
   });
 }

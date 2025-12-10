@@ -56,6 +56,9 @@ import '../../features/channel-transfer/presentation/pages/tambah_channel_transf
 import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
 
+<<<<<<< HEAD
+// import 'package:flutter/material.dart';
+=======
 import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
@@ -70,6 +73,7 @@ import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/blo
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/daftar_users.dart';
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/tambah_users.dart';
 
+>>>>>>> ca1d6b39775f4c13ccf54fe7aff26cf62a15d2b7
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
