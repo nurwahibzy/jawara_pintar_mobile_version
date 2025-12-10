@@ -147,6 +147,17 @@ import '../../features/tagihan/domain/usecases/approve_tagihan_pembayaran.dart';
 import '../../features/tagihan/domain/usecases/reject_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 
+// PEMASUKAN
+import '../../features/pemasukan/data/datasources/pemasukan_remote_datasource.dart';
+import '../../features/pemasukan/data/repositories/pemasukan_repository_impl.dart';
+import '../../features/pemasukan/domain/repositories/pemasukan_repository.dart';
+import '../../features/pemasukan/domain/usecases/get_pemasukan_list.dart';
+import '../../features/pemasukan/domain/usecases/get_pemasukan_detail.dart';
+import '../../features/pemasukan/domain/usecases/create_pemasukan.dart';
+import '../../features/pemasukan/domain/usecases/update_pemasukan.dart';
+import '../../features/pemasukan/domain/usecases/delete_pemasukan.dart';
+import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -468,6 +479,32 @@ Future<void> init() async {
       getTagihanPembayaranDetail: sl(),
       approveTagihanPembayaran: sl(),
       rejectTagihanPembayaran: sl(),
+    ),
+  );
+
+  // PEMASUKAN
+  sl.registerLazySingleton<PemasukanRemoteDataSource>(
+    () => PemasukanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<PemasukanRepository>(
+    () => PemasukanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetPemasukanList(sl()));
+  sl.registerLazySingleton(() => GetPemasukanDetail(sl()));
+  sl.registerLazySingleton(() => CreatePemasukan(sl()));
+  sl.registerLazySingleton(() => UpdatePemasukan(sl()));
+  sl.registerLazySingleton(() => DeletePemasukan(sl()));
+
+  sl.registerFactory(
+    () => PemasukanBloc(
+      getPemasukanList: sl(),
+      getPemasukanDetail: sl(),
+      createPemasukan: sl(),
+      updatePemasukan: sl(),
+      deletePemasukan: sl(),
+      repository: sl(),
     ),
   );
 }
