@@ -77,31 +77,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Row(
                 children: [
                   // Tombol Pesan
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/daftar-pesan-warga');
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                            width: 1,
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.message_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(width: 8),
                   // Tombol Logout
                   Material(
@@ -114,9 +89,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text("Konfirmasi Logout"),
+                              // title: const Text("Konfirmasi Logout"),s
                               content: const Text(
                                 "Apakah Anda yakin ingin keluar dari aplikasi?",
+                                style: TextStyle(fontSize: 18),
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
