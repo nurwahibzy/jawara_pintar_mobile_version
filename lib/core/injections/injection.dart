@@ -158,6 +158,17 @@ import '../../features/pemasukan/domain/usecases/update_pemasukan.dart';
 import '../../features/pemasukan/domain/usecases/delete_pemasukan.dart';
 import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
 
+// Manajemen Pengguna
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/datasources/users_datasource.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/repositories/users_repository_implementation.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/repositories/users_repository.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/create_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/delete_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_all_users.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/update_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -507,4 +518,24 @@ Future<void> init() async {
       repository: sl(),
     ),
   );
+
+  // --------------------------------------------------------------------------
+  // Manajemen Pengguna
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<UsersDataSource>(
+    () => UsersDataSourceImplementation(),
+  );
+
+  sl.registerLazySingleton<UsersRepository>(
+    () => UsersRepositoryImplementation(sl(), supabaseClient),
+  );
+
+  sl.registerLazySingleton(() => GetAllUsers(sl()));
+  sl.registerLazySingleton(() => GetUserById(sl()));
+  sl.registerLazySingleton(() => CreateUser(sl()));
+  sl.registerLazySingleton(() => UpdateUser(sl()));
+  sl.registerLazySingleton(() => DeleteUser(sl()));
+  // sl.registerLazySingleton(() => DeleteUser(sl()));
+
+  sl.registerFactory(() => UsersBloc(repository: sl<UsersRepository>()));
 }

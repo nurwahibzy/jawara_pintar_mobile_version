@@ -65,6 +65,12 @@ import '../../features/pemasukan/presentation/pages/daftar_pemasukan_page.dart';
 import '../../features/pemasukan/presentation/pages/detail_pemasukan_page.dart';
 import '../../features/pemasukan/presentation/pages/form_pemasukan_page.dart';
 
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_event.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/daftar_users.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/tambah_users.dart';
+
+
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -329,6 +335,24 @@ class AppRouter {
             child: const FormPemasukanPage(),
           ),
         );
+
+         //Manajemen User
+      case AppRoutes.daftarUser:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<UsersBloc>()..add(const LoadUsers()),
+            child: const DaftarUsers(),
+          ),
+        );
+
+      case AppRoutes.tambahUser:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<UsersBloc>(),
+            child: const TambahUsers(),
+          ),
+        );
+
 
       // dikebutt moasss
       default:

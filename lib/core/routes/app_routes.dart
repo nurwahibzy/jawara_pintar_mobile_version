@@ -42,4 +42,11 @@ class AppRoutes {
   static const daftarPemasukan = '/daftar-pemasukan';
   static const detailPemasukan = '/detail-pemasukan';
   static const formPemasukan = '/form-pemasukan';
+
+  // manajemen user
+  static const daftarUser = '/daftar-user';
+  static const tambahUser = '/tambah-user';
+  static const editUser = '/edit-user';
+  static const hapusUser = '/hapus-user';
+
 }
