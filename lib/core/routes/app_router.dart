@@ -60,6 +60,11 @@ import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
 
+import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
+import '../../features/pemasukan/presentation/pages/daftar_pemasukan_page.dart';
+import '../../features/pemasukan/presentation/pages/detail_pemasukan_page.dart';
+import '../../features/pemasukan/presentation/pages/form_pemasukan_page.dart';
+
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -294,6 +299,34 @@ class AppRouter {
             create: (_) =>
                 sl<TagihanBloc>()..add(LoadTagihanPembayaranDetail(tagihanId)),
             child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
+          ),
+        );
+
+      // PEMASUKAN
+      case AppRoutes.daftarPemasukan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                sl<PemasukanBloc>()..add(const GetPemasukanListEvent()),
+            child: const DaftarPemasukanPage(),
+          ),
+        );
+
+      case AppRoutes.detailPemasukan:
+        final pemasukanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) =>
+                sl<PemasukanBloc>()..add(GetPemasukanDetailEvent(pemasukanId)),
+            child: DetailPemasukanPage(pemasukanId: pemasukanId),
+          ),
+        );
+
+      case AppRoutes.formPemasukan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PemasukanBloc>(),
+            child: const FormPemasukanPage(),
           ),
         );
 

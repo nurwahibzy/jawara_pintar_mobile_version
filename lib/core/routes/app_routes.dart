@@ -38,4 +38,8 @@ class AppRoutes {
 
   static const daftarTagihanPembayaran = '/daftar-tagihan-pembayaran';
   static const detailTagihanPembayaran = '/detail-tagihan-pembayaran';
+
+  static const daftarPemasukan = '/daftar-pemasukan';
+  static const detailPemasukan = '/detail-pemasukan';
+  static const formPemasukan = '/form-pemasukan';
 }
