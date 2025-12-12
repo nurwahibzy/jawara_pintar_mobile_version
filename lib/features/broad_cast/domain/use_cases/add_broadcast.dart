@@ -1,12 +1,13 @@
-import '../entities/broad_cast.dart';
-import '../repositories/broad_cast_repository.dart';
+import '../entities/broadcast.dart';
+import '../repositories/broadcast_repository.dart';
 
-class AddBroadcast {
-  final BroadcastRepository repository;
 
-  AddBroadcast(this.repository);
+class AddBroadcastUseCase {
+final BroadcastRepository repository;
+AddBroadcastUseCase(this.repository);
 
-  Future<bool> call(BroadCast entity) {
-    return repository.addBroadcast(entity);
-  }
+
+Future<void> call(Broadcast data) async {
+await repository.addBroadcast(data);
+}
 }

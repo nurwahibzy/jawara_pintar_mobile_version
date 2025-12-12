@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
+import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/blocs/broadcast_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/pages/broad_cast_page.dart';
 import 'package:jawara_pintar_mobile_version/features/channel-transfer/domain/repositories/channel_transfer_repository.dart';
 import 'package:jawara_pintar_mobile_version/features/channel-transfer/presentation/bloc/channel_transfer_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
@@ -309,50 +311,16 @@ class AppRouter {
           ),
         );
 
-      // PEMASUKAN
-      case AppRoutes.daftarPemasukan:
+      // BROADCAST
+      case AppRoutes.BroadCast:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) =>
-                sl<PemasukanBloc>()..add(const GetPemasukanListEvent()),
-            child: const DaftarPemasukanPage(),
+                sl<BroadcastBloc>()..add(const GetPemasukanListEvent()),
+            child: BroadCastPage(addBroadcast: null,),
           ),
         );
 
-      case AppRoutes.detailPemasukan:
-        final pemasukanId = settings.arguments as int;
-        return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (_) =>
-                sl<PemasukanBloc>()..add(GetPemasukanDetailEvent(pemasukanId)),
-            child: DetailPemasukanPage(pemasukanId: pemasukanId),
-          ),
-        );
-
-      case AppRoutes.formPemasukan:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<PemasukanBloc>(),
-            child: const FormPemasukanPage(),
-          ),
-        );
-
-         //Manajemen User
-      case AppRoutes.daftarUser:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<UsersBloc>()..add(const LoadUsers()),
-            child: const DaftarUsers(),
-          ),
-        );
-
-      case AppRoutes.tambahUser:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<UsersBloc>(),
-            child: const TambahUsers(),
-          ),
-        );
 
 
       // dikebutt moasss
