@@ -1,72 +1,45 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/broadcast_bloc.dart';
 import '../../domain/entities/broadcast.dart';
 
-class BroadCastPage extends StatefulWidget {
-  final BroadCastPage addBroadcast;
 
-  const BroadCastPage({super.key, required this.addBroadcast});
+class BroadCastPage extends StatelessWidget {
+const BroadCastPage({super.key});
 
-  @override
-  State<BroadCastPage> createState() => _BroadCastPageState();
+
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+appBar: AppBar(title: const Text('Broadcast RT')),
+body: BlocBuilder<BroadcastBloc, BroadcastState>(
+builder: (context, state) {
+if (state is BroadcastLoading) {
+return const Center(child: CircularProgressIndicator());
 }
 
-class _BroadCastPageState extends State<BroadCastPage> {
-  final _gambarController = TextEditingController();
-  final _dokumenController = TextEditingController();
 
-  void _submit() async {
-    final newBroadcast = (
-      lampiranGambar: _gambarController.text.isEmpty ? null : _gambarController.text,
-      lampiranDokumen: _dokumenController.text.isEmpty ? null : _dokumenController.text,
-      createdBy: 1,
-    );
-
-    await widget.addBroadcast;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Broadcast berhasil ditambahkan!')),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Tambah Broadcast')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _gambarController,
-              decoration: const InputDecoration(labelText: 'Lampiran Gambar'),
-            ),
-            TextField(
-              controller: _dokumenController,
-              decoration: const InputDecoration(labelText: 'Lampiran Dokumen'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text('Simpan'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+if (state is BroadcastLoaded) {
+return ListView.builder(
+itemCount: state.data.length,
+itemBuilder: (context, index) {
+final item = state.data[index];
+return ListTile(
+title: Text(item.judul),
+subtitle: Text(item.isiPesan),
+);
+},
+);
 }
 
-// class BroadCastPage extends StatelessWidget {
-//   const BroadCastPage({super.key});
 
-//   static const String routeName = '/broad_cast';
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('BroadCast')),
-//       body: const Center(child: Text('BroadCast Page')),
-//     );
-//   }
-// }
+return const Center(child: Text('Tidak ada data broadcast'));
+},
+),
+floatingActionButton: FloatingActionButton(
+onPressed: () {},
+child: const Icon(Icons.add),
+),
+);
+}
+}

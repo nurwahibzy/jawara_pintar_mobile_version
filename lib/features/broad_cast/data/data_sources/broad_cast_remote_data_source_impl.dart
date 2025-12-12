@@ -1,41 +1,32 @@
-import 'package:jawara_pintar_mobile_version/features/broad_cast/data/models/broad_cast_model.dart';
-
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../domain/entities/broadcast.dart';
 import '../models/broadcast_model.dart';
 
-abstract class BroadcastRemoteDataSource {
-  Future<void> insertBroadcast(BroadcastModel broadcast);
+
+abstract class BroadCastRemoteDataSource {
+Future<List<BroadcastModel>> getAllBroadcast();
+Future<void> addBroadcast(BroadcastModel model);
 }
 
-class BroadcastRemoteDataSourceImpl implements BroadcastRemoteDataSource {
-  final http.Client client;
-  final String baseUrl;
 
-  BroadcastRemoteDataSourceImpl({required this.client, required this.baseUrl});
+class BroadCastRemoteDataSourceImpl implements BroadCastRemoteDataSource {
+final SupabaseClient client;
+BroadCastRemoteDataSourceImpl(this.client);
 
-  @override
-  Future<void> insertBroadcast(BroadcastModel broadcast) async {
-    final response = await client.post(
-      Uri.parse('$baseUrl/broadcast'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(broadcast.toJson()),
-    );
 
-    if (response.statusCode != 201) {
-      throw Exception('Failed to insert broadcast');
-    }
-  }
+@override
+Future<List<BroadcastModel>> getAllBroadcast() async {
+final response = await client.from('broadcast').select();
+
+
+return response
+.map((e) => BroadcastModel.fromJson(e))
+.toList();
 }
 
-// class BroadCastRemoteDataSourceImpl implements BroadCastRemoteDataSource {
-//   const BroadCastRemoteDataSourceImpl();
 
-//   Future<T> _run<T>(Future<T> Function() function) async {
-//     try {
-//       return await function();
-//     } catch (e) {
-//       rethrow;
-//     }
-//   }
-// }
+@override
+Future<void> addBroadcast(BroadcastModel model) async {
+await client.from('broadcast').insert(model.toJson());
+}
+}

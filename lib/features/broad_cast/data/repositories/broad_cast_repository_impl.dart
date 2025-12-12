@@ -1,26 +1,37 @@
-import '../../domain/repositories/broad_cast_repository.dart';
-import '../../domain/entities/broad_cast.dart';
+import 'package:jawara_pintar_mobile_version/features/broad_cast/data/data_sources/broad_cast_remote_data_source_impl.dart';
+
+import '../../domain/entities/broadcast.dart';
+import '../../domain/repositories/broadcast_repository.dart';
+import '../data_sources/broad_cast_remote_data_source_impl.dart';
+import '../models/broadcast_model.dart';
+
 
 class BroadCastRepositoryImpl implements BroadcastRepository {
-  const BroadCastRepositoryImpl();
+final BroadCastRemoteDataSource remote;
 
-  Future<T> _run<T>(Future<T> Function() function) async {
-    try {
-      return await function();
-    } catch (e) {
-      rethrow;
-    }
-  }
 
-  @override
-  Future<bool> addBroadcast(BroadCast broadcast) async {
-    // TODO: implement addBroadcast
-    throw UnimplementedError();
-  }
+BroadCastRepositoryImpl(this.remote);
 
-  @override
-  Future<List<BroadCast>> getBroadcastList() async {
-    // TODO: implement getBroadcastList
-    throw UnimplementedError();
-  }
+
+@override
+Future<List<Broadcast>> getAllBroadcast() async {
+return await remote.getAllBroadcast();
+}
+
+
+@override
+Future<void> addBroadcast(Broadcast data) async {
+final model = BroadcastModel(
+id: data.id,
+judul: data.judul,
+isiPesan: data.isiPesan,
+tanggalPublikasi: data.tanggalPublikasi,
+lampiranGambar: data.lampiranGambar,
+lampiranDokumen: data.lampiranDokumen,
+createdBy: data.createdBy,
+);
+
+
+await remote.addBroadcast(model);
+}
 }

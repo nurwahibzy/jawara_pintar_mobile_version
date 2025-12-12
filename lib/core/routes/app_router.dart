@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
+import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/blocs/broadcast_bloc.dart';
+import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/pages/broad_cast_page.dart';
 import 'package:jawara_pintar_mobile_version/features/channel-transfer/domain/repositories/channel_transfer_repository.dart';
 import 'package:jawara_pintar_mobile_version/features/channel-transfer/presentation/bloc/channel_transfer_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
@@ -56,9 +58,7 @@ import '../../features/channel-transfer/presentation/pages/tambah_channel_transf
 import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
 
-<<<<<<< HEAD
 // import 'package:flutter/material.dart';
-=======
 import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
@@ -73,7 +73,6 @@ import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/blo
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/daftar_users.dart';
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/tambah_users.dart';
 
->>>>>>> ca1d6b39775f4c13ccf54fe7aff26cf62a15d2b7
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -312,50 +311,16 @@ class AppRouter {
           ),
         );
 
-      // PEMASUKAN
-      case AppRoutes.daftarPemasukan:
+      // BROADCAST
+      case AppRoutes.BroadCast:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) =>
-                sl<PemasukanBloc>()..add(const GetPemasukanListEvent()),
-            child: const DaftarPemasukanPage(),
+                sl<BroadcastBloc>()..add(const GetPemasukanListEvent()),
+            child: BroadCastPage(addBroadcast: null,),
           ),
         );
 
-      case AppRoutes.detailPemasukan:
-        final pemasukanId = settings.arguments as int;
-        return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (_) =>
-                sl<PemasukanBloc>()..add(GetPemasukanDetailEvent(pemasukanId)),
-            child: DetailPemasukanPage(pemasukanId: pemasukanId),
-          ),
-        );
-
-      case AppRoutes.formPemasukan:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<PemasukanBloc>(),
-            child: const FormPemasukanPage(),
-          ),
-        );
-
-         //Manajemen User
-      case AppRoutes.daftarUser:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<UsersBloc>()..add(const LoadUsers()),
-            child: const DaftarUsers(),
-          ),
-        );
-
-      case AppRoutes.tambahUser:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => sl<UsersBloc>(),
-            child: const TambahUsers(),
-          ),
-        );
 
 
       // dikebutt moasss
