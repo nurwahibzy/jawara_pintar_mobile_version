@@ -80,6 +80,15 @@ class KeluargaDetailLoaded extends WargaState {
   List<Object?> get props => [keluarga];
 }
 
+class KeluargaActionSuccess extends WargaState {
+  final String message;
+  final int? keluargaId;
+  const KeluargaActionSuccess(this.message, {this.keluargaId});
+
+  @override
+  List<Object?> get props => [message, keluargaId];
+}
+
 // Rumah States
 class RumahLoading extends WargaState {}
 
@@ -97,4 +106,13 @@ class RumahError extends WargaState {
 
   @override
   List<Object?> get props => [message];
+}
+
+// Warga Tanpa Keluarga States
+class WargaTanpaKeluargaLoaded extends WargaState {
+  final List<Warga> wargaList;
+  const WargaTanpaKeluargaLoaded(this.wargaList);
+
+  @override
+  List<Object?> get props => [wargaList];
 }

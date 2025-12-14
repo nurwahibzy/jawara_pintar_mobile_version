@@ -281,17 +281,11 @@ class _WargaFormPageState extends State<WargaFormPage> {
         return;
       }
 
-      // Validasi keluarga untuk create mode
+      // Keluarga sekarang opsional
       final keluargaId =
           _selectedKeluarga?.id ??
           widget.keluargaId ??
           widget.warga?.keluargaId;
-      if (keluargaId == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Mohon pilih keluarga')));
-        return;
-      }
 
       final wargaData = Warga(
         idWarga: widget.warga?.idWarga ?? 0,
@@ -520,54 +514,84 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     const SizedBox(height: 24),
 
                     // --- KELUARGA ---
-                    Text(
-                      "Keluarga",
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Keluarga",
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        if (_selectedKeluarga != null)
+                          TextButton.icon(
+                            onPressed: () {
+                              setState(() => _selectedKeluarga = null);
+                            },
+                            icon: const Icon(Icons.clear, size: 18),
+                            label: const Text('Hapus Pilihan'),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 12),
                     // Dropdown Keluarga dengan Search
                     _isLoadingKeluarga
                         ? const Center(child: CircularProgressIndicator())
-                        : DropdownButtonFormField<Keluarga>(
-                            value: _selectedKeluarga,
-                            isExpanded: true,
-                            decoration: InputDecoration(
-                              labelText: "Pilih Keluarga (No. KK) *",
-                              enabledBorder: _inputBorder(theme.dividerColor),
-                              focusedBorder: _inputBorder(
-                                theme.colorScheme.primary,
-                              ),
-                              filled: true,
-                              fillColor:
-                                  theme.inputDecorationTheme.fillColor ??
-                                  theme.cardColor,
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.search),
-                                onPressed: () =>
-                                    _showKeluargaSearchDialog(context, theme),
-                              ),
-                            ),
-                            items: _keluargaList.map((keluarga) {
-                              return DropdownMenuItem<Keluarga>(
-                                value: keluarga,
-                                child: Text(
-                                  '${keluarga.nomorKk} (${keluarga.statusHunian})',
-                                  overflow: TextOverflow.ellipsis,
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DropdownButtonFormField<Keluarga>(
+                                value: _selectedKeluarga,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  labelText:
+                                      "Pilih Keluarga (No. KK) (Opsional)",
+                                  hintText: "Pilih keluarga atau kosongkan",
+                                  enabledBorder: _inputBorder(
+                                    theme.dividerColor,
+                                  ),
+                                  focusedBorder: _inputBorder(
+                                    theme.colorScheme.primary,
+                                  ),
+                                  filled: true,
+                                  fillColor:
+                                      theme.inputDecorationTheme.fillColor ??
+                                      theme.cardColor,
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(Icons.search),
+                                    onPressed: () => _showKeluargaSearchDialog(
+                                      context,
+                                      theme,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            }).toList(),
-                            onChanged: (val) =>
-                                setState(() => _selectedKeluarga = val),
-                            validator: (value) {
-                              if (value == null &&
-                                  widget.keluargaId == null &&
-                                  widget.warga?.keluargaId == null) {
-                                return 'Keluarga wajib dipilih';
-                              }
-                              return null;
-                            },
+                                items: _keluargaList.map((keluarga) {
+                                  return DropdownMenuItem<Keluarga>(
+                                    value: keluarga,
+                                    child: Text(
+                                      '${keluarga.nomorKk} (${keluarga.statusHunian})',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (val) =>
+                                    setState(() => _selectedKeluarga = val),
+                              ),
+                              if (_selectedKeluarga == null)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 8.0,
+                                    left: 12.0,
+                                  ),
+                                  child: Text(
+                                    'Warga akan disimpan tanpa keluarga',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: Colors.orange,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
 
                     const SizedBox(height: 24),

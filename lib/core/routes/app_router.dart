@@ -312,14 +312,14 @@ class AppRouter {
         );
 
       // BROADCAST
-      case AppRoutes.BroadCast:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) =>
-                sl<BroadcastBloc>()..add(const GetPemasukanListEvent()),
-            child: BroadCastPage(addBroadcast: null,),
-          ),
-        );
+      // case AppRoutes.BroadCast:
+      //   return MaterialPageRoute(
+      //     builder: (_) => BlocProvider(
+      //       create: (_) =>
+      //           sl<BroadcastBloc>()..add(const GetPemasukanListEvent()),
+      //       child: BroadCastPage(addBroadcast: null,),
+      //     ),
+      //   );
 
 
 

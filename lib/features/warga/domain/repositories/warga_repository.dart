@@ -14,6 +14,13 @@ abstract class WargaRepository {
   Future<Either<Failure, List<Keluarga>>> searchKeluarga(String query);
   Future<Either<Failure, List<Keluarga>>> getAllKeluargaWithRelations();
   Future<Either<Failure, Keluarga>> getKeluargaById(int id);
+  Future<Either<Failure, int>> createKeluarga(Keluarga keluarga);
+  Future<Either<Failure, bool>> updateKeluarga(Keluarga keluarga);
   Future<Either<Failure, List<Map<String, dynamic>>>> getAllRumahSimple();
   Future<Either<Failure, List<Map<String, dynamic>>>> searchRumah(String query);
+  Future<Either<Failure, List<Warga>>> getWargaTanpaKeluarga();
+  Future<Either<Failure, bool>> updateWargaKeluargaId(
+    List<int> wargaIds,
+    int keluargaId,
+  );
 }
