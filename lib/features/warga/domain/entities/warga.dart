@@ -2,31 +2,31 @@ import 'package:equatable/equatable.dart';
 
 class Warga extends Equatable {
   final int idWarga;
-  final int keluargaId;
+  final int? keluargaId; // Nullable - warga bisa tanpa keluarga
   final String nik;
   final String nama;
   final String nomorTelepon;
-  
+
   // Data Nullable
   final String? tempatLahir;
   final DateTime? tanggalLahir;
-  
+
   final String jenisKelamin;
   final String statusKeluarga;
   final String statusHidup;
-  
+
   final String? agama;
   final String? golonganDarah;
   final String? pendidikanTerakhir;
   final String? pekerjaan;
   final String? statusPenduduk;
-  
+
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   const Warga({
     required this.idWarga,
-    required this.keluargaId,
+    this.keluargaId, // Nullable
     required this.nik,
     required this.nama,
     required this.nomorTelepon,
