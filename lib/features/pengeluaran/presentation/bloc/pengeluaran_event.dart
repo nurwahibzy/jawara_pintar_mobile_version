@@ -30,7 +30,7 @@ class CreatePengeluaranEvent extends PengeluaranEvent {
   final Pengeluaran pengeluaran;
   final File? buktiFile;
 
-  CreatePengeluaranEvent(this.pengeluaran, {this.buktiFile});
+  const CreatePengeluaranEvent(this.pengeluaran, {this.buktiFile});
 }
 
 class UpdatePengeluaranEvent extends PengeluaranEvent {

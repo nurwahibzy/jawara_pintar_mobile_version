@@ -25,7 +25,6 @@ import 'package:supabase_flutter/supabase_flutter.dart' as _i2;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
-// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeSupabaseClient_0 extends _i1.SmartFake
     implements _i2.SupabaseClient {
@@ -101,4 +100,46 @@ class MockMutasiKeluargaDatasourceImplementation extends _i1.Mock
                 ),
           )
           as _i5.Future<_i3.MutasiKeluargaModel>);
+
+  @override
+  _i5.Future<List<Map<String, dynamic>>> getOptionKeluarga() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOptionKeluarga, []),
+            returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+            returnValueForMissingStub:
+                _i5.Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[],
+                ),
+          )
+          as _i5.Future<List<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<List<Map<String, dynamic>>> getOptionRumah() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOptionRumah, []),
+            returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+            returnValueForMissingStub:
+                _i5.Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[],
+                ),
+          )
+          as _i5.Future<List<Map<String, dynamic>>>);
+
+  @override
+  _i5.Future<List<Map<String, dynamic>>> getOptionWarga() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOptionWarga, []),
+            returnValue: _i5.Future<List<Map<String, dynamic>>>.value(
+              <Map<String, dynamic>>[],
+            ),
+            returnValueForMissingStub:
+                _i5.Future<List<Map<String, dynamic>>>.value(
+                  <Map<String, dynamic>>[],
+                ),
+          )
+          as _i5.Future<List<Map<String, dynamic>>>);
 }

@@ -85,7 +85,7 @@ class _DetailTagihanPembayaranPageState
     Color statusColor;
     IconData statusIcon;
 
-    switch (tagihan.statusVerifikasi) {
+    switch (tagihan.statusTagihan ?? tagihan.statusVerifikasi) {
       case 'Lunas':
         statusColor = Colors.green;
         statusIcon = Icons.check_circle;
@@ -99,7 +99,8 @@ class _DetailTagihanPembayaranPageState
         statusIcon = Icons.help_outline;
     }
 
-    final canApprove = tagihan.statusVerifikasi == 'Belum Lunas';
+    final canApprove = tagihan.statusTagihan == 'Belum Lunas';
+    final hasRiwayatPembayaran = tagihan.riwayatPembayaranId != null;
 
     return SingleChildScrollView(
       child: Column(
@@ -114,7 +115,7 @@ class _DetailTagihanPembayaranPageState
                 Icon(statusIcon, size: 60, color: statusColor),
                 const SizedBox(height: 12),
                 Text(
-                  tagihan.statusVerifikasi,
+                  tagihan.statusTagihan ?? tagihan.statusVerifikasi,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -187,10 +188,56 @@ class _DetailTagihanPembayaranPageState
                   ),
                 ),
 
-                // Bukti Bayar Image (hanya tampilkan jika ada)
-                if (tagihan.bukti.isNotEmpty) ...[
+                // Informasi Metode Pembayaran
+                if (hasRiwayatPembayaran) ...[
                   const SizedBox(height: 24),
-                  _buildSectionTitle('Bukti Pembayaran'),
+                  _buildSectionTitle('Metode Pembayaran'),
+                  const SizedBox(height: 12),
+                  Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildDetailRow(
+                            'Metode',
+                            tagihan.metodePembayaran ?? '-',
+                            bold: true,
+                          ),
+                          const Divider(height: 24),
+                          _buildDetailRow(
+                            'Tanggal Bayar',
+                            tagihan.tanggalBayarRiwayat != null
+                                ? dateFormatter.format(
+                                    tagihan.tanggalBayarRiwayat!,
+                                  )
+                                : '-',
+                          ),
+                          const Divider(height: 24),
+                          _buildDetailRow(
+                            'Status Verifikasi',
+                            tagihan.statusVerifikasiRiwayat ?? '-',
+                            bold: true,
+                            valueColor:
+                                tagihan.statusVerifikasiRiwayat == 'Verified'
+                                ? Colors.green
+                                : Colors.orange,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+
+                // Bukti Bayar Image (hanya tampilkan jika ada riwayat pembayaran)
+                if (hasRiwayatPembayaran &&
+                    tagihan.buktiBayar != null &&
+                    tagihan.buktiBayar!.isNotEmpty) ...[
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Bukti Pembayaran Transfer'),
                   const SizedBox(height: 12),
                   Card(
                     elevation: 2,
@@ -199,7 +246,7 @@ class _DetailTagihanPembayaranPageState
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: Image.network(
-                      tagihan.bukti,
+                      tagihan.buktiBayar!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
@@ -254,28 +301,107 @@ class _DetailTagihanPembayaranPageState
                 if (canApprove) ...[
                   _buildSectionTitle('Tindakan'),
                   const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _showApproveDialog(tagihan.id),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+
+                  // Jika ada riwayat pembayaran (Transfer)
+                  if (hasRiwayatPembayaran) ...[
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.blue[200]!),
                       ),
-                      icon: const Icon(Icons.payment, size: 24),
-                      label: const Text(
-                        'Tandai Sudah Lunas',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      child: Row(
+                        children: [
+                          Icon(Icons.info_outline, color: Colors.blue[700]),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Warga telah melakukan pembayaran via transfer. Silakan verifikasi bukti pembayaran.',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.blue[900],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () =>
+                            _showApproveDialog(tagihan.id, isTransfer: true),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        icon: const Icon(Icons.verified, size: 24),
+                        label: const Text(
+                          'Verifikasi Pembayaran Transfer',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ]
+                  // Jika tidak ada riwayat pembayaran (Cash)
+                  else ...[
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.orange[50],
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.orange[200]!),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.info_outline, color: Colors.orange[700]),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Belum ada pembayaran transfer. Jika warga membayar tunai, tandai sebagai lunas.',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.orange[900],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () =>
+                            _showApproveDialog(tagihan.id, isTransfer: false),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        icon: const Icon(Icons.payments, size: 24),
+                        label: const Text(
+                          'Tandai Sudah Lunas (Cash)',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 24),
                 ],
               ],
@@ -325,24 +451,51 @@ class _DetailTagihanPembayaranPageState
     );
   }
 
-  void _showApproveDialog(int id) {
+  void _showApproveDialog(int id, {required bool isTransfer}) {
     showDialog(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Konfirmasi Pembayaran'),
-          content: const Column(
+          title: Text(
+            isTransfer
+                ? 'Verifikasi Pembayaran Transfer'
+                : 'Konfirmasi Pembayaran Cash',
+          ),
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Apakah Anda yakin ingin menandai tagihan ini sebagai LUNAS?',
+                isTransfer
+                    ? 'Apakah Anda yakin pembayaran transfer sudah valid dan ingin menandai tagihan ini sebagai LUNAS?'
+                    : 'Apakah Anda yakin warga telah membayar secara tunai dan ingin menandai tagihan ini sebagai LUNAS?',
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'Status tagihan akan berubah dari "Belum Lunas" menjadi "Lunas".',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               ),
+              if (isTransfer) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'Pastikan bukti transfer sudah sesuai dengan nominal tagihan.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.orange[700],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ] else ...[
+                const SizedBox(height: 8),
+                Text(
+                  'Uang tunai harus sudah diterima oleh bendahara.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.orange[700],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ],
           ),
           actions: [
@@ -359,7 +512,7 @@ class _DetailTagihanPembayaranPageState
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Ya, Tandai Lunas'),
+              child: Text(isTransfer ? 'Ya, Verifikasi' : 'Ya, Tandai Lunas'),
             ),
           ],
         );

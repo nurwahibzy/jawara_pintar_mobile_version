@@ -426,7 +426,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _jenisKelamin,
+                      initialValue: _jenisKelamin,
                       decoration: InputDecoration(
                         labelText: "Jenis Kelamin *",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -541,7 +541,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               DropdownButtonFormField<Keluarga>(
-                                value: _selectedKeluarga,
+                                initialValue: _selectedKeluarga,
                                 isExpanded: true,
                                 decoration: InputDecoration(
                                   labelText:
@@ -605,7 +605,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _statusKeluarga,
+                      initialValue: _statusKeluarga,
                       decoration: InputDecoration(
                         labelText: "Status Keluarga *",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -624,7 +624,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _statusPenduduk,
+                      initialValue: _statusPenduduk,
                       decoration: InputDecoration(
                         labelText: "Status Penduduk",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -643,7 +643,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _statusHidup,
+                      initialValue: _statusHidup,
                       decoration: InputDecoration(
                         labelText: "Status Hidup *",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -672,7 +672,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _agama,
+                      initialValue: _agama,
                       decoration: InputDecoration(
                         labelText: "Agama",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -691,7 +691,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _golonganDarah,
+                      initialValue: _golonganDarah,
                       decoration: InputDecoration(
                         labelText: "Golongan Darah",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -710,7 +710,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _pendidikanTerakhir,
+                      initialValue: _pendidikanTerakhir,
                       decoration: InputDecoration(
                         labelText: "Pendidikan Terakhir",
                         enabledBorder: _inputBorder(theme.dividerColor),

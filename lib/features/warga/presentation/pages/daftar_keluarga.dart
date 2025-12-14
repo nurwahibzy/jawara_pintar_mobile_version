@@ -470,7 +470,7 @@ class _DaftarKeluargaPageState extends State<DaftarKeluargaPage> {
                                 ),
                               ),
                             ),
-                            value: _filterStatusTemp ?? '-- Pilih Status --',
+                            initialValue: _filterStatusTemp ?? '-- Pilih Status --',
                             style: const TextStyle(
                               fontSize: 13,
                               color: Colors.black87,

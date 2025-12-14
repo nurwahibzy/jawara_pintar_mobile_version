@@ -155,7 +155,7 @@ class _DaftarTransferChannelState extends State<DaftarTransferChannel> {
                           filled: true,
                           fillColor: AppColors.secondBackground,
                         ),
-                        value: _filterTipe ?? '-- Pilih Tipe --',
+                        initialValue: _filterTipe ?? '-- Pilih Tipe --',
                         items: tipeOptions
                             .map(
                               (e) => DropdownMenuItem(value: e, child: Text(e)),
@@ -175,8 +175,9 @@ class _DaftarTransferChannelState extends State<DaftarTransferChannel> {
                                   firstDate: DateTime(2020),
                                   lastDate: DateTime.now(),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   setState(() => _filterDariTemp = picked);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -206,8 +207,9 @@ class _DaftarTransferChannelState extends State<DaftarTransferChannel> {
                                   firstDate: DateTime(2020),
                                   lastDate: DateTime.now(),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   setState(() => _filterSampaiTemp = picked);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

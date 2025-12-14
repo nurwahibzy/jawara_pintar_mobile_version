@@ -177,7 +177,7 @@ class _EditUsersState extends State<EditUsers> {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: _selectedStatus,
+                initialValue: _selectedStatus,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,

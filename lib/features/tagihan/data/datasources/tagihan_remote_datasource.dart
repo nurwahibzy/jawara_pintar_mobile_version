@@ -70,6 +70,13 @@ class TagihanRemoteDataSourceImpl implements TagihanRemoteDataSource {
             created_at,
             master_iuran:master_iuran_id (
               nama_iuran
+            ),
+            pembayaran_tagihan (
+              id,
+              metode_pembayaran,
+              bukti_bayar,
+              tanggal_bayar,
+              status_verifikasi
             )
           ''')
           .eq('id', id)

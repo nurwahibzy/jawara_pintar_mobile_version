@@ -4,8 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-        
         {
             "name": "jawara_pintar_mobile_version",
             "request": "launch",
@@ -22,6 +20,28 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Debug All Warga Tests",
+            "request": "launch",
+            "type": "dart",
+            "program": "test/warga/",
+            "args": [
+                "--reporter",
+                "expanded"
+            ]
+        },
+        {
+            "name": "Debug Warga Domain Tests",
+            "request": "launch",
+            "type": "dart",
+            "program": "test/warga/domain/"
+        },
+        {
+            "name": "Debug Warga Data Tests",
+            "request": "launch",
+            "type": "dart",
+            "program": "test/warga/data/"
         }
     ]
 }

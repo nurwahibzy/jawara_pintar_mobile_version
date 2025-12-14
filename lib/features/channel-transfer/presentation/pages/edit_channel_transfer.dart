@@ -210,7 +210,7 @@ class _EditTransferChannelPageState extends State<EditTransferChannelPage> {
 
               // Tipe
               DropdownButtonFormField<ChannelType>(
-                value: tipe,
+                initialValue: tipe,
                 decoration: InputDecoration(
                   labelText: "Tipe Channel",
                   border: _inputBorder(theme.dividerColor),

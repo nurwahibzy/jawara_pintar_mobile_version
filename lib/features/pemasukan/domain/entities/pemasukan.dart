@@ -13,6 +13,8 @@ class Pemasukan extends Equatable {
   final DateTime? tanggalVerifikasi;
   final DateTime createdAt;
   final String? namaKategori;
+  final String? namaCreatedBy;
+  final String? namaVerifikator;
 
   const Pemasukan({
     required this.id,
@@ -27,6 +29,8 @@ class Pemasukan extends Equatable {
     this.tanggalVerifikasi,
     required this.createdAt,
     this.namaKategori,
+    this.namaCreatedBy,
+    this.namaVerifikator,
   });
 
   @override
@@ -43,5 +47,7 @@ class Pemasukan extends Equatable {
     tanggalVerifikasi,
     createdAt,
     namaKategori,
+    namaCreatedBy,
+    namaVerifikator,
   ];
 }

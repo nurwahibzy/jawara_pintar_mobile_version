@@ -88,6 +88,7 @@ class TransferChannelModel extends TransferChannel {
     );
   }
 
+  @override
   TransferChannelModel copyWith({
     int? id,
     String? namaChannel,

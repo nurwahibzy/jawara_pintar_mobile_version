@@ -381,7 +381,7 @@ class _FormKeluargaPageState extends State<FormKeluargaPage> {
 
                     // Status Hunian
                     DropdownButtonFormField<String>(
-                      value: _statusHunian,
+                      initialValue: _statusHunian,
                       decoration: InputDecoration(
                         labelText: "Status Hunian *",
                         enabledBorder: _inputBorder(theme.dividerColor),

@@ -18,6 +18,11 @@ class TagihanPembayaranModel extends TagihanPembayaran {
     super.nominal,
     super.statusTagihan,
     super.namaIuran,
+    super.riwayatPembayaranId,
+    super.metodePembayaran,
+    super.buktiBayar,
+    super.tanggalBayarRiwayat,
+    super.statusVerifikasiRiwayat,
   });
 
   factory TagihanPembayaranModel.fromJson(Map<String, dynamic> json) {
@@ -48,15 +53,17 @@ class TagihanPembayaranModel extends TagihanPembayaran {
 
     // Jika data langsung dari tabel tagihan (struktur baru)
     final masterIuran = json['master_iuran'] as Map<String, dynamic>?;
+    final pembayaranTagihan = json['pembayaran_tagihan'] as List?;
+    final riwayat = pembayaranTagihan != null && pembayaranTagihan.isNotEmpty
+        ? pembayaranTagihan[0] as Map<String, dynamic>
+        : null;
 
     return TagihanPembayaranModel(
       id: json['id'] as int,
       tagihanId: json['id'] as int,
       metode: '',
       bukti: '',
-      tanggalBayar: json['jatuh_tempo'] != null
-          ? DateTime.parse(json['jatuh_tempo'] as String)
-          : DateTime.now(),
+      tanggalBayar: DateTime.parse(json['created_at'] as String),
       statusVerifikasi: json['status_tagihan'] as String? ?? 'Belum Lunas',
       catatanAdmin: null,
       verifikatorId: null,
@@ -68,6 +75,14 @@ class TagihanPembayaranModel extends TagihanPembayaran {
       nominal: (json['nominal'] as num?)?.toDouble(),
       statusTagihan: json['status_tagihan'] as String?,
       namaIuran: masterIuran?['nama_iuran'] as String?,
+      // Riwayat pembayaran (jika ada)
+      riwayatPembayaranId: riwayat?['id'] as int?,
+      metodePembayaran: riwayat?['metode_pembayaran'] as String?,
+      buktiBayar: riwayat?['bukti_bayar'] as String?,
+      tanggalBayarRiwayat: riwayat?['tanggal_bayar'] != null
+          ? DateTime.parse(riwayat!['tanggal_bayar'] as String)
+          : null,
+      statusVerifikasiRiwayat: riwayat?['status_verifikasi'] as String?,
     );
   }
 

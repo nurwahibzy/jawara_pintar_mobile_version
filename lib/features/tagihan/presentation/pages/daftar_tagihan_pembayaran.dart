@@ -151,7 +151,7 @@ class _DaftarTagihanPembayaranPageState
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           DropdownButtonFormField<String>(
-            value: _filterStatusTemp,
+            initialValue: _filterStatusTemp,
             decoration: const InputDecoration(
               labelText: 'Status Tagihan',
               border: OutlineInputBorder(),

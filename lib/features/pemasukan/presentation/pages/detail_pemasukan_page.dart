@@ -158,20 +158,25 @@ class _DetailPemasukanPageState extends State<DetailPemasukanPage> {
                     pemasukan.tanggalTransaksi,
                   ),
                   _buildInfoRow('Keterangan', pemasukan.keterangan),
-                  if (pemasukan.buktiFoto != null)
-                    _buildInfoRow('Bukti Foto', pemasukan.buktiFoto!),
                 ]),
+                if (pemasukan.buktiFoto != null) ...[
+                  const SizedBox(height: 16),
+                  _buildBuktiFotoCard(pemasukan.buktiFoto!),
+                ],
                 const SizedBox(height: 16),
                 _buildInfoCard('Informasi Sistem', [
                   _buildInfoRow(
                     'Dibuat pada',
                     dateFormatter.format(pemasukan.createdAt),
                   ),
-                  _buildInfoRow('Dibuat oleh', pemasukan.createdBy.toString()),
+                  _buildInfoRow(
+                    'Dibuat oleh',
+                    pemasukan.namaCreatedBy.toString(),
+                  ),
                   if (pemasukan.verifikatorId != null)
                     _buildInfoRow(
                       'Verifikator',
-                      pemasukan.verifikatorId.toString(),
+                      pemasukan.namaVerifikator.toString(),
                     ),
                   if (pemasukan.tanggalVerifikasi != null)
                     _buildInfoRow(
@@ -228,6 +233,146 @@ class _DetailPemasukanPageState extends State<DetailPemasukanPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildBuktiFotoCard(String fotoUrl) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Bukti Foto',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () => _showFullScreenImage(fotoUrl),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  fotoUrl,
+                  width: double.infinity,
+                  height: 200,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.broken_image,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Gagal memuat gambar',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      height: 200,
+                      color: Colors.grey[200],
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Tap untuk melihat gambar penuh',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showFullScreenImage(String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.black,
+        insetPadding: EdgeInsets.zero,
+        child: Stack(
+          children: [
+            Center(
+              child: InteractiveViewer(
+                panEnabled: true,
+                minScale: 0.5,
+                maxScale: 4.0,
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.broken_image,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'Gagal memuat gambar',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              top: 40,
+              right: 16,
+              child: IconButton(
+                icon: const Icon(Icons.close, color: Colors.white, size: 30),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
