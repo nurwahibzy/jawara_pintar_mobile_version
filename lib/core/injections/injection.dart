@@ -158,6 +158,19 @@ import '../../features/pemasukan/domain/usecases/update_pemasukan.dart';
 import '../../features/pemasukan/domain/usecases/delete_pemasukan.dart';
 import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
 
+// KEGIATAN
+import '../../features/kegiatan/data/datasources/kegiatan_remote_datasource.dart';
+import '../../features/kegiatan/data/repositories/kegiatan_repository_impl.dart';
+import '../../features/kegiatan/domain/repositories/kegiatan_repository.dart';
+import '../../features/kegiatan/domain/usecases/get_kegiatan_list.dart';
+import '../../features/kegiatan/domain/usecases/get_kegiatan_detail.dart';
+import '../../features/kegiatan/domain/usecases/create_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/update_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/get_transaksi_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/create_transaksi_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/delete_transaksi_kegiatan.dart';
+import '../../features/kegiatan/presentation/bloc/kegiatan_bloc.dart';
+
 // Manajemen Pengguna
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/datasources/users_datasource.dart';
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/repositories/users_repository_implementation.dart';
@@ -516,6 +529,35 @@ Future<void> init() async {
       updatePemasukan: sl(),
       deletePemasukan: sl(),
       repository: sl(),
+    ),
+  );
+
+  // KEGIATAN
+  sl.registerLazySingleton<KegiatanRemoteDataSource>(
+    () => KegiatanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<KegiatanRepository>(
+    () => KegiatanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetKegiatanList(sl()));
+  sl.registerLazySingleton(() => GetKegiatanDetail(sl()));
+  sl.registerLazySingleton(() => CreateKegiatan(sl()));
+  sl.registerLazySingleton(() => UpdateKegiatan(sl()));
+  sl.registerLazySingleton(() => GetTransaksiKegiatan(repository: sl()));
+  sl.registerLazySingleton(() => CreateTransaksiKegiatan(repository: sl()));
+  sl.registerLazySingleton(() => DeleteTransaksiKegiatan(repository: sl()));
+
+  sl.registerFactory(
+    () => KegiatanBloc(
+      getKegiatanList: sl(),
+      getKegiatanDetail: sl(),
+      createKegiatan: sl(),
+      updateKegiatan: sl(),
+      getTransaksiKegiatan: sl(),
+      createTransaksiKegiatan: sl(),
+      deleteTransaksiKegiatan: sl(),
     ),
   );
 
