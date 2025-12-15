@@ -61,8 +61,9 @@ class TransferChannelRepositoryImpl implements TransferChannelRepository {
       String? thumbnailUrl = channel.thumbnailUrl;
 
       if (qrFile != null) qrUrl = await remote.uploadQr(qrFile);
-      if (thumbnailFile != null)
+      if (thumbnailFile != null) {
         thumbnailUrl = await remote.uploadThumbnail(thumbnailFile);
+      }
 
       final model = TransferChannelModel.fromEntity(channel).copyWith(
         createdBy: createdBy,
@@ -103,11 +104,12 @@ class TransferChannelRepositoryImpl implements TransferChannelRepository {
       String? thumbnailUrl = channel.thumbnailUrl;
 
       if (qrFile != null) qrUrl = await remote.uploadQr(qrFile, oldUrl: qrUrl);
-      if (thumbnailFile != null)
+      if (thumbnailFile != null) {
         thumbnailUrl = await remote.uploadThumbnail(
           thumbnailFile,
           oldUrl: thumbnailUrl,
         );
+      }
 
       final model = TransferChannelModel.fromEntity(channel).copyWith(
         createdBy: createdBy,

@@ -344,6 +344,23 @@ class _DaftarPemasukanPageState extends State<DaftarPemasukanPage> {
                   ),
                 ],
               ),
+              if (pemasukan.buktiFoto != null) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.image, size: 16, color: Colors.blue[600]),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Dengan bukti foto',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue[600],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),

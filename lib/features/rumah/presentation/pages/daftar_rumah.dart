@@ -365,7 +365,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                               borderSide: BorderSide(color: AppColors.primary),
                             ),
                           ),
-                          value: _filterStatusTemp ?? '-- Pilih Status --',
+                          initialValue: _filterStatusTemp ?? '-- Pilih Status --',
                           style: const TextStyle(
                             fontSize: 13,
                             color: Colors.black87,

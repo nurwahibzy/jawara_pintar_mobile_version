@@ -50,7 +50,7 @@ class AspirasiBloc extends Bloc<AspirasiEvent, AspirasiState> {
    on<UpdateAspirasi>((event, emit) async {
       try {
         await repository.updateAspirasi(event.aspirasi);
-        final updated = await repository.getAspirasiById(event.aspirasi.id!);
+        final updated = await repository.getAspirasiById(event.aspirasi.id);
         emit(AspirasiDetailLoaded(updated));
         emit(const AspirasiOperationSuccess("Aspirasi berhasil diperbarui"));
         add(LoadAspirasi());

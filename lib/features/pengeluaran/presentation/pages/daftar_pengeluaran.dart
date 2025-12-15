@@ -177,7 +177,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                             '-- Pilih Kategori --',
                             ..._allKategori
                                 .map((k) => k.nama_kategori ?? 'Lainnya')
-                                .toList(),
+                                ,
                           ];
 
                           return DropdownButtonFormField<String>(
@@ -185,7 +185,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                               filled: true,
                               fillColor: AppColors.secondBackground,
                             ),
-                            value: _filterKategori ?? '-- Pilih Kategori --',
+                            initialValue: _filterKategori ?? '-- Pilih Kategori --',
                             items: kategoriOptions.map((e) {
                               return DropdownMenuItem(value: e, child: Text(e));
                             }).toList(),
@@ -208,8 +208,9 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                   firstDate: DateTime(2020),
                                   lastDate: DateTime.now(),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   setState(() => _filterDariTemp = picked);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -242,8 +243,9 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                                   firstDate: DateTime(2020),
                                   lastDate: DateTime.now(),
                                 );
-                                if (picked != null)
+                                if (picked != null) {
                                   setState(() => _filterSampaiTemp = picked);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

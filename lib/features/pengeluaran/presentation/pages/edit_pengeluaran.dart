@@ -238,7 +238,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: kategori,
+                initialValue: kategori,
                 decoration: InputDecoration(
                   labelText: "Kategori Pengeluaran",
                   enabledBorder: _inputBorder(theme.dividerColor),

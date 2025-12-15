@@ -95,8 +95,9 @@ Future<void> _simpan() async {
         .maybeSingle();
 
     final userId = response?['id'] as int?;
-    if (userId == null)
+    if (userId == null) {
       return _showError("User tidak ditemukan di tabel users");
+    }
 
     final newChannel = TransferChannel(
       namaChannel: namaController.text.trim(),
@@ -192,7 +193,7 @@ Future<void> _simpan() async {
 
               // Tipe Channel
               DropdownButtonFormField<ChannelType>(
-                value: tipe,
+                initialValue: tipe,
                 decoration: InputDecoration(
                   labelText: "Tipe Channel",
                   border: _inputBorder(theme.dividerColor),

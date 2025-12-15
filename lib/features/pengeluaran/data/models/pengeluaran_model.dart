@@ -1,6 +1,7 @@
 import 'package:jawara_pintar_mobile_version/features/pengeluaran/domain/entities/pengeluaran.dart';
 
 class PengeluaranModel extends Pengeluaran {
+  @override
   final String? createdByName;
 
   const PengeluaranModel({
@@ -101,6 +102,7 @@ class PengeluaranModel extends Pengeluaran {
     };
   }
 
+  @override
   PengeluaranModel copyWith({
     int? id,
     String? judul,

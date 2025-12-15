@@ -45,7 +45,7 @@ class AspirasiDetailLoaded extends AspirasiState {
 
 class UserRoleLoaded extends AspirasiState {
   final String? role; 
-  UserRoleLoaded(this.role);
+  const UserRoleLoaded(this.role);
 }
 
 class GetUserIdEvent extends AspirasiEvent {} 

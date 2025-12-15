@@ -115,7 +115,7 @@ class _FormPemasukanPageState extends State<FormPemasukanPage> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<int>(
-                    value: _selectedKategori,
+                    initialValue: _selectedKategori,
                     decoration: const InputDecoration(
                       labelText: 'Kategori',
                       border: OutlineInputBorder(),
@@ -422,7 +422,9 @@ class _FormPemasukanPageState extends State<FormPemasukanPage> {
 
   void _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
-      final tanggalTransaksi = _selectedDate!.millisecondsSinceEpoch.toString();
+      // Format tanggal ke YYYY-MM-DD untuk Supabase
+      final tanggalTransaksi =
+          '${_selectedDate!.year.toString().padLeft(4, '0')}-${_selectedDate!.month.toString().padLeft(2, '0')}-${_selectedDate!.day.toString().padLeft(2, '0')}';
       final nominal = double.parse(_nominalController.text);
 
       if (isEditMode) {

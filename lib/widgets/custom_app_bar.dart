@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jawara_pintar_mobile_version/core/auth/auth_services.dart';
 import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -110,18 +111,35 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 ),
                                 // Tombol Ya/Keluar
                                 TextButton(
-                                  onPressed: () {
-                                    Navigator.of(
-                                      context,
-                                    ).pop(); // Tutup dialog terlebih dahulu
+                                  onPressed: () async {
+                                    Navigator.of(context).pop(); // Tutup dialog
 
-                                    // LAKUKAN AKSI LOGOUT DI SINI
-                                    // Disarankan menggunakan pushNamedAndRemoveUntil agar user tidak bisa 'Back' lagi
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      '/logout', // Ganti dengan rute login page Anda (misal '/login')
-                                      (route) => false,
-                                    );
+                                    try {
+                                      // LAKUKAN AKSI LOGOUT
+                                      final authServices = AuthServices();
+                                      await authServices.signOut();
+
+                                      // Navigate ke root dan clear semua route
+                                      if (context.mounted) {
+                                        Navigator.of(
+                                          context,
+                                        ).pushNamedAndRemoveUntil(
+                                          '/',
+                                          (route) => false,
+                                        );
+                                      }
+                                    } catch (e) {
+                                      // Handle error jika ada
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Logout gagal: $e'),
+                                          ),
+                                        );
+                                      }
+                                    }
                                   },
                                   child: const Text(
                                     "Ya, Keluar",
