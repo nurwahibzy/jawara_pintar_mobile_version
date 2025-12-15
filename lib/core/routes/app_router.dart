@@ -21,6 +21,10 @@ import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
 import '../../features/pemasukan/presentation/pages/daftar_pemasukan_page.dart';
 import '../../features/pemasukan/presentation/pages/detail_pemasukan_page.dart';
 import '../../features/pemasukan/presentation/pages/form_pemasukan_page.dart';
+import '../../features/kegiatan/presentation/bloc/kegiatan_bloc.dart';
+import '../../features/kegiatan/presentation/pages/daftar_kegiatan_page.dart';
+import '../../features/kegiatan/presentation/pages/detail_kegiatan_page.dart';
+import '../../features/kegiatan/presentation/pages/form_kegiatan_page.dart';
 import 'app_routes.dart';
 // import halaman yg dibutuhkan
 // import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
@@ -138,6 +142,32 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (_) => sl<PemasukanBloc>(),
             child: DetailPemasukanPage(pemasukanId: pemasukanId),
+          ),
+        );
+
+      // KEGIATAN
+      case AppRoutes.daftarKegiatan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<KegiatanBloc>()..add(GetKegiatanListEvent()),
+            child: const DaftarKegiatanPage(),
+          ),
+        );
+
+      case AppRoutes.formKegiatan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<KegiatanBloc>(),
+            child: const FormKegiatanPage(),
+          ),
+        );
+
+      case AppRoutes.detailKegiatan:
+        final kegiatanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) => sl<KegiatanBloc>(),
+            child: DetailKegiatanPage(kegiatanId: kegiatanId),
           ),
         );
 
