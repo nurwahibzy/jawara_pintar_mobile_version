@@ -2,13 +2,16 @@ import '../../domain/entities/penerimaan_warga.dart';
 import '../../domain/repositories/penerimaan_warga_repository.dart';
 import '../data_sources/penerimaan_warga_remote_data_source.dart';
 
+
 class PenerimaanWargaRepositoryImpl implements PenerimaanWargaRepository {
-  final PenerimaanWargaRemoteDataSource remoteDataSource;
+final PenerimaanWargaRemoteDataSource remote;
 
-  PenerimaanWargaRepositoryImpl(this.remoteDataSource);
 
-  @override
-  Future<List<PenerimaanWarga>> getPenerimaanWarga() async {
-    return await remoteDataSource.getPenerimaanWarga();
-  }
+PenerimaanWargaRepositoryImpl(this.remote);
+
+
+@override
+Future<List<PenerimaanWarga>> getAllPenerimaanWarga() async {
+return await remote.getAll();
+}
 }

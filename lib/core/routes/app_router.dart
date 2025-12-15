@@ -98,7 +98,7 @@ class AppRouter {
             child: DetailPesanWarga(pesan: pesan),
           ),
         );
-
+  
       // dikebutt moasss
       default:
         return _errorRoute();
@@ -115,4 +115,5 @@ class AppRouter {
       },
     );
   }
+
 }
