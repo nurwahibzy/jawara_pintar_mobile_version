@@ -107,6 +107,37 @@ class KeluargaModel extends Keluarga {
     };
   }
 
+  factory KeluargaModel.fromEntity(Keluarga keluarga) {
+    return KeluargaModel(
+      id: keluarga.id,
+      nomorKk: keluarga.nomorKk,
+      rumahId: keluarga.rumahId,
+      statusHunian: keluarga.statusHunian,
+      tanggalTerdaftar: keluarga.tanggalTerdaftar,
+      createdAt: keluarga.createdAt,
+      rumah: keluarga.rumah != null
+          ? RumahInfoModel(
+              id: keluarga.rumah!.id,
+              alamat: keluarga.rumah!.alamat,
+              statusRumah: keluarga.rumah!.statusRumah,
+            )
+          : null,
+      anggota: keluarga.anggota
+          .map(
+            (a) => AnggotaKeluargaModel(
+              id: a.id,
+              nik: a.nik,
+              nama: a.nama,
+              jenisKelamin: a.jenisKelamin,
+              tanggalLahir: a.tanggalLahir,
+              statusKeluarga: a.statusKeluarga,
+              statusHidup: a.statusHidup,
+            ),
+          )
+          .toList(),
+    );
+  }
+
   static List<KeluargaModel> fromJsonList(List<dynamic>? data) {
     if (data == null || data.isEmpty) return [];
     return data

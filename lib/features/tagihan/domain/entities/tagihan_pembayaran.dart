@@ -20,6 +20,13 @@ class TagihanPembayaran extends Equatable {
   final String? statusTagihan;
   final String? namaIuran;
 
+  // Riwayat pembayaran (jika ada pembayaran transfer)
+  final int? riwayatPembayaranId;
+  final String? metodePembayaran;
+  final String? buktiBayar;
+  final DateTime? tanggalBayarRiwayat;
+  final String? statusVerifikasiRiwayat;
+
   const TagihanPembayaran({
     required this.id,
     required this.tagihanId,
@@ -37,6 +44,11 @@ class TagihanPembayaran extends Equatable {
     this.nominal,
     this.statusTagihan,
     this.namaIuran,
+    this.riwayatPembayaranId,
+    this.metodePembayaran,
+    this.buktiBayar,
+    this.tanggalBayarRiwayat,
+    this.statusVerifikasiRiwayat,
   });
 
   @override
@@ -57,5 +69,10 @@ class TagihanPembayaran extends Equatable {
     nominal,
     statusTagihan,
     namaIuran,
+    riwayatPembayaranId,
+    metodePembayaran,
+    buktiBayar,
+    tanggalBayarRiwayat,
+    statusVerifikasiRiwayat,
   ];
 }

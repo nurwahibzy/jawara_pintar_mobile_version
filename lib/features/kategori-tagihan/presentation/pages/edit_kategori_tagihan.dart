@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
@@ -150,7 +150,7 @@ class _EditKategoriTagihanPageState extends State<EditKategoriTagihanPage> {
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<int>(
-                      value: _selectedKategoriId,
+                      initialValue: _selectedKategoriId,
                       decoration: InputDecoration(
                         labelText: "Kategori Iuran *",
                         enabledBorder: _inputBorder(theme.dividerColor),
@@ -189,7 +189,7 @@ class _EditKategoriTagihanPageState extends State<EditKategoriTagihanPage> {
                         subtitle: Text(_isActive ? "Iuran aktif" : "Iuran tidak aktif"),
                         value: _isActive,
                         onChanged: (v) => setState(() => _isActive = v),
-                        activeColor: theme.colorScheme.primary,
+                        activeThumbColor: theme.colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 24),

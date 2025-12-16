@@ -151,18 +151,19 @@ class _DaftarTagihanPembayaranPageState
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           DropdownButtonFormField<String>(
-            value: _filterStatusTemp,
+            initialValue: _filterStatusTemp,
             decoration: const InputDecoration(
-              labelText: 'Status Verifikasi',
+              labelText: 'Status Tagihan',
               border: OutlineInputBorder(),
               contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
             items: const [
               DropdownMenuItem(value: null, child: Text('Semua Status')),
-              DropdownMenuItem(value: 'Pending', child: Text('Pending')),
-              DropdownMenuItem(value: 'Diterima', child: Text('Diterima')),
-              DropdownMenuItem(value: 'Ditolak', child: Text('Ditolak')),
-              DropdownMenuItem(value: 'Menunggu', child: Text('Menunggu')),
+              DropdownMenuItem(
+                value: 'Belum Lunas',
+                child: Text('Belum Lunas'),
+              ),
+              DropdownMenuItem(value: 'Lunas', child: Text('Lunas')),
             ],
             onChanged: (value) {
               setState(() {
@@ -219,16 +220,11 @@ class _DaftarTagihanPembayaranPageState
     IconData statusIcon;
 
     switch (tagihan.statusVerifikasi) {
-      case 'Diterima':
+      case 'Lunas':
         statusColor = Colors.green;
         statusIcon = Icons.check_circle;
         break;
-      case 'Ditolak':
-        statusColor = Colors.red;
-        statusIcon = Icons.cancel;
-        break;
-      case 'Menunggu':
-      case 'Pending':
+      case 'Belum Lunas':
         statusColor = Colors.orange;
         statusIcon = Icons.pending;
         break;
@@ -318,11 +314,9 @@ class _DaftarTagihanPembayaranPageState
                 tagihan.periode ?? '-',
               ),
               const SizedBox(height: 8),
-              _buildInfoRow(Icons.payment_outlined, 'Metode', tagihan.metode),
-              const SizedBox(height: 8),
               _buildInfoRow(
                 Icons.event_outlined,
-                'Tanggal Bayar',
+                'Jatuh Tempo',
                 dateFormatter.format(tagihan.tanggalBayar),
               ),
               const SizedBox(height: 12),

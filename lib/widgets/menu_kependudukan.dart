@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
-
 class MenuKependudukan extends StatelessWidget {
   const MenuKependudukan({super.key});
 
@@ -27,10 +26,11 @@ class MenuKependudukan extends StatelessWidget {
           GridView.count(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            crossAxisCount: 4, 
+            crossAxisCount: 4,
             crossAxisSpacing: 12,
             mainAxisSpacing: 16,
-            childAspectRatio: 0.85, 
+            // PERUBAHAN 1: Ubah aspect ratio menjadi 0.70 agar kotak lebih tinggi
+            childAspectRatio: 0.70, 
             children: [
               _buildMenuItem(context, Icons.home, "Rumah", '/daftar-rumah'),
               _buildMenuItem(context, Icons.people, "Warga", '/daftar-warga'),
@@ -56,7 +56,7 @@ class MenuKependudukan extends StatelessWidget {
                 context,
                 Icons.manage_accounts,
                 "Manajemen\nPengguna",
-                '/manajemen_pengguna/daftar_pengguna',
+                '/daftar-user',
               ),
             ],
           ),
@@ -81,13 +81,15 @@ class MenuKependudukan extends StatelessWidget {
         splashColor: AppColors.primary.withOpacity(0.1),
         highlightColor: AppColors.primary.withOpacity(0.05),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          // Padding luar sedikit dikurangi
+          padding: const EdgeInsets.symmetric(vertical: 4),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start, // Icon nempel atas
             children: [
               Container(
-                padding: const EdgeInsets.all(14),
+                // PERUBAHAN 2: Padding icon dikurangi jadi 12
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -116,7 +118,8 @@ class MenuKependudukan extends StatelessWidget {
                   size: 28,
                 ),
               ),
-              const SizedBox(height: 8),
+              // PERUBAHAN 3: Jarak icon ke teks diperkecil jadi 6
+              const SizedBox(height: 6),
               Flexible(
                 child: Text(
                   label,
@@ -124,8 +127,8 @@ class MenuKependudukan extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 9,
-                    height: 1.2,
+                    fontSize: 10, // Font sedikit lebih jelas
+                    height: 1.1,
                     fontWeight: FontWeight.w600,
                     color: Colors.grey[800],
                   ),

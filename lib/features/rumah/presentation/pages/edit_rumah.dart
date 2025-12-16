@@ -205,7 +205,7 @@ class _EditRumahPageState extends State<EditRumahPage> {
 
                     // Dropdown Status
                     DropdownButtonFormField<String>(
-                      value: _statusRumah,
+                      initialValue: _statusRumah,
                       decoration: InputDecoration(
                         labelText: "Status Rumah *",
                         prefixIcon: const Icon(Icons.verified_user),

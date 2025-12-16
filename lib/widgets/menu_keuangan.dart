@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 
-
 class MenuKeuangan extends StatelessWidget {
   const MenuKeuangan({super.key});
 
@@ -30,13 +29,15 @@ class MenuKeuangan extends StatelessWidget {
             crossAxisCount: 4, 
             crossAxisSpacing: 12,
             mainAxisSpacing: 16,
-            childAspectRatio: 0.85, 
+            // PERUBAHAN 1: Ubah aspect ratio agar kotak lebih tinggi
+            // Semakin kecil angkanya, kotak semakin memanjang ke bawah
+            childAspectRatio: 0.70, 
             children: [
               _buildMenuItem(
                 context,
                 Icons.add_card,
                 "Pemasukan",
-                "/pemasukan_lain",
+                "/daftar-pemasukan",
               ),
               _buildMenuItem(
                 context,
@@ -103,13 +104,15 @@ class MenuKeuangan extends StatelessWidget {
         splashColor: AppColors.primary.withOpacity(0.1),
         highlightColor: AppColors.primary.withOpacity(0.05),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          // Padding container luar bisa dikurangi sedikit jika perlu
+          padding: const EdgeInsets.symmetric(vertical: 4), 
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start, // Ubah ke start agar icon nempel atas
             children: [
               Container(
-                padding: const EdgeInsets.all(14),
+                // PERUBAHAN 2: Kurangi padding icon agar tidak terlalu boros tempat
+                padding: const EdgeInsets.all(12), 
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -138,7 +141,8 @@ class MenuKeuangan extends StatelessWidget {
                   size: 28,
                 ),
               ),
-              const SizedBox(height: 8),
+              // PERUBAHAN 3: Perkecil jarak antara icon dan text
+              const SizedBox(height: 6), 
               Flexible(
                 child: Text(
                   label,
@@ -146,8 +150,8 @@ class MenuKeuangan extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 9,
-                    height: 1.2,
+                    fontSize: 10, // Sedikit diperbesar agar terbaca (opsional)
+                    height: 1.1,
                     fontWeight: FontWeight.w600,
                     color: Colors.grey[800],
                   ),

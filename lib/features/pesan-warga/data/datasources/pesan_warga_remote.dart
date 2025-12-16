@@ -31,8 +31,6 @@ class AspirasiRemoteDataSourceImpl implements AspirasiRemoteDataSource {
         ''')
         .order('created_at', ascending: false);
 
-    if (response == null) return [];
-
     final dataList = List<Map<String, dynamic>>.from(response);
     return dataList.map((e) => AspirasiModel.fromMap(e)).toList();
   }

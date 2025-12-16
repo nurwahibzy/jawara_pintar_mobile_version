@@ -24,8 +24,12 @@ class WargaBloc extends Bloc<WargaEvent, WargaState> {
     on<SearchKeluargaEvent>(_onSearchKeluarga);
     on<LoadAllKeluargaWithRelations>(_onLoadAllKeluargaWithRelations);
     on<GetDetailKeluarga>(_onGetDetailKeluarga);
+    on<CreateKeluargaEvent>(_onCreateKeluarga);
+    on<UpdateKeluargaEvent>(_onUpdateKeluarga);
     on<LoadRumahEvent>(_onLoadRumah);
     on<SearchRumahEvent>(_onSearchRumah);
+    on<LoadWargaTanpaKeluargaEvent>(_onLoadWargaTanpaKeluarga);
+    on<AssignWargaToKeluargaEvent>(_onAssignWargaToKeluarga);
   }
 
   Future<void> _onLoad(WargaEvent event, Emitter<WargaState> emit) async {
@@ -181,6 +185,67 @@ class WargaBloc extends Bloc<WargaEvent, WargaState> {
     res.fold(
       (failure) => emit(RumahError(failure.message)),
       (list) => emit(RumahListLoaded(list)),
+    );
+  }
+
+  Future<void> _onCreateKeluarga(
+    CreateKeluargaEvent event,
+    Emitter<WargaState> emit,
+  ) async {
+    emit(KeluargaLoading());
+    final res = await repository.createKeluarga(event.keluarga);
+
+    res.fold((failure) => emit(KeluargaError(failure.message)), (keluargaId) {
+      add(LoadAllKeluargaWithRelations());
+      emit(
+        KeluargaActionSuccess(
+          'Tambah keluarga berhasil',
+          keluargaId: keluargaId,
+        ),
+      );
+    });
+  }
+
+  Future<void> _onUpdateKeluarga(
+    UpdateKeluargaEvent event,
+    Emitter<WargaState> emit,
+  ) async {
+    emit(KeluargaLoading());
+    final res = await repository.updateKeluarga(event.keluarga);
+
+    res.fold((failure) => emit(KeluargaError(failure.message)), (success) {
+      add(LoadAllKeluargaWithRelations());
+      emit(const KeluargaActionSuccess('Update keluarga berhasil'));
+    });
+  }
+
+  Future<void> _onLoadWargaTanpaKeluarga(
+    LoadWargaTanpaKeluargaEvent event,
+    Emitter<WargaState> emit,
+  ) async {
+    emit(WargaLoading());
+    final res = await repository.getWargaTanpaKeluarga();
+
+    res.fold(
+      (failure) => emit(WargaError(failure.message)),
+      (wargaList) => emit(WargaTanpaKeluargaLoaded(wargaList)),
+    );
+  }
+
+  Future<void> _onAssignWargaToKeluarga(
+    AssignWargaToKeluargaEvent event,
+    Emitter<WargaState> emit,
+  ) async {
+    emit(WargaLoading());
+    final res = await repository.updateWargaKeluargaId(
+      event.wargaIds,
+      event.keluargaId,
+    );
+
+    res.fold(
+      (failure) => emit(WargaError(failure.message)),
+      (success) =>
+          emit(const WargaActionSuccess('Anggota berhasil ditambahkan')),
     );
   }
 }

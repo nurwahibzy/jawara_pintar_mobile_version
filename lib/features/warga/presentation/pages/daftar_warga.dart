@@ -220,7 +220,7 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
             borderSide: BorderSide.none,
           ),
         ),
-        value: value,
+        initialValue: value,
         style: const TextStyle(fontSize: 13, color: Colors.black87),
         items: items.map((e) {
           String displayText = e;

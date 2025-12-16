@@ -147,6 +147,41 @@ import '../../features/tagihan/domain/usecases/approve_tagihan_pembayaran.dart';
 import '../../features/tagihan/domain/usecases/reject_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 
+// PEMASUKAN
+import '../../features/pemasukan/data/datasources/pemasukan_remote_datasource.dart';
+import '../../features/pemasukan/data/repositories/pemasukan_repository_impl.dart';
+import '../../features/pemasukan/domain/repositories/pemasukan_repository.dart';
+import '../../features/pemasukan/domain/usecases/get_pemasukan_list.dart';
+import '../../features/pemasukan/domain/usecases/get_pemasukan_detail.dart';
+import '../../features/pemasukan/domain/usecases/create_pemasukan.dart';
+import '../../features/pemasukan/domain/usecases/update_pemasukan.dart';
+import '../../features/pemasukan/domain/usecases/delete_pemasukan.dart';
+import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
+
+// KEGIATAN
+import '../../features/kegiatan/data/datasources/kegiatan_remote_datasource.dart';
+import '../../features/kegiatan/data/repositories/kegiatan_repository_impl.dart';
+import '../../features/kegiatan/domain/repositories/kegiatan_repository.dart';
+import '../../features/kegiatan/domain/usecases/get_kegiatan_list.dart';
+import '../../features/kegiatan/domain/usecases/get_kegiatan_detail.dart';
+import '../../features/kegiatan/domain/usecases/create_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/update_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/get_transaksi_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/create_transaksi_kegiatan.dart';
+import '../../features/kegiatan/domain/usecases/delete_transaksi_kegiatan.dart';
+import '../../features/kegiatan/presentation/bloc/kegiatan_bloc.dart';
+
+// Manajemen Pengguna
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/datasources/users_datasource.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/repositories/users_repository_implementation.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/repositories/users_repository.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/create_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/delete_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_all_users.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/update_user.dart';
+import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -470,4 +505,79 @@ Future<void> init() async {
       rejectTagihanPembayaran: sl(),
     ),
   );
+
+  // PEMASUKAN
+  sl.registerLazySingleton<PemasukanRemoteDataSource>(
+    () => PemasukanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<PemasukanRepository>(
+    () => PemasukanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetPemasukanList(sl()));
+  sl.registerLazySingleton(() => GetPemasukanDetail(sl()));
+  sl.registerLazySingleton(() => CreatePemasukan(sl()));
+  sl.registerLazySingleton(() => UpdatePemasukan(sl()));
+  sl.registerLazySingleton(() => DeletePemasukan(sl()));
+
+  sl.registerFactory(
+    () => PemasukanBloc(
+      getPemasukanList: sl(),
+      getPemasukanDetail: sl(),
+      createPemasukan: sl(),
+      updatePemasukan: sl(),
+      deletePemasukan: sl(),
+      repository: sl(),
+    ),
+  );
+
+  // KEGIATAN
+  sl.registerLazySingleton<KegiatanRemoteDataSource>(
+    () => KegiatanRemoteDataSourceImpl(supabaseClient: supabaseClient),
+  );
+
+  sl.registerLazySingleton<KegiatanRepository>(
+    () => KegiatanRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetKegiatanList(sl()));
+  sl.registerLazySingleton(() => GetKegiatanDetail(sl()));
+  sl.registerLazySingleton(() => CreateKegiatan(sl()));
+  sl.registerLazySingleton(() => UpdateKegiatan(sl()));
+  sl.registerLazySingleton(() => GetTransaksiKegiatan(repository: sl()));
+  sl.registerLazySingleton(() => CreateTransaksiKegiatan(repository: sl()));
+  sl.registerLazySingleton(() => DeleteTransaksiKegiatan(repository: sl()));
+
+  sl.registerFactory(
+    () => KegiatanBloc(
+      getKegiatanList: sl(),
+      getKegiatanDetail: sl(),
+      createKegiatan: sl(),
+      updateKegiatan: sl(),
+      getTransaksiKegiatan: sl(),
+      createTransaksiKegiatan: sl(),
+      deleteTransaksiKegiatan: sl(),
+    ),
+  );
+
+  // --------------------------------------------------------------------------
+  // Manajemen Pengguna
+  // --------------------------------------------------------------------------
+  sl.registerLazySingleton<UsersDataSource>(
+    () => UsersDataSourceImplementation(),
+  );
+
+  sl.registerLazySingleton<UsersRepository>(
+    () => UsersRepositoryImplementation(sl(), supabaseClient),
+  );
+
+  sl.registerLazySingleton(() => GetAllUsers(sl()));
+  sl.registerLazySingleton(() => GetUserById(sl()));
+  sl.registerLazySingleton(() => CreateUser(sl()));
+  sl.registerLazySingleton(() => UpdateUser(sl()));
+  sl.registerLazySingleton(() => DeleteUser(sl()));
+  // sl.registerLazySingleton(() => DeleteUser(sl()));
+
+  sl.registerFactory(() => UsersBloc(repository: sl<UsersRepository>()));
 }

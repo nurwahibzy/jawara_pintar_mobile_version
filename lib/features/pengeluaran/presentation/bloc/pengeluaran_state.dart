@@ -40,5 +40,5 @@ class PengeluaranActionSuccess extends PengeluaranState {
 
 class KategoriPengeluaranLoaded extends PengeluaranState {
   final List<KategoriEntity> kategori;
-  KategoriPengeluaranLoaded(this.kategori);
+  const KategoriPengeluaranLoaded(this.kategori);
 }

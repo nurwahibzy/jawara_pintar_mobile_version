@@ -13,8 +13,12 @@ abstract interface class WargaRemoteDataSource {
   Future<List<KeluargaModel>> searchKeluarga(String query);
   Future<List<KeluargaModel>> getAllKeluargaWithRelations();
   Future<KeluargaModel> getKeluargaById(int id);
+  Future<int> createKeluarga(KeluargaModel keluarga);
+  Future<void> updateKeluarga(KeluargaModel keluarga);
   Future<List<Map<String, dynamic>>> getAllRumahSimple();
   Future<List<Map<String, dynamic>>> searchRumah(String query);
+  Future<List<WargaModel>> getWargaTanpaKeluarga();
+  Future<void> updateWargaKeluargaId(List<int> wargaIds, int keluargaId);
 }
 
 class WargaRemoteDataSourceImpl implements WargaRemoteDataSource {
@@ -216,7 +220,8 @@ class WargaRemoteDataSourceImpl implements WargaRemoteDataSource {
     try {
       final List<dynamic> response = await supabaseClient
           .from('rumah')
-          .select('id, alamat')
+          .select('id, alamat, status_rumah')
+          .or('status_rumah.eq.Kosong')
           .order('alamat', ascending: true);
 
       return response.cast<Map<String, dynamic>>();
@@ -230,12 +235,79 @@ class WargaRemoteDataSourceImpl implements WargaRemoteDataSource {
     try {
       final List<dynamic> response = await supabaseClient
           .from('rumah')
-          .select('id, alamat')
+          .select('id, alamat, status_rumah')
+          .or('status_rumah.eq.Kosong')
           .ilike('alamat', '%$query%')
           .order('alamat', ascending: true)
           .limit(20);
 
       return response.cast<Map<String, dynamic>>();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<int> createKeluarga(KeluargaModel keluarga) async {
+    try {
+      final response = await supabaseClient
+          .from('keluarga')
+          .insert({
+            'nomor_kk': keluarga.nomorKk,
+            'rumah_id': keluarga.rumahId,
+            'status_hunian': keluarga.statusHunian,
+            'tanggal_terdaftar': keluarga.tanggalTerdaftar?.toIso8601String(),
+          })
+          .select('id')
+          .single();
+
+      return response['id'] as int;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<void> updateKeluarga(KeluargaModel keluarga) async {
+    try {
+      await supabaseClient
+          .from('keluarga')
+          .update({
+            'nomor_kk': keluarga.nomorKk,
+            'rumah_id': keluarga.rumahId,
+            'status_hunian': keluarga.statusHunian,
+            'tanggal_terdaftar': keluarga.tanggalTerdaftar?.toIso8601String(),
+          })
+          .eq('id', keluarga.id);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<List<WargaModel>> getWargaTanpaKeluarga() async {
+    try {
+      final List<dynamic> response = await supabaseClient
+          .from('warga')
+          .select()
+          .isFilter('keluarga_id', null)
+          .order('nama_lengkap', ascending: true);
+
+      return response.map((json) => WargaModel.fromJson(json)).toList();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<void> updateWargaKeluargaId(List<int> wargaIds, int keluargaId) async {
+    try {
+      for (final wargaId in wargaIds) {
+        await supabaseClient
+            .from('warga')
+            .update({'keluarga_id': keluargaId})
+            .eq('id', wargaId);
+      }
     } catch (e) {
       throw Exception(e.toString());
     }

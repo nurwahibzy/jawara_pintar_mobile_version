@@ -1,3 +1,5 @@
+// import 'package:jawara_pintar_mobile_version/features/broad_cast/domain/entities/broad_cast.dart';
+
 class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
@@ -38,4 +40,20 @@ class AppRoutes {
 
   static const daftarTagihanPembayaran = '/daftar-tagihan-pembayaran';
   static const detailTagihanPembayaran = '/detail-tagihan-pembayaran';
+
+  static const daftarPemasukan = '/daftar-pemasukan';
+  static const detailPemasukan = '/detail-pemasukan';
+  static const formPemasukan = '/form-pemasukan';
+
+  static const daftarKegiatan = '/daftar-kegiatan';
+  static const detailKegiatan = '/detail-kegiatan';
+  static const formKegiatan = '/form-kegiatan';
+
+  // manajemen user
+  static const daftarUser = '/daftar-user';
+  static const tambahUser = '/tambah-user';
+  static const editUser = '/edit-user';
+  static const hapusUser = '/hapus-user';
+
+  static const BroadCast = '/broad-cast';
 }
