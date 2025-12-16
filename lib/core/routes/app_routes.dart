@@ -1,4 +1,4 @@
-import 'package:jawara_pintar_mobile_version/features/broad_cast/domain/entities/broad_cast.dart';
+
 
 class AppRoutes {
   static const String login = '/login';
@@ -52,7 +52,8 @@ class AppRoutes {
   static const editUser = '/edit-user';
   static const hapusUser = '/hapus-user';
 
-  static const BroadCast = '/broad-cast';
-
+static const broadCast = '/broadcast';
+  static const tambahBroadCast = '/broadcast/tambah';
+  static const detailBroadCast = '/broadcast/detail';
 
 }

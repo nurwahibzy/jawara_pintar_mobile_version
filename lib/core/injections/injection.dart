@@ -169,6 +169,15 @@ import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/update_user.dart';
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
 
+//BROADCAST
+import '../../features/broad_cast/presentation/blocs/broadcast_bloc.dart';
+import '../../features/broad_cast/domain/use_cases/get_broadcast_list.dart';
+import '../../features/broad_cast/domain/use_cases/add_broadcast.dart';
+import '../../features/broad_cast/domain/repositories/broadcast_repository.dart';
+import '../../features/broad_cast/data/repositories/broad_cast_repository_impl.dart';
+import '../../features/broad_cast/data/data_sources/broad_cast_remote_data_source_impl.dart';
+
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -177,6 +186,11 @@ Future<void> init() async {
 
   //! External - Supabase
   final supabaseClient = Supabase.instance.client;
+  //! External - Supabase
+  sl.registerLazySingleton<SupabaseClient>(
+  () => Supabase.instance.client,
+);
+
 
   // --------------------------------------------------------------------------
   // DASHBOARD KEUANGAN
@@ -538,4 +552,30 @@ Future<void> init() async {
   // sl.registerLazySingleton(() => DeleteUser(sl()));
 
   sl.registerFactory(() => UsersBloc(repository: sl<UsersRepository>()));
+
+  //BROADCAST
+sl.registerLazySingleton<BroadCastRemoteDataSource>(
+  () => BroadCastRemoteDataSourceImpl(
+    sl<SupabaseClient>(), 
+  ),
+);
+sl.registerLazySingleton<BroadcastRepository>(
+  () => BroadCastRepositoryImpl(sl()),
+);
+
+sl.registerLazySingleton<GetBroadcastUseCase>(
+  () => GetBroadcastUseCase(sl()),
+);
+
+sl.registerLazySingleton<AddBroadcastUseCase>(
+  () => AddBroadcastUseCase(sl()),
+);
+
+sl.registerFactory(
+  () => BroadcastBloc(
+    sl<GetBroadcastUseCase>(),
+    sl<AddBroadcastUseCase>(),
+  ),
+);
+
 }
