@@ -1,5 +1,3 @@
-
-
 class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
@@ -36,7 +34,6 @@ class AppRoutes {
   static const editChannelTransfer = '/edit-channel-transfer';
   static const detailChannelTransfer = '/detail-channel-transfer';
 
-
   static const tambahTagihIuran = '/tambah-tagih-iuran';
 
   static const daftarTagihanPembayaran = '/daftar-tagihan-pembayaran';
@@ -46,14 +43,21 @@ class AppRoutes {
   static const detailPemasukan = '/detail-pemasukan';
   static const formPemasukan = '/form-pemasukan';
 
+  static const daftarKegiatan = '/daftar-kegiatan';
+  static const detailKegiatan = '/detail-kegiatan';
+  static const formKegiatan = '/form-kegiatan';
+
   // manajemen user
   static const daftarUser = '/daftar-user';
   static const tambahUser = '/tambah-user';
   static const editUser = '/edit-user';
   static const hapusUser = '/hapus-user';
 
+
 static const broadCast = '/broadcast';
   static const tambahBroadCast = '/broadcast/tambah';
   static const detailBroadCast = '/broadcast/detail';
+
+  static const BroadCast = '/broad-cast';
 
 }

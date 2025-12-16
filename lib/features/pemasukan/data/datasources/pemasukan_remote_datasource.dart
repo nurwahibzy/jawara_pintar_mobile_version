@@ -39,18 +39,9 @@ class PemasukanRemoteDataSourceImpl implements PemasukanRemoteDataSource {
   }) async {
     try {
       var query = supabaseClient.from('pemasukan_lain').select('''
-            id,
-            judul,
-            kategori_transaksi_id,
-            nominal,
-            tanggal_transaksi,
-            bukti_foto,
-            keterangan,
-            created_by,
-            verifikator_id,
-            tanggal_verifikasi,
-            created_at,
+            *,
             kategori_transaksi:kategori_transaksi_id (
+              id,
               nama_kategori
             )
           ''');
@@ -61,9 +52,49 @@ class PemasukanRemoteDataSourceImpl implements PemasukanRemoteDataSource {
 
       final response = await query.order('created_at', ascending: false);
 
-      return (response as List)
-          .map((item) => PemasukanModel.fromJson(item))
-          .toList();
+      // Ambil data pemasukan dulu
+      final pemasukanList = (response as List).map((item) {
+        return item as Map<String, dynamic>;
+      }).toList();
+
+      // Ambil semua warga ID yang unik
+      final wargaIds = <int>{};
+      for (var item in pemasukanList) {
+        if (item['created_by'] != null) wargaIds.add(item['created_by'] as int);
+        if (item['verifikator_id'] != null)
+          wargaIds.add(item['verifikator_id'] as int);
+      }
+
+      // Fetch nama warga jika ada
+      Map<int, String> wargaNames = {};
+      if (wargaIds.isNotEmpty) {
+        final wargaResponse = await supabaseClient
+            .from('warga')
+            .select('id, nama_lengkap')
+            .inFilter('id', wargaIds.toList());
+
+        for (var warga in wargaResponse) {
+          wargaNames[warga['id'] as int] = warga['nama_lengkap'] as String;
+        }
+      }
+
+      // Gabungkan data
+      return pemasukanList.map((item) {
+        final createdBy = item['created_by'] as int?;
+        final verifikatorId = item['verifikator_id'] as int?;
+
+        item['created_by_warga'] =
+            createdBy != null && wargaNames.containsKey(createdBy)
+            ? {'id': createdBy, 'nama_lengkap': wargaNames[createdBy]}
+            : null;
+
+        item['verifikator_warga'] =
+            verifikatorId != null && wargaNames.containsKey(verifikatorId)
+            ? {'id': verifikatorId, 'nama_lengkap': wargaNames[verifikatorId]}
+            : null;
+
+        return PemasukanModel.fromJson(item);
+      }).toList();
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -75,25 +106,46 @@ class PemasukanRemoteDataSourceImpl implements PemasukanRemoteDataSource {
       final response = await supabaseClient
           .from('pemasukan_lain')
           .select('''
-            id,
-            judul,
-            kategori_transaksi_id,
-            nominal,
-            tanggal_transaksi,
-            bukti_foto,
-            keterangan,
-            created_by,
-            verifikator_id,
-            tanggal_verifikasi,
-            created_at,
+            *,
             kategori_transaksi:kategori_transaksi_id (
+              id,
               nama_kategori
             )
           ''')
           .eq('id', id)
           .single();
 
-      return PemasukanModel.fromJson(response);
+      final item = response as Map<String, dynamic>;
+
+      // Fetch nama warga untuk created_by dan verifikator_id
+      final createdBy = item['created_by'] as int?;
+      final verifikatorId = item['verifikator_id'] as int?;
+
+      if (createdBy != null) {
+        final wargaResponse = await supabaseClient
+            .from('warga')
+            .select('id, nama_lengkap')
+            .eq('id', createdBy)
+            .maybeSingle();
+
+        if (wargaResponse != null) {
+          item['created_by_warga'] = wargaResponse;
+        }
+      }
+
+      if (verifikatorId != null) {
+        final wargaResponse = await supabaseClient
+            .from('warga')
+            .select('id, nama_lengkap')
+            .eq('id', verifikatorId)
+            .maybeSingle();
+
+        if (wargaResponse != null) {
+          item['verifikator_warga'] = wargaResponse;
+        }
+      }
+
+      return PemasukanModel.fromJson(item);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -189,34 +241,51 @@ class PemasukanRemoteDataSourceImpl implements PemasukanRemoteDataSource {
     try {
       final bucket = 'pemasukan_lain';
 
-      String fileName;
+      // Hapus file lama jika ada
       if (oldUrl != null && oldUrl.isNotEmpty) {
-        final uri = Uri.parse(oldUrl);
-        final segments = uri.pathSegments;
-        final fileIndex = segments.indexOf(bucket) + 1;
-        fileName = segments[fileIndex];
-      } else {
-        fileName =
-            'pemasukan_${DateTime.now().millisecondsSinceEpoch}_${file.uri.pathSegments.last}';
+        try {
+          final uri = Uri.parse(oldUrl);
+          final segments = uri.pathSegments;
+          final fileIndex = segments.indexOf(bucket) + 1;
+          if (fileIndex < segments.length) {
+            final oldFileName = segments[fileIndex];
+            await supabaseClient.storage.from(bucket).remove([oldFileName]);
+          }
+        } catch (e) {
+          // Ignore error jika file tidak ditemukan
+          print('Gagal hapus file lama: $e');
+        }
       }
 
-      final storagePath = fileName;
+      // Generate nama file baru
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final extension = file.path.split('.').last;
+      final fileName = 'pemasukan_${timestamp}.$extension';
+
       final bytes = await file.readAsBytes();
 
+      // Upload file baru dengan upsert
       await supabaseClient.storage
           .from(bucket)
           .uploadBinary(
-            storagePath,
+            fileName,
             bytes,
-            fileOptions: const FileOptions(contentType: 'image/*'),
+            fileOptions: FileOptions(contentType: 'image/*', upsert: true),
           );
 
+      // Get public URL
       final publicUrl = supabaseClient.storage
           .from(bucket)
-          .getPublicUrl(storagePath);
+          .getPublicUrl(fileName);
 
       return publicUrl;
     } catch (e) {
+      // Berikan pesan error yang lebih jelas
+      if (e.toString().contains('403') || e.toString().contains('Forbidden')) {
+        throw Exception(
+          'Gagal upload: Tidak memiliki izin. Pastikan bucket "pemasukan_lain" sudah dibuat dan memiliki policy yang benar di Supabase Storage.',
+        );
+      }
       throw Exception('Gagal upload bukti: $e');
     }
   }

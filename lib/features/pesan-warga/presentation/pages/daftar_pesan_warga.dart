@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:jawara_pintar_mobile_version/features/pesan-warga/domain/usecases/get_user_role.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../data/models/pesan_warga_model.dart';
@@ -183,7 +181,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                           filled: true,
                           fillColor: AppColors.secondBackground,
                         ),
-                        value: tempStatus ?? appliedStatus,
+                        initialValue: tempStatus ?? appliedStatus,
                         items: [
                           const DropdownMenuItem(
                             value: null,
@@ -388,7 +386,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                                     );
                                     if (confirm == true) {
                                       context.read<AspirasiBloc>().add(
-                                        DeleteAspirasi(data.id!),
+                                        DeleteAspirasi(data.id),
                                       );
 
                                       ScaffoldMessenger.of(

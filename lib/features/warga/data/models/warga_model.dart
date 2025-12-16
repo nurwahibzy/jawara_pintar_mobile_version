@@ -1,9 +1,8 @@
-
 import 'package:jawara_pintar_mobile_version/features/warga/domain/entities/warga.dart';
 
 class WargaModel extends Warga {
   const WargaModel({
-    required super.keluargaId,
+    super.keluargaId, // Nullable
     required super.idWarga,
     required super.nik,
     required super.nama,
@@ -49,7 +48,7 @@ class WargaModel extends Warga {
           : null,
       keluargaId: json['keluarga_id'] is int
           ? json['keluarga_id'] as int
-          : int.tryParse('${json['keluarga_id']}') ?? 0,
+          : int.tryParse('${json['keluarga_id']}'),
     );
   }
 
@@ -124,6 +123,8 @@ class WargaModel extends Warga {
 
   static List<WargaModel> fromJsonList(List<dynamic>? data) {
     if (data == null || data.isEmpty) return [];
-    return data.map((json) => WargaModel.fromJson(json as Map<String, dynamic>)).toList();
+    return data
+        .map((json) => WargaModel.fromJson(json as Map<String, dynamic>))
+        .toList();
   }
 }

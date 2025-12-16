@@ -63,6 +63,22 @@ class GetDetailKeluarga extends WargaEvent {
   List<Object?> get props => [id];
 }
 
+class CreateKeluargaEvent extends WargaEvent {
+  final Keluarga keluarga;
+  const CreateKeluargaEvent(this.keluarga);
+
+  @override
+  List<Object?> get props => [keluarga];
+}
+
+class UpdateKeluargaEvent extends WargaEvent {
+  final Keluarga keluarga;
+  const UpdateKeluargaEvent(this.keluarga);
+
+  @override
+  List<Object?> get props => [keluarga];
+}
+
 class LoadRumahEvent extends WargaEvent {}
 
 class SearchRumahEvent extends WargaEvent {
@@ -71,4 +87,15 @@ class SearchRumahEvent extends WargaEvent {
 
   @override
   List<Object?> get props => [query];
+}
+
+class LoadWargaTanpaKeluargaEvent extends WargaEvent {}
+
+class AssignWargaToKeluargaEvent extends WargaEvent {
+  final List<int> wargaIds;
+  final int keluargaId;
+  const AssignWargaToKeluargaEvent(this.wargaIds, this.keluargaId);
+
+  @override
+  List<Object?> get props => [wargaIds, keluargaId];
 }

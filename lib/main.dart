@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/auth_gate.dart';
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -7,8 +8,6 @@ import 'core/utils/erors_checkers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/injections/injection.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter/material.dart';
-import 'core/routes/app_router.dart'; 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +48,16 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.appTheme,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('id', 'ID'), // Indonesian
+        Locale('en', 'US'), // English
+      ],
+      locale: const Locale('id', 'ID'),
       // initialRoute: AppRoutes.login,
       home: const AuthGate(),
       onGenerateRoute: AppRouter.generateRoute,

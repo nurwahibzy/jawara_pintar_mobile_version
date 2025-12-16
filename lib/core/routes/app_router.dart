@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jawara_pintar_mobile_version/core/auth/auth_gate.dart';
 import 'package:jawara_pintar_mobile_version/core/auth/register_page.dart';
-import 'package:jawara_pintar_mobile_version/features/broad_cast/domain/entities/broadcast.dart' show Broadcast;
+import 'package:jawara_pintar_mobile_version/features/broad_cast/domain/entities/broadcast.dart';
 import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/blocs/broadcast_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/pages/broad_cast_page.dart';
+
 import 'package:jawara_pintar_mobile_version/features/channel-transfer/domain/repositories/channel_transfer_repository.dart';
 import 'package:jawara_pintar_mobile_version/features/channel-transfer/presentation/bloc/channel_transfer_event.dart';
 import 'package:jawara_pintar_mobile_version/features/kategori-tagihan/presentation/bloc/master_iuran_bloc.dart';
@@ -19,6 +21,14 @@ import '../injections/injection.dart';
 import '../../features/pengeluaran/domain/entities/pengeluaran.dart';
 import '../../features/pengeluaran/presentation/bloc/pengeluaran_bloc.dart';
 import '../../features/pengeluaran/presentation/bloc/pengeluaran_event.dart';
+import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
+import '../../features/pemasukan/presentation/pages/daftar_pemasukan_page.dart';
+import '../../features/pemasukan/presentation/pages/detail_pemasukan_page.dart';
+import '../../features/pemasukan/presentation/pages/form_pemasukan_page.dart';
+import '../../features/kegiatan/presentation/bloc/kegiatan_bloc.dart';
+import '../../features/kegiatan/presentation/pages/daftar_kegiatan_page.dart';
+import '../../features/kegiatan/presentation/pages/detail_kegiatan_page.dart';
+import '../../features/kegiatan/presentation/pages/form_kegiatan_page.dart';
 import 'app_routes.dart';
 // import halaman yg dibutuhkan
 // import 'package:jawara_pintar_mobile_version/pages/login/login_page.dart';
@@ -35,7 +45,6 @@ import '../../features/pesan-warga/presentation/pages/daftar_pesan_warga.dart';
 import '../../features/pesan-warga/presentation/pages/edit_pesan_warga.dart';
 import '../../features/pesan-warga/presentation/pages/detail_pesan_warga.dart';
 import '../../features/pesan-warga/presentation/pages/tambah_pesan_warga.dart';
-// import '../../features/penerimaan-warga/presentation/pages/penerimaan_warga_page.dart';
 
 import '../../features/mutasi-keluarga/presentation/bloc/mutasi_keluarga_bloc.dart';
 import '../../features/mutasi-keluarga/presentation/pages/daftar_mutasi_keluarga.dart';
@@ -59,15 +68,9 @@ import '../../features/channel-transfer/presentation/pages/tambah_channel_transf
 import '../../features/channel-transfer/presentation/pages/edit_channel_transfer.dart';
 import '../../features/channel-transfer/presentation/pages/detail_channel_transfer.dart';
 
-// import 'package:flutter/material.dart';
 import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
-
-import '../../features/pemasukan/presentation/bloc/pemasukan_bloc.dart';
-import '../../features/pemasukan/presentation/pages/daftar_pemasukan_page.dart';
-import '../../features/pemasukan/presentation/pages/detail_pemasukan_page.dart';
-import '../../features/pemasukan/presentation/pages/form_pemasukan_page.dart';
 
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
 import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_event.dart';
@@ -82,6 +85,9 @@ class AppRouter {
     final args = settings.arguments;
 
     switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (_) => const AuthGate());
+
       case AppRoutes.login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
 
@@ -117,6 +123,58 @@ class AppRouter {
               pengeluaran: pengeluaran,
               kategoriList: [],
             ),
+          ),
+        );
+
+      // PEMASUKAN
+      case AppRoutes.daftarPemasukan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PemasukanBloc>(),
+            child: const DaftarPemasukanPage(),
+          ),
+        );
+
+      case AppRoutes.formPemasukan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<PemasukanBloc>(),
+            child: const FormPemasukanPage(),
+          ),
+        );
+
+      case AppRoutes.detailPemasukan:
+        final pemasukanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) => sl<PemasukanBloc>(),
+            child: DetailPemasukanPage(pemasukanId: pemasukanId),
+          ),
+        );
+
+      // KEGIATAN
+      case AppRoutes.daftarKegiatan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<KegiatanBloc>()..add(GetKegiatanListEvent()),
+            child: const DaftarKegiatanPage(),
+          ),
+        );
+
+      case AppRoutes.formKegiatan:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<KegiatanBloc>(),
+            child: const FormKegiatanPage(),
+          ),
+        );
+
+      case AppRoutes.detailKegiatan:
+        final kegiatanId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) => sl<KegiatanBloc>(),
+            child: DetailKegiatanPage(kegiatanId: kegiatanId),
           ),
         );
 
@@ -313,6 +371,7 @@ class AppRouter {
             child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
           ),
         );
+BroadCast
     
     //BROADCAST
 case AppRoutes.broadCast:
@@ -344,6 +403,33 @@ case AppRoutes.detailBroadCast:
   );
 
 
+      //Manajemen User
+      case AppRoutes.daftarUser:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<UsersBloc>()..add(const LoadUsers()),
+            child: const DaftarUsers(),
+          ),
+        );
+ main
+
+      case AppRoutes.tambahUser:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<UsersBloc>(),
+            child: const TambahUsers(),
+          ),
+        );
+
+      // BROADCAST
+      // case AppRoutes.BroadCast:
+      //   return MaterialPageRoute(
+      //     builder: (_) => BlocProvider(
+      //       create: (_) =>
+      //           sl<BroadcastBloc>()..add(const GetPemasukanListEvent()),
+      //       child: BroadCastPage(addBroadcast: null,),
+      //     ),
+      //   );
 
       // dikebutt moasss
       default:

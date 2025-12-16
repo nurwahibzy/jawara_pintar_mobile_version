@@ -261,7 +261,7 @@ class _DaftarKategoriTagihanContentState
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<String>(
-                          value: _filterKategoriTemp,
+                          initialValue: _filterKategoriTemp,
                           decoration: InputDecoration(
                             labelText: 'Kategori',
                             border: OutlineInputBorder(

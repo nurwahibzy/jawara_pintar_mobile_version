@@ -164,7 +164,7 @@ class _TambahKategoriTagihanPageState extends State<TambahKategoriTagihanPage> {
 
                     // Kategori Iuran Dropdown
                     DropdownButtonFormField<int>(
-                      value: _selectedKategoriId,
+                      initialValue: _selectedKategoriId,
                       decoration: InputDecoration(
                         labelText: "Kategori Iuran *",
                         hintText: "Pilih kategori iuran",
@@ -247,7 +247,7 @@ class _TambahKategoriTagihanPageState extends State<TambahKategoriTagihanPage> {
                             _isActive = value;
                           });
                         },
-                        activeColor: theme.colorScheme.primary,
+                        activeThumbColor: theme.colorScheme.primary,
                       ),
                     ),
 

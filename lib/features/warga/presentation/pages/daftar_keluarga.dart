@@ -5,6 +5,7 @@ import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/domain/entities/keluarga.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/bloc/warga_bloc.dart';
 import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/detail_keluarga.dart';
+import 'package:jawara_pintar_mobile_version/features/warga/presentation/pages/form_keluarga_page.dart';
 
 class DaftarKeluargaPage extends StatefulWidget {
   const DaftarKeluargaPage({super.key});
@@ -469,7 +470,7 @@ class _DaftarKeluargaPageState extends State<DaftarKeluargaPage> {
                                 ),
                               ),
                             ),
-                            value: _filterStatusTemp ?? '-- Pilih Status --',
+                            initialValue: _filterStatusTemp ?? '-- Pilih Status --',
                             style: const TextStyle(
                               fontSize: 13,
                               color: Colors.black87,
@@ -725,6 +726,28 @@ class _DaftarKeluargaPageState extends State<DaftarKeluargaPage> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: Builder(
+        builder: (BuildContext ctx) {
+          return FloatingActionButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                ctx,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider.value(
+                    value: ctx.read<WargaBloc>(),
+                    child: const FormKeluargaPage(),
+                  ),
+                ),
+              );
+              if (result == true && mounted) {
+                ctx.read<WargaBloc>().add(LoadAllKeluargaWithRelations());
+              }
+            },
+            backgroundColor: AppColors.primary,
+            child: const Icon(Icons.add, color: Colors.white),
+          );
+        },
       ),
     );
   }

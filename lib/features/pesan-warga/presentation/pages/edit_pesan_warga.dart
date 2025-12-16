@@ -234,7 +234,7 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
         Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 6),
         DropdownButtonFormField(
-          value: value,
+          initialValue: value,
           items: items,
           onChanged: onChanged,
         ),

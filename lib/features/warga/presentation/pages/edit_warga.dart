@@ -308,7 +308,7 @@ class _EditWargaPageState extends State<EditWargaPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _jenisKelamin,
+                      initialValue: _jenisKelamin,
                       decoration: InputDecoration(
                         labelText: "Jenis Kelamin *",
                         prefixIcon: const Icon(Icons.wc),
@@ -461,7 +461,7 @@ class _EditWargaPageState extends State<EditWargaPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _statusHidup,
+                      initialValue: _statusHidup,
                       decoration: InputDecoration(
                         labelText: "Status Hidup *",
                         prefixIcon: const Icon(Icons.favorite),
@@ -484,7 +484,7 @@ class _EditWargaPageState extends State<EditWargaPage> {
                     _buildSectionHeader('Data Tambahan', Icons.info_outline),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _agama,
+                      initialValue: _agama,
                       decoration: InputDecoration(
                         labelText: "Agama",
                         prefixIcon: const Icon(Icons.church),
@@ -502,7 +502,7 @@ class _EditWargaPageState extends State<EditWargaPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _golonganDarah,
+                      initialValue: _golonganDarah,
                       decoration: InputDecoration(
                         labelText: "Golongan Darah",
                         prefixIcon: const Icon(Icons.bloodtype),
@@ -523,7 +523,7 @@ class _EditWargaPageState extends State<EditWargaPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
-                      value: _pendidikanTerakhir,
+                      initialValue: _pendidikanTerakhir,
                       decoration: InputDecoration(
                         labelText: "Pendidikan Terakhir",
                         prefixIcon: const Icon(Icons.school),

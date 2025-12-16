@@ -218,7 +218,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
 
               // Kategori
               DropdownButtonFormField<String>(
-                value: kategori,
+                initialValue: kategori,
                 decoration: InputDecoration(
                   labelText: "Kategori",
                   border: _inputBorder(theme.dividerColor),

@@ -14,6 +14,8 @@ class PemasukanModel extends Pemasukan {
     super.tanggalVerifikasi,
     required super.createdAt,
     super.namaKategori,
+    super.namaCreatedBy,
+    super.namaVerifikator,
   });
 
   factory PemasukanModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +35,12 @@ class PemasukanModel extends Pemasukan {
       createdAt: DateTime.parse(json['created_at'] as String),
       namaKategori: json['kategori_transaksi'] != null
           ? json['kategori_transaksi']['nama_kategori'] as String?
+          : null,
+      namaCreatedBy: json['created_by_warga'] != null
+          ? json['created_by_warga']['nama_lengkap'] as String?
+          : null,
+      namaVerifikator: json['verifikator_warga'] != null
+          ? json['verifikator_warga']['nama_lengkap'] as String?
           : null,
     );
   }

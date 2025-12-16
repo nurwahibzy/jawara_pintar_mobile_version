@@ -187,7 +187,7 @@ class _TambahUsersState extends State<TambahUsers> {
 
                 // 4. ROLE DROPDOWN
                 DropdownButtonFormField<String>(
-                  value: _selectedRole,
+                  initialValue: _selectedRole,
                   decoration: InputDecoration(
                     labelText: "Role Pengguna",
                     prefixIcon: const Icon(Icons.admin_panel_settings_outlined),
