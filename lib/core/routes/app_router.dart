@@ -72,10 +72,10 @@ import '../../features/tagihan/presentation/bloc/tagihan_bloc.dart';
 import '../../features/tagihan/presentation/pages/daftar_tagihan_pembayaran.dart';
 import '../../features/tagihan/presentation/pages/detail_tagihan_pembayaran.dart';
 
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_event.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/daftar_users.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/pages/tambah_users.dart';
+import '../../features/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+import '../../features/manajemen-pengguna/presentation/bloc/users_event.dart';
+import '../../features/manajemen-pengguna/presentation/pages/daftar_users.dart';
+import '../../features/manajemen-pengguna/presentation/pages/tambah_users.dart';
 
 import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/pages/tambah_broadcast_page.dart';
 import 'package:jawara_pintar_mobile_version/features/broad_cast/presentation/pages/detail_broadcast_page.dart';
@@ -371,37 +371,33 @@ class AppRouter {
             child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
           ),
         );
-BroadCast
-    
-    //BROADCAST
-case AppRoutes.broadCast:
-  return MaterialPageRoute(
-    builder: (_) => BlocProvider(
-      create: (_) => sl<BroadcastBloc>()
-        ..add(LoadBroadcastEvent()),
-      child: const BroadCastPage(),
-    ),
-  );
 
+      //BROADCAST
+      case AppRoutes.broadCast:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<BroadcastBloc>()..add(LoadBroadcastEvent()),
+            child: const BroadCastPage(),
+          ),
+        );
 
-case AppRoutes.tambahBroadCast:
-  return MaterialPageRoute(
-    builder: (_) => BlocProvider(
-      create: (_) => sl<BroadcastBloc>(),
-      child: const TambahBroadCastPage(),
-    ),
-  );
+      case AppRoutes.tambahBroadCast:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<BroadcastBloc>(),
+            child: const TambahBroadCastPage(),
+          ),
+        );
 
-case AppRoutes.detailBroadCast:
-  final broadcast = settings.arguments as Broadcast;
+      case AppRoutes.detailBroadCast:
+        final broadcast = settings.arguments as Broadcast;
 
-  return MaterialPageRoute(
-    builder: (_) => BlocProvider(
-      create: (_) => sl<BroadcastBloc>(),
-      child: DetailBroadCastPage(broadcast: broadcast),
-    ),
-  );
-
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<BroadcastBloc>(),
+            child: DetailBroadCastPage(broadcast: broadcast),
+          ),
+        );
 
       //Manajemen User
       case AppRoutes.daftarUser:
@@ -411,7 +407,6 @@ case AppRoutes.detailBroadCast:
             child: const DaftarUsers(),
           ),
         );
- main
 
       case AppRoutes.tambahUser:
         return MaterialPageRoute(

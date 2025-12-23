@@ -1,4 +1,4 @@
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/entities/users.dart';
+import '../../../manajemen-pengguna/domain/entities/users.dart';
 
 class UsersModel extends Users {
   const UsersModel({
