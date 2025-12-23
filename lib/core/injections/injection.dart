@@ -172,15 +172,15 @@ import '../../features/kegiatan/domain/usecases/delete_transaksi_kegiatan.dart';
 import '../../features/kegiatan/presentation/bloc/kegiatan_bloc.dart';
 
 // Manajemen Pengguna
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/datasources/users_datasource.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/data/repositories/users_repository_implementation.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/repositories/users_repository.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/create_user.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/delete_user.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_all_users.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/get_user.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/usecases/update_user.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/presentation/bloc/users_bloc.dart';
+import '../../features/manajemen-pengguna/data/datasources/users_datasource.dart';
+import '../../features/manajemen-pengguna/data/repositories/users_repository_implementation.dart';
+import '../../features/manajemen-pengguna/domain/repositories/users_repository.dart';
+import '../../features/manajemen-pengguna/domain/usecases/create_user.dart';
+import '../../features/manajemen-pengguna/domain/usecases/delete_user.dart';
+import '../../features/manajemen-pengguna/domain/usecases/get_all_users.dart';
+import '../../features/manajemen-pengguna/domain/usecases/get_user.dart';
+import '../../features/manajemen-pengguna/domain/usecases/update_user.dart';
+import '../../features/manajemen-pengguna/presentation/bloc/users_bloc.dart';
 
 //BROADCAST
 import '../../features/broad_cast/presentation/blocs/broadcast_bloc.dart';
