@@ -371,8 +371,7 @@ class AppRouter {
             child: DetailTagihanPembayaranPage(tagihanId: tagihanId),
           ),
         );
-BroadCast
-    
+
     //BROADCAST
 case AppRoutes.broadCast:
   return MaterialPageRoute(
@@ -411,7 +410,6 @@ case AppRoutes.detailBroadCast:
             child: const DaftarUsers(),
           ),
         );
- main
 
       case AppRoutes.tambahUser:
         return MaterialPageRoute(
