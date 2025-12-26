@@ -15,7 +15,10 @@ class UsersDataSourceImplementation implements UsersDataSource {
   final SupabaseClient client;
   final _table = 'users';
 
-  UsersDataSourceImplementation() : client = SupabaseService.client;
+  // UsersDataSourceImplementation() : client = SupabaseService.client;
+  // mengubah konstruktor untuk menerima client sebagai parameter opsional agar bisa dilakukan mock saat testing
+  UsersDataSourceImplementation({SupabaseClient? client})
+    : client = client ?? SupabaseService.client;
 
   @override
   Future<List<UsersModel>> getAllUsers() async {
