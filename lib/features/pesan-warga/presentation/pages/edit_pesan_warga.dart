@@ -133,6 +133,7 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      key: const Key('edit_simpan_button'),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           final updatedPesan = Aspirasi(
@@ -171,6 +172,7 @@ class _EditPesanWargaState extends State<EditPesanWarga> {
                   ),
                   const SizedBox(width: 10),
                   Expanded(
+                    key: const Key('edit_batal_button'),
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(

@@ -153,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         // EMAIL FIELD
                         TextField(
+                          key: const Key('input_email'),
                           controller: _emailController,
                           cursorColor: AppColors.primary,
                           // Hapus error saat user mengetik
@@ -180,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         // PASSWORD FIELD
                         TextField(
+                          key: const Key('input_password'),
                           controller: _passwordController,
                           cursorColor: AppColors.primary,
                           obscureText: true,
@@ -203,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         // LOGIN BUTTON
                         SizedBox(
+                          key: const Key('login_btn'),
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
