@@ -352,6 +352,7 @@ class _DaftarKategoriTagihanContentState
                           ),
                         )
                       : ListView.builder(
+                          key: const Key('list_kategori_tagihan'),
                           padding: const EdgeInsets.all(16),
                           itemCount: _filteredList.length,
                           itemBuilder: (context, index) {

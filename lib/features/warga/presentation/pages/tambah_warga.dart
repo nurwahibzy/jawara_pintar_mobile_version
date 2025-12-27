@@ -375,6 +375,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListView(
+                  key: const Key('form_warga'),
                   children: [
                     // --- DATA PRIBADI ---
                     Text(
@@ -385,6 +386,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      key: const Key('input_nama'),
                       controller: _namaController,
                       cursorColor: theme.colorScheme.primary,
                       style: theme.textTheme.bodyMedium,
@@ -405,6 +407,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      key: const Key('input_nik'),
                       controller: _nikController,
                       cursorColor: theme.colorScheme.primary,
                       style: theme.textTheme.bodyMedium,
@@ -426,6 +429,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                     ),
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
+                      key: const Key('dropdown_jenis_kelamin_form'),
                       initialValue: _jenisKelamin,
                       decoration: InputDecoration(
                         labelText: "Jenis Kelamin *",
@@ -752,6 +756,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
+                            key: const Key('btn_simpan_warga'),
                             onPressed: _isLoading ? null : _submitForm,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.primary,
@@ -768,6 +773,7 @@ class _WargaFormPageState extends State<WargaFormPage> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton(
+                            key: const Key('btn_batal_warga'),
                             onPressed: _isLoading ? null : _resetForm,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.secondary,

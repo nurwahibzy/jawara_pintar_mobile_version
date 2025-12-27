@@ -90,6 +90,7 @@ class _TambahRumahPageState extends State<TambahRumahPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListView(
+                  key: const Key('form_rumah'),
                   children: [
                     // --- DATA RUMAH ---
                     Text(
@@ -100,6 +101,7 @@ class _TambahRumahPageState extends State<TambahRumahPage> {
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      key: const Key('input_alamat_rumah'),
                       controller: _alamatController,
                       cursorColor: theme.colorScheme.primary,
                       style: theme.textTheme.bodyMedium,
@@ -173,6 +175,7 @@ class _TambahRumahPageState extends State<TambahRumahPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
+                            key: const Key('btn_simpan_rumah'),
                             onPressed: _isLoading ? null : _submitForm,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.primary,
@@ -189,6 +192,7 @@ class _TambahRumahPageState extends State<TambahRumahPage> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton(
+                            key: const Key('btn_batal_rumah'),
                             onPressed: _isLoading ? null : _resetForm,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.colorScheme.secondary,

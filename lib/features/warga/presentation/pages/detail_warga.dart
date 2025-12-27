@@ -190,6 +190,7 @@ class _DetailWargaPageState extends State<DetailWargaPage> {
           centerTitle: true,
           actions: [
             IconButton(
+              key: const Key('btn_edit_warga'),
               icon: const Icon(Icons.edit),
               tooltip: 'Edit',
               onPressed: () async {
