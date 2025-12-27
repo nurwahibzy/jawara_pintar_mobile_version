@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jawara_pintar_mobile_version/core/theme/app_colors.dart';
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/entities/users.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../domain/entities/users.dart';
 
 import '../bloc/users_bloc.dart';
 import '../bloc/users_event.dart';

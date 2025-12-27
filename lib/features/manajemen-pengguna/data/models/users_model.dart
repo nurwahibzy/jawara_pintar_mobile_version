@@ -1,4 +1,4 @@
-import 'package:jawara_pintar_mobile_version/manajemen-pengguna/domain/entities/users.dart';
+import '../../../manajemen-pengguna/domain/entities/users.dart';
 
 class UsersModel extends Users {
   const UsersModel({
@@ -43,7 +43,7 @@ class UsersModel extends Users {
       'id': id,
       'warga_id': wargaId,
       'role': role,
-      // 'nama_lengkap': nama,
+      'nama_lengkap': nama,
       'status_user': status,
       'auth_id': authId,
       'created_at': createdAt.toIso8601String(),
