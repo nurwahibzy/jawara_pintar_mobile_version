@@ -206,6 +206,9 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
     return SizedBox(
       height: 36,
       child: DropdownButtonFormField<String>(
+        key: label == 'Jenis Kelamin'
+            ? const Key('dropdown_jenis_kelamin')
+            : null,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(fontSize: 13),
@@ -254,6 +257,7 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
         centerTitle: true,
         actions: [
           IconButton(
+            key: const Key('toggle_filter'),
             icon: Icon(_showFilter ? Icons.filter_alt_off : Icons.filter_alt),
             onPressed: () {
               setState(() {
@@ -313,6 +317,7 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
                       SizedBox(
                         height: 40,
                         child: TextField(
+                          key: const Key('search_warga'),
                           controller: _searchController,
                           style: const TextStyle(fontSize: 14),
                           decoration: InputDecoration(
@@ -383,6 +388,7 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
+                            key: const Key('btn_reset_filter'),
                             onPressed: _resetFilter,
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
@@ -397,6 +403,7 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
                           ),
                           const SizedBox(width: 8),
                           ElevatedButton(
+                            key: const Key('btn_apply_filter'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
@@ -465,11 +472,13 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
                   }
 
                   return ListView.builder(
+                    key: const Key('list_warga'),
                     padding: const EdgeInsets.all(8),
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       final item = list[index];
                       return Card(
+                        key: Key('card_warga_$index'),
                         color: AppColors.background,
                         elevation: 2,
                         margin: const EdgeInsets.only(bottom: 8),
@@ -600,6 +609,7 @@ class _DaftarWargaPageState extends State<DaftarWargaPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        key: const Key('fab_tambah_warga'),
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
