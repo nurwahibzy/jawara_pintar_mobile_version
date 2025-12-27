@@ -227,6 +227,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
         centerTitle: true,
         actions: [
           IconButton(
+            key: const Key('toggle_filter_rumah'),
             icon: Icon(_showFilter ? Icons.filter_alt_off : Icons.filter_alt),
             onPressed: () {
               setState(() {
@@ -295,6 +296,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                       SizedBox(
                         height: 40,
                         child: TextField(
+                          key: const Key('search_rumah'),
                           controller: _searchController,
                           style: const TextStyle(fontSize: 14),
                           decoration: InputDecoration(
@@ -341,6 +343,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                       SizedBox(
                         height: 44,
                         child: DropdownButtonFormField<String>(
+                          key: const Key('dropdown_status_rumah'),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: AppColors.secondBackground,
@@ -365,7 +368,8 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                               borderSide: BorderSide(color: AppColors.primary),
                             ),
                           ),
-                          initialValue: _filterStatusTemp ?? '-- Pilih Status --',
+                          initialValue:
+                              _filterStatusTemp ?? '-- Pilih Status --',
                           style: const TextStyle(
                             fontSize: 13,
                             color: Colors.black87,
@@ -405,6 +409,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
+                            key: const Key('btn_reset_filter_rumah'),
                             onPressed: _resetFilter,
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
@@ -419,6 +424,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                           ),
                           const SizedBox(width: 8),
                           ElevatedButton(
+                            key: const Key('btn_apply_filter_rumah'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
@@ -484,11 +490,13 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
                   }
 
                   return ListView.builder(
+                    key: const Key('list_rumah'),
                     padding: const EdgeInsets.all(8),
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       final item = list[index];
                       return Card(
+                        key: Key('card_rumah_$index'),
                         color: AppColors.background,
                         elevation: 2,
                         margin: const EdgeInsets.only(bottom: 8),
@@ -639,6 +647,7 @@ class _DaftarRumahPageState extends State<DaftarRumahPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        key: const Key('fab_tambah_rumah'),
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
