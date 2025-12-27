@@ -105,6 +105,7 @@ class _DashboardKegiatanPageContent extends StatelessWidget {
             final dashboard = state.dashboard;
 
             return SingleChildScrollView(
+              key: const Key('list_kegiatan'),
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

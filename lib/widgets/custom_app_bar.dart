@@ -83,7 +83,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Material(
                     color: Colors.transparent,
                     child: InkWell(
-                       key: const Key('btn_profile'),
+                      key: const Key('btn_profile'),
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
                         // TAMPILKAN DIALOG KONFIRMASI

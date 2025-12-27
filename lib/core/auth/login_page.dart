@@ -208,6 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                           key: const Key('login_btn'),
                           width: double.infinity,
                           child: ElevatedButton(
+                            key: const Key('btn_login'),
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
                             ),
