@@ -53,6 +53,11 @@ class DetailPengeluaran extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          key: const Key('btn_back_detail_pengeluaran'),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
