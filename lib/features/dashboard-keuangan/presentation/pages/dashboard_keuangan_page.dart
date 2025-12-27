@@ -114,6 +114,7 @@ class _DashboardKeuanganPageContent extends StatelessWidget {
             final availableYears = state.availableYears;
 
             return SingleChildScrollView(
+              key: const Key('list_transaksi_keuangan'),
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

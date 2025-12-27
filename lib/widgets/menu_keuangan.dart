@@ -74,12 +74,14 @@ class MenuKeuangan extends StatelessWidget {
                 Icons.bar_chart,
                 "Laporan\nKeuangan",
                 "/laporan-keuangan",
+                key: const Key('menu_laporan_keuangan'),
               ),
               _buildMenuItem(
                 context,
                 Icons.print,
                 "Cetak\nLaporan",
                 "/cetak-laporan",
+                key: const Key('menu_cetak_laporan'),
               ),
             ],
           ),
@@ -92,11 +94,13 @@ class MenuKeuangan extends StatelessWidget {
     BuildContext context,
     IconData icon,
     String label,
-    String route,
-  ) {
+    String route, {
+    Key? key,
+  }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
+        key: key,
         borderRadius: BorderRadius.circular(16),
         onTap: () {
           Navigator.pushNamed(context, route);
