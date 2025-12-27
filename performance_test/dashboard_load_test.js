@@ -33,7 +33,6 @@ export const options = {
   },
 };
 
-// ... (Setup function remains the same) ...
 
 // Headers helper
 const getHeaders = (token) => ({
@@ -93,5 +92,4 @@ export function testLaporan(data) {
   sleep(2);
 }
 
-// Default function tidak lagi digunakan karena kita pakai exec di scenarios
 export default function () {}
