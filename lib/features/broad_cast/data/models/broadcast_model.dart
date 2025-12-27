@@ -9,7 +9,7 @@ required super.isiPesan,
 required super.tanggalPublikasi,
 required super.lampiranGambar,
 required super.lampiranDokumen,
-required super.createdBy,
+required super.createdBy, required super.title, required super.content,
 });
 
 
@@ -21,7 +21,7 @@ isiPesan: json['isi_pesan'],
 tanggalPublikasi: DateTime.parse(json['tanggal_publikasi']),
 lampiranGambar: json['lampiran_gambar'],
 lampiranDokumen: json['lampiran_dokumen'],
-createdBy: json['created_by'],
+createdBy: json['created_by'], title: '', content: '',
 );
 }
 

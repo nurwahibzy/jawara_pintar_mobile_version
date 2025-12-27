@@ -18,6 +18,6 @@ class Broadcast {
     required this.tanggalPublikasi,
     this.lampiranGambar,
     this.lampiranDokumen,
-    required this.createdBy,
+    required this.createdBy, required String title, required String content,
   });
 }

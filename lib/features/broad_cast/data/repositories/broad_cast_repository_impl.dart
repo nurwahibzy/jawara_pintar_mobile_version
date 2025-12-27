@@ -27,7 +27,7 @@ isiPesan: data.isiPesan,
 tanggalPublikasi: data.tanggalPublikasi,
 lampiranGambar: data.lampiranGambar,
 lampiranDokumen: data.lampiranDokumen,
-createdBy: data.createdBy,
+createdBy: data.createdBy, title: '', content: '',
 );
 
 
