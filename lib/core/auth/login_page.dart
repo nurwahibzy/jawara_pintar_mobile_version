@@ -205,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         // LOGIN BUTTON
                         SizedBox(
+                          key: const Key('login_btn'),
                           width: double.infinity,
                           child: ElevatedButton(
                             key: const Key('btn_login'),

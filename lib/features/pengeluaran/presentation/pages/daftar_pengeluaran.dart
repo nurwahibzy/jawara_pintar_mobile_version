@@ -86,23 +86,28 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary, 
+     appBar: AppBar(
+        backgroundColor: AppColors.primary,
         title: const Text(
           'Daftar Pengeluaran',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white, 
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white), 
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          key: const Key('btn_back_to_dashboard'),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
 
         actions: [
           IconButton(
+            key: const Key('btn_filter'),
             icon: Icon(
               _showFilter ? Icons.filter_alt_off : Icons.filter_alt,
-              color: Colors.white, 
+              color: Colors.white,
             ),
             onPressed: () {
               setState(() {
@@ -145,6 +150,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                             ),
                           ),
                           IconButton(
+                            key: const Key('btn_close_filter'),
                             icon: const Icon(
                               Icons.close,
                               color: Colors.black87,
@@ -159,6 +165,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
 
                       /// SEARCH INPUT
                       TextField(
+                        key: const Key('filter_textfield_search'),
                         controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Cari nama...',
@@ -274,6 +281,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           OutlinedButton(
+                             key: const Key('filter_reset_button'),
                             onPressed: () {
                               setState(() {
                                 _searchController.clear();
@@ -290,6 +298,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                           ),
                           const SizedBox(width: 12),
                           ElevatedButton(
+                            key: const Key('filter_apply_button'),
                             onPressed: () {
                               setState(() {
                                 _filterKategori = _filterKategoriTemp;
@@ -400,6 +409,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                             ],
                           ),
                           trailing: PopupMenuButton<String>(
+                            key: Key('btn_more_options_$index'),
                             onSelected: (value) {
                              if (value == 'detail') {
                                Navigator.push(
@@ -433,10 +443,14 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
                             },
                             itemBuilder: (_) => const [
                               PopupMenuItem(
+                                key: Key('menu_option_detail'),
                                 value: 'detail',
                                 child: Text("Detail"),
                               ),
-                              PopupMenuItem(value: 'edit', child: Text("Edit")),
+                              PopupMenuItem(
+                                key: Key('menu_option_edit'),
+                                value: 'edit',
+                                child: Text("Edit")),
                               PopupMenuItem(
                                 value: 'hapus',
                                 child: Text("Hapus"),
@@ -458,6 +472,7 @@ class _DaftarPengeluaranState extends State<DaftarPengeluaran> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 16.0, right: 16.0),
         child: FloatingActionButton(
+          key: const Key('btn_tambah_pengeluaran'),
           child: const Icon(Icons.add),
           onPressed: () async {
             final result = await Navigator.pushNamed(

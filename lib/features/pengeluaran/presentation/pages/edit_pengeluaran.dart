@@ -203,6 +203,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
           child: ListView(
             children: [
               TextField(
+                key: const Key('input_nama_pengeluaran'),
                 controller: namaController,
                 cursorColor: theme.colorScheme.primary,
                 style: theme.textTheme.bodyMedium,
@@ -218,6 +219,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
               ),
               const SizedBox(height: 12),
               GestureDetector(
+                key: const Key('input_tanggal_pengeluaran'),
                 onTap: _pickTanggal,
                 child: AbsorbPointer(
                   child: TextField(
@@ -238,6 +240,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
+                key: const Key('dropdown_kategori'),
                 initialValue: kategori,
                 decoration: InputDecoration(
                   labelText: "Kategori Pengeluaran",
@@ -259,6 +262,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
               ),
               const SizedBox(height: 12),
               TextField(
+                key: const Key('input_nominal'),
                 controller: nominalController,
                 cursorColor: theme.colorScheme.primary,
                 style: theme.textTheme.bodyMedium,
@@ -276,6 +280,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
               ),
               const SizedBox(height: 12),
               TextField(
+                key: const Key('input_keterangan'),
                 controller: keteranganController,
                 cursorColor: theme.colorScheme.primary,
                 style: theme.textTheme.bodyMedium,
@@ -299,6 +304,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
               ),
               const SizedBox(height: 8),
              GestureDetector(
+             key: const Key('input_bukti_gambar'),
   onTap: _pickImage,
   child: Container(
     height: 150,
@@ -352,6 +358,7 @@ class _EditPengeluaranPageState extends State<EditPengeluaranPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      key: const Key('btn_update_form'),
                       onPressed: _simpanData,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary, 
