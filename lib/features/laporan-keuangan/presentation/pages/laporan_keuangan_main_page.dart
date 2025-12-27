@@ -76,6 +76,7 @@ class _LaporanKeuanganMainPageContentState
                 Row(
                   children: [
                     IconButton(
+                      key: const Key('btn_back'),
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -116,6 +117,7 @@ class _LaporanKeuanganMainPageContentState
                   children: [
                     Expanded(
                       child: GestureDetector(
+                        key: const Key('tab_pemasukan'),
                         onTap: () => _tabController.animateTo(0),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
@@ -156,6 +158,7 @@ class _LaporanKeuanganMainPageContentState
                     ),
                     Expanded(
                       child: GestureDetector(
+                        key: const Key('tab_pengeluaran'),
                         onTap: () => _tabController.animateTo(1),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),

@@ -28,6 +28,8 @@ dependencies:
   supabase_flutter: ^2.10.3
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   bloc_test: ^10.0.0
   build_runner: ^2.4.13
   flutter_lints: ^5.0.0

@@ -108,6 +108,7 @@ class _CetakLaporanPageState extends State<CetakLaporanPage> {
             Material(
               borderRadius: BorderRadius.circular(10),
               child: Container(
+                key: const Key('dropdown_jenis_laporan'),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[300]!),
                   borderRadius: BorderRadius.circular(10),
@@ -179,6 +180,7 @@ class _CetakLaporanPageState extends State<CetakLaporanPage> {
             ),
             const SizedBox(height: 8),
             InkWell(
+              key: const Key('input_tanggal_mulai'),
               onTap: () async {
                 final date = await showDatePicker(
                   context: context,
@@ -233,6 +235,7 @@ class _CetakLaporanPageState extends State<CetakLaporanPage> {
             ),
             const SizedBox(height: 8),
             InkWell(
+              key: const Key('input_tanggal_akhir'),
               onTap: () async {
                 final date = await showDatePicker(
                   context: context,
@@ -287,6 +290,7 @@ class _CetakLaporanPageState extends State<CetakLaporanPage> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
+            key: const Key('btn_submit_cetak'),
             onPressed: canLoad && state is! CetakLaporanLoading
                 ? () {
                     context.read<CetakLaporanBloc>().add(
@@ -315,6 +319,7 @@ class _CetakLaporanPageState extends State<CetakLaporanPage> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
+              key: const Key('btn_generate_pdf'),
               onPressed: state is! PdfGenerating
                   ? () {
                       context.read<CetakLaporanBloc>().add(
