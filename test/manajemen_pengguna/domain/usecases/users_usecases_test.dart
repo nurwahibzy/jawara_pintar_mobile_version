@@ -24,7 +24,7 @@ void main() {
   late GetAllUsers getAllUsers;
   late GetUserById getUserById;
   late UpdateUser updateUser;
-  late GetWargaList getWargaList;
+  late GetWargaList     getWargaList;
 
   // setup sebelum menjalankan setiap test
   setUp(() {
