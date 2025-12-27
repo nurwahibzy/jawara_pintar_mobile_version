@@ -71,6 +71,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
               icon: Container(
+                key: const Key('tab_keuangan'),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: currentIndex == 0
@@ -84,6 +85,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Container(
+                key: const Key('tab_kegiatan'),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: currentIndex == 1
@@ -97,6 +99,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Container(
+                key: const Key('tab_kependudukan'),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: currentIndex == 2
