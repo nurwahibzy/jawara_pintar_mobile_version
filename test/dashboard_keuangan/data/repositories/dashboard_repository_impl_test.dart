@@ -82,15 +82,16 @@ void main() {
   group('getAvailableYears', () {
     test('should return list of years when remote data source is successful', () async {
       // Arrange
+      final tYears = ['2025'];
       when(mockRemoteDataSource.getAvailableYears())
-          .thenAnswer((_) async => ['2024', '2025']);
+          .thenAnswer((_) async => tYears);
 
       // Act
       final result = await repository.getAvailableYears();
 
       // Assert
       verify(mockRemoteDataSource.getAvailableYears());
-      expect(result, equals(const Right(['2024', '2025'])));
+      expect(result, equals(Right(tYears)));
     });
 
     test('should return ServerFailure when remote data source throws ServerException', () async {
