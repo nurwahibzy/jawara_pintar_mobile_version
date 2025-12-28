@@ -5,7 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([MockSpec<MutasiKeluargaDatasourceImplementation>()])
-import 'mutasi_keluarga_test.mocks.dart';
+import 'mutasi_keluarga_datasources_test.mocks.dart';
 
 void main() {
   // Definisi Variable di luar agar bisa dipakai semua test (mocking)

@@ -49,7 +49,7 @@ void main() {
   // get all users
   group('getAllUsers', () {
     test(
-      'POSITIVE: should return right list of users when datasource succeeds',
+      'POSITIVE: should return right list of users when get data from datasource succeeds',
       () async {
         // Arrange
         when(
@@ -70,7 +70,7 @@ void main() {
     );
 
     test(
-      'NEGATIVE: should throw left failure when datasource throws error',
+      'NEGATIVE: should throw left failure when get data from datasource throws error',
       () async {
         // Arrange
         when(
@@ -88,7 +88,7 @@ void main() {
   // get user by id
   group('getUserById', () {
     test(
-      'POSITIVE: should return right user when datasource succeeds',
+      'POSITIVE: should return right user when get data by id from datasource succeeds',
       () async {
         // Arrange
         when(
@@ -107,7 +107,7 @@ void main() {
       },
     );
 
-    test('NEGATIVE: should throw left failure when datasource fails', () async {
+    test('NEGATIVE: should throw left failure when get data by id from datasource fails', () async {
       // Arrange
       when(
         mockRemoteDataSource.getUserById(1),
@@ -164,7 +164,7 @@ void main() {
       verify(mockRemoteDataSource.updateUser(tUsersModel)).called(1);
     });
 
-    test('NEGATIVE: should return failure when datasource fails', () async {
+    test('NEGATIVE: should return failure when update data from datasource fails', () async {
       // Arrange
       when(
         mockRemoteDataSource.updateUser(tUsersModel),
@@ -193,7 +193,7 @@ void main() {
       verify(mockRemoteDataSource.deleteUser(1)).called(1);
     });
 
-    test('NEGATIVE: should return failure when datasource fails', () async {
+    test('NEGATIVE: should return failure when delete data from datasource fails', () async {
       // Arrange
       when(mockRemoteDataSource.deleteUser(1)).thenThrow(Exception('DB Error'));
 

@@ -17,47 +17,41 @@ class MutasiKeluargaModel extends MutasiKeluarga {
   });
 
   factory MutasiKeluargaModel.fromJson(Map<String, dynamic> json) {
-    // 1. LOGIKA MENCARI NAMA KEPALA KELUARGA
-    String namaFound = 'Tanpa Nama';
+    final List<dynamic>? wargaList = json['keluarga'] != null
+        ? json['keluarga']['warga']
+        : null;
 
-    // Ambil objek keluarga (bisa null)
-    final keluargaObj = json['keluarga'];
+    String namaKepalaKeluarga = 'Tanpa Nama';
 
-    if (keluargaObj != null && keluargaObj['warga'] != null) {
-      // Ambil list warga
-      final List listWarga = keluargaObj['warga'] as List;
+    if (wargaList != null && wargaList.isNotEmpty) {
+      // Cari Kepala Keluarga
+      final kepalaList = wargaList.where(
+        (w) => w['status_keluarga'] == 'Kepala Keluarga',
+      );
 
-      if (listWarga.isNotEmpty) {
-        // Cari yang statusnya 'Kepala Keluarga'
-        final kepala = listWarga.firstWhere(
-          (w) =>
-              w['status_keluarga'] ==
-              'Kepala Keluarga', // Sesuaikan string di DB kamu
-          orElse: () => listWarga.first, // Fallback: ambil orang pertama
-        );
-        namaFound = kepala['nama_lengkap'] ?? 'Tanpa Nama';
+      if (kepalaList.isNotEmpty) {
+        namaKepalaKeluarga = kepalaList.first['nama_lengkap'] ?? 'Tanpa Nama';
+      } else {
+        // Jika tidak ada Kepala Keluarga, pakai orang pertama
+        namaKepalaKeluarga = wargaList.first['nama_lengkap'] ?? 'Tanpa Nama';
       }
     }
 
-    // 2. LOGIKA MENGAMBIL ALAMAT RUMAH
-    final rumahAsalObj = json['rumah_asal'];
-    final rumahTujuanObj = json['rumah_tujuan'];
-
     return MutasiKeluargaModel(
-      id: json['id'] as int?,
-      keluargaId: json['keluarga_id'] as int,
-      jenisMutasi: json['jenis_mutasi'] as String,
-      rumahAsalId: json['rumah_asal_id'] as int?,
-      rumahTujuanId: json['rumah_tujuan_id'] as int?,
-      tanggalMutasi: DateTime.parse(json['tanggal_mutasi'] as String),
-      keterangan: json['keterangan'] as String?,
-      fileBukti: json['file_bukti'] as String?,
+      id: json['id'],
+      keluargaId: json['keluarga_id'],
+      jenisMutasi: json['jenis_mutasi'],
+      tanggalMutasi: json['tanggal_mutasi'] != null
+          ? DateTime.parse(json['tanggal_mutasi'])
+          : DateTime.now(),
+      keterangan: json['keterangan'],
+      fileBukti: json['file_bukti'],
       createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'] as String)
+          ? DateTime.parse(json['created_at'])
           : null,
-      namaKepalaKeluarga: namaFound,
-      alamatAsal: rumahAsalObj != null ? rumahAsalObj['alamat'] : '-',
-      alamatTujuan: rumahTujuanObj != null ? rumahTujuanObj['alamat'] : '-',
+      alamatAsal: json['rumah_asal']?['alamat'] ?? '-',
+      alamatTujuan: json['rumah_tujuan']?['alamat'] ?? '-',
+      namaKepalaKeluarga: namaKepalaKeluarga,
     );
   }
 
