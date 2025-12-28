@@ -87,6 +87,13 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          key: const Key('btn_back_aspirasi'),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: const Text(
           'Aspirasi Warga',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
@@ -98,6 +105,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
         ),
         actions: [
           IconButton(
+            key: const Key('btn_filter'),
             icon: Icon(
               _showFilter ? Icons.filter_alt_off : Icons.filter_alt,
               color: Colors.white,
@@ -111,6 +119,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
           final role = context.read<AspirasiBloc>().currentRole;
           if (role == "Warga") {
             return FloatingActionButton(
+               key: const Key('fab_add_pesan'),
               backgroundColor: AppColors.primary,
               child: Icon(Icons.add, color: Colors.white),
               onPressed: () {
@@ -259,6 +268,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           OutlinedButton(
+                            key: const Key('filter_reset_button'),
                             onPressed: () {
                               setState(() {
                                 _searchController.clear();
@@ -276,6 +286,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                           ),
                           const SizedBox(width: 12),
                           ElevatedButton(
+                            key: const Key('filter_apply_button'),
                             onPressed: () {
                               setState(() {
                                 appliedStatus = tempStatus;
@@ -350,6 +361,7 @@ class _DaftarPesanWargaState extends State<DaftarPesanWarga> {
                                 ),
                               ),
                               PopupMenuButton<String>(
+                                key: Key('menu_button_${data.id}'),
                                 icon: const Icon(Icons.more_vert),
                                 onSelected: (value) async {
                                   if (value == 'detail') {

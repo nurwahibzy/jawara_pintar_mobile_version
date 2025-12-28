@@ -40,6 +40,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
             children: [
               /// JUDUL
               TextFormField(
+                key: const Key('judul_field'),
                 controller: _judulController,
                 decoration: InputDecoration(
                   labelText: "Judul",
@@ -58,6 +59,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
 
               /// DESKRIPSI
               TextFormField(
+                key: const Key('deskripsi_field'), 
                 controller: _deskripsiController,
                 maxLines: 4,
                 decoration: InputDecoration(
@@ -80,6 +82,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      key: const Key('tambah_simpan_button'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -91,7 +94,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
                         if (_formKey.currentState!.validate()) {
                           final newAspirasi = Aspirasi(
                             id: 0,
-                            wargaId: 1, // TODO: ganti dengan warga yg mengirim
+                            wargaId: 1,
                             judul: _judulController.text,
                             deskripsi: _deskripsiController.text,
                             status: StatusAspirasi.Pending,
@@ -128,6 +131,7 @@ class _TambahPesanWargaState extends State<TambahPesanWarga> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
+                      key: const Key('tambah_batal_button'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey,
                         padding: const EdgeInsets.symmetric(vertical: 14),

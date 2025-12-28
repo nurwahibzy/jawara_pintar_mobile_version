@@ -186,6 +186,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
             children: [
               // Nama Pengeluaran
               TextField(
+                key: const Key('input_nama_pengeluaran'),
                 controller: namaController,
                 decoration: InputDecoration(
                   labelText: "Nama Pengeluaran",
@@ -199,6 +200,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
 
               // Tanggal Pengeluaran
               GestureDetector(
+                  key: const Key('input_tanggal_pengeluaran'),
                 onTap: _pickTanggal,
                 child: AbsorbPointer(
                   child: TextField(
@@ -218,6 +220,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
 
               // Kategori
               DropdownButtonFormField<String>(
+                key: const Key('dropdown_kategori'),
                 initialValue: kategori,
                 decoration: InputDecoration(
                   labelText: "Kategori",
@@ -240,6 +243,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
 
               // Nominal
               TextField(
+                key: const Key('input_nominal'),
                 controller: nominalController,
                 decoration: InputDecoration(
                   labelText: "Nominal",
@@ -254,6 +258,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
 
               // Keterangan
               TextField(
+                key: const Key('input_keterangan'),
                 controller: keteranganController,
                 decoration: InputDecoration(
                   labelText: "Keterangan",
@@ -268,6 +273,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
 
               // Bukti Gambar
               GestureDetector(
+                key: const Key('input_bukti_gambar'),
                 onTap: _pickImage,
                 child: Container(
                   height: 150,
@@ -288,6 +294,7 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
+                      key: const Key('btn_simpan_form'),
                       onPressed: _simpanData,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,

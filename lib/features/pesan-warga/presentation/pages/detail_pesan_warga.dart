@@ -46,6 +46,11 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
       ).copyWith(colorScheme: ColorScheme.light(primary: AppColors.primary)),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            key: const Key('detail_back_button'),
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: const Text('Detail Aspirasi'),
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
@@ -146,6 +151,7 @@ class _DetailPesanWargaState extends State<DetailPesanWarga> {
                           child: SizedBox(
                             width: 160,
                             child: ElevatedButton.icon(
+                              key: const Key('detail_edit_button'),
                               onPressed: () async {
                                 final result = await Navigator.push(
                                   context,
